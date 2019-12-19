@@ -47,6 +47,7 @@ public class OrderLogic {
 
         return order;
     }
+
     public IOrder getLastBy(IUser user) {
         IOrder order = _orderRepository.getLastBy(user);
         order.setTable(_tableRepository.getBy(order.getTable().getId()));
