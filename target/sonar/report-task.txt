@@ -1,0 +1,6 @@
+projectKey=BestelMar:BestelMar
+serverUrl=http://localhost:9000
+serverVersion=7.9.1.27448
+dashboardUrl=http://localhost:9000/dashboard?id=BestelMar%3ABestelMar
+ceTaskId=AW6DLLE8VurMtA2qQTD3
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AW6DLLE8VurMtA2qQTD3
