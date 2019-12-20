@@ -142,10 +142,10 @@ export const mutations = {
     }
     if(state.orders.length){
       let foundTable = state.orders.filter(function(el){
-          // console.log(el.table.id)
-          if (el.table === webSocketData.table){
-            console.log("Table math: " + el.table.id + " with " + webSocketData.table.id)
-            return true
+        // console.log(el.table.id)
+        if (el.table === webSocketData.table){
+          console.log("Table math: " + el.table.id + " with " + webSocketData.table.id)
+          return true
         }
         return false;
       });

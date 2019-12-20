@@ -85,49 +85,49 @@
 </template>
 
 <script>
-    import orderTable from './Table';
-    export default {
-        name: "order-index",
-        components: { orderTable },
-        data(){
-            return {
-                webSocketData: [],
-                order: {
-                    table: [],
-                    articles: [],
-                }
-            }
-        },
-        methods: {
-            addComment(article, $event){
-                this.$set(article, 'comment', $event.target.value)
-            },
-            sendOrder () {
-                this.$store.dispatch("sendOrder", this.order);
-            },
-            connect () {
-                this.$store.dispatch("connect")
-            },
-            getAllArticles(){
-                this.$store.dispatch("getAllArticles");
-            },
-            getAllTables(){
-                this.$store.dispatch("getAllTables");
-            },
-        },
-        computed: {
-            tables(){
-                return this.$store.getters.tables
-            },
-            articles(){
-                return this.$store.getters.articles
-            }
-        },
-        mounted(){
-            this.connect();
-            this.getAllArticles();
-            this.getAllTables();
+  import orderTable from './Table';
+  export default {
+    name: "order-index",
+    components: { orderTable },
+    data(){
+      return {
+        webSocketData: [],
+        order: {
+          table: [],
+          articles: [],
         }
+      }
+    },
+    methods: {
+      addComment(article, $event){
+        this.$set(article, 'comment', $event.target.value)
+      },
+      sendOrder () {
+        this.$store.dispatch("sendOrder", this.order);
+      },
+      connect () {
+        this.$store.dispatch("connect")
+      },
+      getAllArticles(){
+        this.$store.dispatch("getAllArticles");
+      },
+      getAllTables(){
+        this.$store.dispatch("getAllTables");
+      },
+    },
+    computed: {
+      tables(){
+        return this.$store.getters.tables
+      },
+      articles(){
+        return this.$store.getters.articles
+      }
+    },
+    mounted(){
+      this.connect();
+      this.getAllArticles();
+      this.getAllTables();
     }
+  }
 </script>
 

@@ -2,14 +2,17 @@ package models;
 
 import Interfaces.model.IArticle;
 import Interfaces.model.IArticleOrder;
+import java.util.Date;
 
-public class ArticleOrderHistory implements IArticleOrder {
+public class ArticleOrder implements IArticleOrder {
     private int id;
     private Double price;
     private String comment;
     private IArticle article;
+    private Date date;
+    private Status status;
 
-    public ArticleOrderHistory(int id, Double price, String comment, IArticle article){
+    public ArticleOrder(int id, Double price, String comment, IArticle article){
         this.id = id;
         this.price = price;
         this.comment = comment;
@@ -28,6 +31,21 @@ public class ArticleOrderHistory implements IArticleOrder {
     }
     public void setArticle(IArticle article) {
         this.article = article;
+    }
+
+
+    public Date getDate() {
+        return this.date;
+    }
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Status getStatus() {
+        return this.status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public int getId() {

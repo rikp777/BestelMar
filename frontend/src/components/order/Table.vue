@@ -23,7 +23,7 @@
 
 
       <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="padding">
               <div class="card">
@@ -42,7 +42,7 @@
                         <th class="center">#</th>
                         <th>Item</th>
                         <th>Description</th>
-                        <th class="right">Price</th>
+                        <th class="right" style="text-align: right">Price</th>
                       </tr>
                       </thead>
                       <tbody>
@@ -50,7 +50,7 @@
                         <td class="center">{{index + 1}}</td>
                         <td class="left strong">{{articleOrder.article.name}}</td>
                         <td class="left">{{articleOrder.comment}}</td>
-                        <td class="right">€{{articleOrder.price.toFixed(2)}}</td>
+                        <td class="right" style="text-align: right">€{{articleOrder.price.toFixed(2)}}</td>
                       </tr>
                       </tbody>
                     </table>
@@ -65,18 +65,18 @@
                           <td class="left">
                             <strong class="text-dark">Subtotal</strong>
                           </td>
-                          <td class="right">€{{(totalPrice * 0.79).toFixed(2)}}</td>
+                          <td class="right" style="text-align: right">€{{(totalPrice * 0.79).toFixed(2)}}</td>
                         </tr>
                         <tr>
                           <td class="left">
                             <strong class="text-dark">btw (21%)</strong>
                           </td>
-                          <td class="right">€{{(totalPrice * 0.21).toFixed(2)}}</td>
+                          <td class="right" style="text-align: right">€{{(totalPrice * 0.21).toFixed(2)}}</td>
                         </tr>
                         <tr>
                           <td class="left">
                             <strong class="text-dark">Total</strong> </td>
-                          <td class="right">
+                          <td class="right" style="text-align: right">
                             <strong class="text-dark">€{{totalPrice}}</strong>
                           </td>
                         </tr>
@@ -100,31 +100,31 @@
 </template>
 
 <script>
-    export default {
-        name: "order-table",
-        data(){
-            return {
-            }
-        },
-        methods: {
-            getOrderTable(id) {
-                this.$store.dispatch("getOrderTable", id)
-            },
-            pay(){
+  export default {
+    name: "order-table",
+    data(){
+      return {
+      }
+    },
+    methods: {
+      getOrderTable(id) {
+        this.$store.dispatch("getOrderTable", id)
+      },
+      pay(){
 
-            }
-        },
-        computed: {
-            order() {
-                return this.$store.getters.order;
-            },
-            totalPrice(){
-                return this.$store.getters.totalPrice;
-            }
-        },
-        mounted() {
-            this.getOrderTable(1)
-        }
+      }
+    },
+    computed: {
+      order() {
+        return this.$store.getters.order;
+      },
+      totalPrice(){
+        return this.$store.getters.totalPrice;
+      }
+    },
+    mounted() {
+      this.getOrderTable(1)
     }
+  }
 </script>
 

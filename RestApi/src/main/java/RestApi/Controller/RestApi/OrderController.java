@@ -42,7 +42,7 @@ public class OrderController { ;
 //        return ResponseEntity.status(HttpStatus.CREATED).body(payload);
 //    }
 
-//    @PutMapping("/{id}")
+    //    @PutMapping("/{id}")
 //    public ResponseEntity update(@RequestBody VOArticleOrder article) {
 ////        if(articleLogic.getBy(article.getName()) != null){
 ////            return ResponseEntity.status(HttpStatus.CONFLICT).body("Article Already exists");

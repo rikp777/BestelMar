@@ -5,6 +5,7 @@ import Data.Context.SQLContext.ArticleOrderContextSQL;
 import Data.Repository.Interfaces.IArticleOrderRepository;
 import Data.Repository.Interfaces.IArticleRepository;
 import Interfaces.model.IArticleOrder;
+import Interfaces.model.IOrder;
 
 import java.util.List;
 
@@ -14,7 +15,9 @@ public class ArticleOrderRepository implements IArticleOrderRepository {
         this._articleOrderContext = new ArticleOrderContextSQL();
     }
 
-
+    public boolean add(IArticleOrder entity, IOrder order) {
+        return _articleOrderContext.create(entity, order);
+    }
     public boolean add(IArticleOrder entity) {
         return _articleOrderContext.create(entity);
     }

@@ -22,19 +22,19 @@
           <div class="card-body" v-if="order.table">
             <h5>{{order.table.name}}</h5>
             <p class="card-text">{{order.table.description}}</p>
-            <p class="card-text">Status: <b>not paid</b></p>
+            <p class="card-text">Status: <b>{{order.status}}</b></p>
             <div class="list-group" v-if="order.articleOrder">
               <div v-for="articleOrder in order.articleOrder">
-                  <a class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex w-100 justify-content-between">
-                      <h5 class="mb-1">{{articleOrder.article.name}}</h5>
-                    </div>
-                    <p class="card-text">{{articleOrder.comment}}</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    <button class="btn btn-primary" @click="updateOrderStatus(articleOrder.id)">Maak</button>
-                  </a>
-                  <br>
-                </div>
+                <a class="list-group-item list-group-item-action flex-column align-items-start">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{articleOrder.article.name}}</h5>
+                  </div>
+                  <p class="card-text">{{articleOrder.comment}}</p>
+                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                  <button class="btn btn-primary" @click="updateOrderStatus(articleOrder.id)">{{articleOrder.status}}</button>
+                </a>
+                <br>
+              </div>
             </div>
             <div class="list-group" v-if="order.articles">
               {{order}}
@@ -71,7 +71,7 @@
         this.$store.dispatch("getAllLastOrders");
       },
       updateOrderStatus(id){
-          console.log(id)
+        console.log(id)
       }
     },
     computed: {
@@ -82,7 +82,7 @@
         return this.$store.getters.tables
       },
       orders() {
-          return this.$store.getters.orders
+        return this.$store.getters.orders
       },
     },
     mounted() {

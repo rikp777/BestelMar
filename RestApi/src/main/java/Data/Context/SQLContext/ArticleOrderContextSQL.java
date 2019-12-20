@@ -1,35 +1,44 @@
 package Data.Context.SQLContext;
 
 import Data.Context.Interfaces.IArticleOrderContext;
+import Data.DTO.ArticleDto;
 import Data.DTO.ArticleOrderDto;
 import Data.Helpers.SQLConnector;
 import Interfaces.model.IArticle;
 import Interfaces.model.IArticleOrder;
 import Interfaces.model.IOrder;
-import models.Article;
-import models.ArticleOrderHistory;
+import models.Status;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ArticleOrderContextSQL extends SQLConnector implements IArticleOrderContext {
-    private final static Logger LOGGER = Logger.getLogger(UserContextSQL.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(ArticleOrderContextSQL.class.getName());
 
 
     public boolean create(IArticleOrder entity, IOrder order) {
-        String query = "INSERT INTO article_order (article_id, order_id, price, comment)" +
-                "VALUES (?, ?, ?) ";
+        String query = "INSERT INTO article_order (article_id, order_id, price, comment, date)" +
+                "VALUES (?, ?, ?, ?, ?) ";
         try {
             this.open();
+            System.out.println("article: "+ entity.getArticle().getId() + " " + entity.getArticle().getName());
+            System.out.println("order id: "+ order.getId());
+            System.out.println("price: "+ entity.getPrice());
+            System.out.println("comment: "+ entity.getComment());
+            System.out.println("date: "+ new java.sql.Date(new Date().getTime()));
+
             PreparedStatement stmt = this.getPreparedStatement(query);
             stmt.setInt(1, entity.getArticle().getId());
             stmt.setInt(2, order.getId());
             stmt.setDouble(3, entity.getPrice());
             stmt.setString(4, entity.getComment());
+            stmt.setDate(5, new java.sql.Date(new Date().getTime()));
+
             LOGGER.log(Level.INFO, "ArticleOrder Created: " + entity.getArticle().getName());
             return this.executeUpdate(stmt) != 0;
         } catch (Exception e){
@@ -40,7 +49,6 @@ public class ArticleOrderContextSQL extends SQLConnector implements IArticleOrde
         return false;
     }
 
-    @Override
     public boolean create(IArticleOrder entity) {
         return false;
     }
@@ -85,7 +93,11 @@ public class ArticleOrderContextSQL extends SQLConnector implements IArticleOrde
 
     public IArticleOrder read(int id) {
         IArticleOrder articleOrder = null;
-        String query = "SELECT * FROM article_order WHERE id = ? LIMIT 1";
+        String query = "SELECT ao.*, s.name as status_name " +
+                "FROM article_order as ao " +
+                "INNER JOIN status as s on s.id = ao.status_id " +
+                "WHERE ao.id = ? " +
+                "LIMIT 1";
         try{
             this.open();
             PreparedStatement stmt = this.getPreparedStatement(query);
@@ -98,6 +110,7 @@ public class ArticleOrderContextSQL extends SQLConnector implements IArticleOrde
                         resultSet.getDouble("price"),
                         resultSet.getString("comment")
                 );
+                articleOrder.setStatus(Status.valueOf(resultSet.getString("status_name")));
                 articleOrder.setArticle(
                         new ArticleContextSQL().read(resultSet.getInt("article_id"))
                 );
@@ -119,8 +132,11 @@ public class ArticleOrderContextSQL extends SQLConnector implements IArticleOrde
 
 
     public List<IArticleOrder> list() {
-        List<IArticleOrder> articleOrderHistories = new ArrayList<>();
-        String query = "SELECT * FROM article_order";
+        List<IArticleOrder> articleOrders = new ArrayList<>();
+        String query = "SELECT article_order.id, article_order.price, article_order.comment, article_order.date, article_order.article_id, article_order.status_id, article_order.order_id, status.name as status_name, articles.name as article_name, articles.description as article_description, articles.price as article_price " +
+                "FROM article_order " +
+                "JOIN status on status.id = article_order.status_id " +
+                "JOIN articles on articles.id = article_order.article_id";
 
         try{
             this.open();
@@ -128,12 +144,22 @@ public class ArticleOrderContextSQL extends SQLConnector implements IArticleOrde
             ResultSet resultSet = this.executeQuery(stmt);
 
             while (resultSet.next()){
-                articleOrderHistories.add(new ArticleOrderHistory(
-                        resultSet.getInt("id"),
-                        resultSet.getDouble("price"),
-                        resultSet.getString("comment"),
-                        (IArticle) new ArticleOrderContextSQL().read(resultSet.getInt("id"))
+                IArticleOrder articleOrderDto = new ArticleOrderDto();
+
+                articleOrderDto.setId(resultSet.getInt("id"));
+                articleOrderDto.setComment(resultSet.getString("comment"));
+                articleOrderDto.setPrice(resultSet.getDouble("price"));
+                articleOrderDto.setDate(resultSet.getDate("date"));
+
+                articleOrderDto.setStatus(Status.valueOf(resultSet.getString("status_name")));
+                articleOrderDto.setArticle(new ArticleDto(
+                        resultSet.getInt("article_id"),
+                        resultSet.getString("article_name"),
+                        resultSet.getString("article_description"),
+                        resultSet.getDouble("article_price")
                 ));
+
+                articleOrders.add(articleOrderDto);
             }
 
         } catch (Exception e) {
@@ -141,12 +167,17 @@ public class ArticleOrderContextSQL extends SQLConnector implements IArticleOrde
         }finally {
             this.close();
         }
-        return articleOrderHistories;
+        return articleOrders;
     }
     public List<IArticleOrder> list(int orderId) {
-        System.out.println("read " + orderId);
+        LOGGER.log(Level.INFO, "Trying to get all article orders for " + orderId);
         List<IArticleOrder> articleOrders = new ArrayList<>();
-        String query = "SELECT * FROM article_order WHERE order_id = ? ORDER BY id DESC";
+        String query = "SELECT ao.*, s.name as status_name " +
+                "FROM article_order as ao " +
+                "INNER JOIN status as s on s.id = ao.status_id " +
+                "WHERE ao.order_id = ? " +
+                "ORDER BY ao.id DESC ";
+//        String query = "SELECT * FROM article_order WHERE order_id = ? ORDER BY id DESC";
 
         try{
             this.open();
@@ -161,11 +192,13 @@ public class ArticleOrderContextSQL extends SQLConnector implements IArticleOrde
                         resultSet.getDouble("price"),
                         resultSet.getString("comment")
                 );
+                articleOrderDto.setStatus(Status.valueOf(resultSet.getString("status_name")));
                 articleOrderDto.setArticle(
                         new ArticleContextSQL().read(resultSet.getInt("article_id"))
                 );
 
-                System.out.println(articleOrderDto.getArticle().getName());
+                LOGGER.log(Level.INFO, "Found article order: " + articleOrderDto.getArticle().getName() + " for order " + orderId + " status " + articleOrderDto.getStatus());
+
                 articleOrders.add(articleOrderDto);
             }
 

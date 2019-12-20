@@ -2,6 +2,9 @@ package Logic.Models;
 
 import Interfaces.model.IArticle;
 import Interfaces.model.IArticleOrder;
+import models.Status;
+
+import java.util.Date;
 
 public class ArticleOrder implements IArticleOrder {
     private int id;
@@ -35,6 +38,26 @@ public class ArticleOrder implements IArticleOrder {
     }
     public void setArticle(IArticle article) {
         this.article = article;
+    }
+
+    @Override
+    public Date getDate() {
+        return null;
+    }
+
+    @Override
+    public void setDate(Date date) {
+
+    }
+
+    @Override
+    public Status getStatus() {
+        return null;
+    }
+
+    @Override
+    public void setStatus(Status status) {
+
     }
 
     public int getId() {

@@ -2,14 +2,19 @@ package Data.DTO;
 
 import Interfaces.model.IArticle;
 import Interfaces.model.IArticleOrder;
+import models.Status;
+
+import java.util.Date;
 
 public class ArticleOrderDto implements IArticleOrder {
     private int id;
     private Double price;
     private String comment;
     private IArticle article;
+    private Date date;
+    private Status status;
 
-    ArticleOrderDto(){
+    public ArticleOrderDto(){
 
     }
     public ArticleOrderDto(Double price, String comment){
@@ -35,6 +40,21 @@ public class ArticleOrderDto implements IArticleOrder {
     }
     public void setArticle(IArticle article) {
         this.article = article;
+    }
+
+    public Date getDate() {
+        return this.date;
+    }
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+
+    public Status getStatus() {
+        return this.status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public int getId() {

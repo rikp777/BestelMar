@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class OrderContextSQL extends SQLConnector implements IOrderContext{
-    private final static Logger LOGGER = Logger.getLogger(UserContextSQL.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(OrderContextSQL.class.getName());
 
     public boolean create(IOrder entity, IUser user) {
         String query = "INSERT INTO Orders (date, table_id, user_id)" +
@@ -144,9 +144,8 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
             if(resultSet.next()){
                 orderDto.setId(resultSet.getInt("id"));
                 orderDto.setDate(resultSet.getDate("date"));
+                orderDto.setStatus(Status.valueOf(resultSet.getString("status_name")));
 
-
-                //orderDto.setStatus(Status.valueOf(resultSet.getString("status_name")));
                 System.out.println(resultSet.getInt("table_id"));
 
                 tableId = resultSet.getInt("table_id");
@@ -212,7 +211,7 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
                         resultSet.getInt("id"),
                         resultSet.getDate("date")
                 );
-//                System.out.println(resultSet.getString("status_name"));
+                System.out.println(resultSet.getString("status_name"));
                 orderDto.setStatus(Status.valueOf(resultSet.getString("status_name")));
                 orderDto.setTable(new TableContextSQL().read(resultSet.getInt("table_id")));
             }
@@ -226,9 +225,7 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
 
     public List<IOrder> listLast(){
         List<IOrder> orders = new ArrayList<>();
-        String query = "SELECT id, MAX(date) as date, table_id, user_id\n" +
-                "FROM orders\n" +
-                "GROUP BY table_id";
+        String query = "SELECT status.name as status_name, n.* FROM orders n INNER JOIN status on status.id = n.status_id INNER JOIN ( SELECT id, MAX(date) AS date, table_id FROM orders GROUP BY table_id ) AS max USING (table_id, date)";
 
         try{
             this.open();
@@ -237,16 +234,17 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
 
             while (resultSet.next()){
                 OrderDto orderDto = new OrderDto(
-                        resultSet.getInt("id"),
-                        resultSet.getDate("date")
+                        resultSet.getInt("n.id"),
+                        resultSet.getDate("n.date")
                 );
+                orderDto.setStatus(Status.valueOf(resultSet.getString("status_name")));
+                System.out.println("nu ben ik hier "+ orderDto.getId() + " asdf "+ resultSet.getInt("table_id"));
                 ITable table = new TableDto();
                 table.setId(resultSet.getInt("table_id"));
                 orderDto.setTable(table);
 
                 orders.add(orderDto);
             }
-
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, e.getMessage());
         }finally {
