@@ -5,6 +5,7 @@ import Data.DTO.TableDto;
 import Data.Helpers.SQLConnector;
 import Interfaces.model.IArticle;
 import Interfaces.model.ITable;
+import Interfaces.model.IUser;
 import models.Article;
 import models.Table;
 
@@ -56,15 +57,22 @@ public class TableContextSQL extends SQLConnector implements ITableContext {
         return false;
     }
     public boolean delete(ITable entity) {
-        String query = "DELETE FROM tables WHERE id = ?";
+        System.out.println("del");
+        String query = "UPDATE tables SET disabled = ? WHERE id = ?";
         try {
             this.open();
             PreparedStatement stmt = this.getPreparedStatement(query);
-            stmt.setInt(1, entity.getId());
+            if(entity.getDisabled()){
+                entity.setDisabled(false);
+            }else{
+                entity.setDisabled(true);
+            }
+            stmt.setBoolean(1, entity.getDisabled());
+            stmt.setInt(2, entity.getId());
 
-            LOGGER.log(Level.INFO, "table Deleted: " + entity.getName());
+            LOGGER.log(Level.INFO, "Table Disabled: " + entity.getName());
             return this.executeUpdate(stmt) != 0;
-        } catch (Exception e){
+        }catch (Exception e){
             LOGGER.log(Level.WARNING, e.getMessage());
         }finally {
             this.close();

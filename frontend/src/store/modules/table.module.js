@@ -67,15 +67,9 @@ const actions = {
         throw error
       })
   },
-  deleteTable(context, tableSlug){
-    console.log(tableSlug)
-    return apiService.delete(apiUrl, tableSlug)
-      .then(() => {
-
-      }).catch((error) => {
-        throw error
-      })
-  }
+  tableDelete(context, slug) {
+    return apiService.delete(apiUrl, slug);
+  },
 };
 
 // Mutations

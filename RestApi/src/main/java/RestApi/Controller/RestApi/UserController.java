@@ -26,21 +26,19 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Something went wrong");
     }
 
-    @PutMapping("/user")
+    @PutMapping("/user/{id}")
     public ResponseEntity update(@RequestBody User user){
-        if(userLogic.getBy(user) != null){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("User Already exists");
-        }
         if(userLogic.edit(user)){
             return ResponseEntity.status(HttpStatus.CREATED).body(user);
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Something went wrong");
     }
 
-    @DeleteMapping("/user/delete/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity delete(@PathVariable int id){
         if(userLogic.getBy(id) != null) {
             userLogic.remove(userLogic.getBy(id));
+            return ResponseEntity.status(HttpStatus.OK).body("User status changed");
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body("User not found");
     }

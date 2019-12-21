@@ -36,12 +36,15 @@ public class UserContextSQL extends SQLConnector implements IUserContext {
         return false;
     }
     public boolean update(IUser entity) {
-        String query = "UPDATE users SET first_name = ?, last_name = ?, WHERE id = ?";
+        System.out.println("Hit");
+        String query = "UPDATE users SET email = ?, first_name = ?, last_name = ? WHERE id = ?";
         try {
             this.open();
             PreparedStatement stmt = this.getPreparedStatement(query);
-            stmt.setString(1, entity.getFirstName());
-            stmt.setString(2, entity.getLastName());
+            stmt.setString(1, entity.getEmail());
+            stmt.setString(2, entity.getFirstName());
+            stmt.setString(3, entity.getLastName());
+            stmt.setInt(4, entity.getId());
 
             LOGGER.log(Level.INFO, "User Updated: " + entity.getEmail());
             return this.executeUpdate(stmt) != 0;
@@ -53,21 +56,51 @@ public class UserContextSQL extends SQLConnector implements IUserContext {
         return false;
     }
     public boolean delete(IUser entity) {
-        String query = "DELETE FROM users WHERE id = ?";
+        System.out.println("del");
+        String query = "UPDATE users SET blocked = ? WHERE id = ?";
         try {
             this.open();
             PreparedStatement stmt = this.getPreparedStatement(query);
-            stmt.setInt(1, entity.getId());
+            if(entity.getBlocked()){
+                entity.setBlocked(false);
+            }else{
+                entity.setBlocked(true);
+            }
+            stmt.setBoolean(1, entity.getBlocked());
+            stmt.setInt(2, entity.getId());
 
-            LOGGER.log(Level.INFO, "User Deleted: " + entity.getEmail());
+            LOGGER.log(Level.INFO, "User Blocked: " + entity.getEmail());
             return this.executeUpdate(stmt) != 0;
-        } catch (Exception e){
+        }catch (Exception e){
             LOGGER.log(Level.WARNING, e.getMessage());
         }finally {
             this.close();
         }
         return false;
     }
+//    public boolean delete(IUser entity) {
+//        String query = "UPDATE users SET blocked = ? WHERE id = ?";
+//        try {
+//            this.open();
+//            PreparedStatement stmt = this.getPreparedStatement(query);
+////            if(entity.getBlocked()){
+////                entity.setBlocked(false);
+////            }else{
+////                entity.setBlocked(true);
+////            }
+//            stmt.setBoolean(1, true);
+//            stmt.setInt(2, entity.getId());
+//
+////            LOGGER.log(Level.INFO, "User Blocked: " + entity.getEmail() + " Blocked =" + entity.getBlocked());
+//            return this.executeUpdate(stmt) != 0;
+//        } catch (Exception e){
+//            e.printStackTrace();
+//            LOGGER.log(Level.WARNING, e.getMessage());
+//        }finally {
+//            this.close();
+//        }
+//        return false;
+//    }
 
 
 

@@ -51,6 +51,23 @@ const actions = {
         throw error
       });
   },
+
+  userDelete(context, slug) {
+    return apiService.delete(apiUrl, slug);
+  },
+
+  updateUser(context, payload) {
+    // console.log()/
+    return apiService.put(apiUrl, payload.id, payload)
+      .then(({ data }) => {
+        // console.log(data.data);
+        context.commit("setUser", data);
+      })
+      .catch( (error) => {
+        throw error
+      });
+  },
+
 };
 
 // Mutations

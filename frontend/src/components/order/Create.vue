@@ -106,7 +106,7 @@
         this.$store.dispatch("sendOrder", this.order);
       },
       connect () {
-        this.$store.dispatch("connect")
+        this.$store.dispatch("connectGlobalOrder")
       },
       getAllArticles(){
         this.$store.dispatch("getAllArticles");

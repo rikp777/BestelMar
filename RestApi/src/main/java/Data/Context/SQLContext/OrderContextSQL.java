@@ -45,7 +45,11 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
         return false;
     }
     public boolean create(IOrder entity) {
-        System.out.println("table = "+ entity.getTable().getName());
+        LOGGER.log(Level.INFO, "Incommming data: \n" +
+                "table: " + entity.getTable().getName() + "\n" +
+                "date: " + entity.getDate() + "\n" +
+                "price: " + entity.getStatus());
+
         String query = "INSERT INTO Orders (date, table_id)" +
                 " VALUES (?, ?) ";
         try {

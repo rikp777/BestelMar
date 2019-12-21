@@ -31,6 +31,7 @@ public class SQLConnector {
                 conn = DriverManager.getConnection(DATABASE_URL, getProperties());
             }catch (Exception e) {
                 e.printStackTrace();
+                LOGGER.log(Level.WARNING, e.getMessage());
             }
         }
     }
@@ -39,6 +40,7 @@ public class SQLConnector {
         try {
             return this.conn.prepareStatement(stmt);
         }catch (Exception e){
+            e.printStackTrace();
             LOGGER.log(Level.WARNING, e.getMessage());
         }
         return null;
@@ -48,6 +50,7 @@ public class SQLConnector {
         try {
             return stmt.executeQuery();
         }catch (Exception e){
+            e.printStackTrace();
             LOGGER.log(Level.WARNING, e.getMessage());
         }
         return null;
@@ -56,6 +59,7 @@ public class SQLConnector {
         try{
             return stmt.executeUpdate();
         }catch (Exception e){
+            e.printStackTrace();
             LOGGER.log(Level.WARNING, e.getMessage());
         }
         return 0;
@@ -67,6 +71,7 @@ public class SQLConnector {
                 this.conn.close();
                 this.conn = null;
             } catch (Exception e) {
+                e.printStackTrace();
                 LOGGER.log(Level.WARNING, e.getMessage());
             }
         }

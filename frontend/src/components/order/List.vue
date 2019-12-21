@@ -62,7 +62,7 @@
     name: "List",
     methods: {
       connect() {
-        this.$store.dispatch("connect")
+        this.$store.dispatch("connectGlobalOrder")
       },
       getAllTables() {
         this.$store.dispatch("getAllTables");

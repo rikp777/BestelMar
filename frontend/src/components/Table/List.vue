@@ -40,12 +40,20 @@
               >
                 Update
               </router-link>
-              <router-link
-                class="btn btn-danger btn-xs"
-                :to="{ name: 'articleDelete', params: { id: table.id }}"
+              <button
+                v-if="table.disabled"
+                class="btn btn-success btn-xs"
+                @click="disableTable(table.id)"
               >
-                Delete
-              </router-link>
+                Enable
+              </button>
+              <button
+                v-if="!table.disabled"
+                class="btn btn-danger btn-xs"
+                @click="disableTable(table.id)"
+              >
+                Disable
+              </button>
             </td>
           </tr>
         </tbody>
@@ -74,6 +82,17 @@
             getAllTables(){
                 this.$store.dispatch("getAllTables");
             },
+          disableTable(id){
+            if(id){
+              this.$store.dispatch('tableDelete', id)
+                .then(() => {
+                  console.log("Disable")
+                  this.getAllTables()
+                }).catch(() => {
+                console.log("Not found")
+              })
+            }
+          }
         }
     }
 </script>

@@ -5,16 +5,15 @@
 <script>
     export default {
         name: "userDelete",
-        created() {
+        mounted() {
             if(this.$route.params.id){
-                this.$store.dispatch('deleteUser', this.$route.params.id)
+                this.$store.dispatch('userDelete', this.$route.params.id)
                     .then(() => {
-                        this.$router.push({ name: 'userList' })
+                      console.log("Deactivate")
                     }).catch(() => {
                     console.log("Not found")
                 })
             }
-            this.$router.push({ name: 'userList'})
         }
     }
 </script>

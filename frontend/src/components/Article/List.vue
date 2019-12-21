@@ -22,7 +22,7 @@
           <tr>
             <th>name</th>
             <th>Description</th>
-            <th>Orders</th>
+            <th>Price</th>
             <th class="text-center">Edit/Disable</th>
           </tr>
         </thead>
@@ -30,7 +30,7 @@
           <tr v-for="article in articles">
             <td>{{article.name}}</td>
             <td>{{article.description}}l</td>
-            <td>{{article.price}}</td>
+            <td>€{{article.price}}</td>
             <td class="text-center">
               <router-link
                 class="btn btn-warning btn-xs"

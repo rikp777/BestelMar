@@ -23,7 +23,7 @@
           <div class="col">
             <router-link
               class="btn btn-primary"
-              :to="{ name: 'articleList' }"
+              :to="{ name: 'userList' }"
             >Back</router-link>
             <button class="btn btn-primary" type="submit">Update User</button>
           </div>
@@ -42,6 +42,7 @@
         data(){
             return {
                 form: {
+                    id: '',
                     email: '',
                     firstName: '',
                     lastName: '',
@@ -60,13 +61,15 @@
         },
         methods: {
             getUser(id){
-                this.$store.dispatch("getUser", id)
+
+                this.$store.dispatch("getUser", this.$route.params.id)
                     .then((data) => {
                         this.form = this.user
                     });
             },
             update(){
-                this.$store.dispatch("updateUser", this.form).then(() => {
+                this.$store.dispatch("updateUser", this.form)
+                  .then(() => {
                     this.$router.push({ name: 'userList'})
                 })
             }

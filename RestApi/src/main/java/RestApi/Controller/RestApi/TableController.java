@@ -25,9 +25,6 @@ public class TableController {
 
     @PutMapping("/table/{id}")
     public ResponseEntity update(@RequestBody VOTable table){
-        if(tableLogic.getBy(table.getName()) != null){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Table Already exists");
-        }
         System.out.println(table.getDisabled());
         if(tableLogic.edit(table)){
             return ResponseEntity.status(HttpStatus.CREATED).body(table);

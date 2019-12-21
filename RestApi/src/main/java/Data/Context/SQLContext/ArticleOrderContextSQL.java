@@ -26,11 +26,12 @@ public class ArticleOrderContextSQL extends SQLConnector implements IArticleOrde
                 "VALUES (?, ?, ?, ?, ?) ";
         try {
             this.open();
-            System.out.println("article: "+ entity.getArticle().getId() + " " + entity.getArticle().getName());
-            System.out.println("order id: "+ order.getId());
-            System.out.println("price: "+ entity.getPrice());
-            System.out.println("comment: "+ entity.getComment());
-            System.out.println("date: "+ new java.sql.Date(new Date().getTime()));
+            LOGGER.log(Level.INFO, "Incommming data: \n" +
+                    "article: " + entity.getArticle().getId() + " " + entity.getArticle().getName() + "\n" +
+                    "order id: "+ order.getId() + "\n" +
+                    "price: "+ entity.getPrice() + "\n" +
+                    "comment: "+ entity.getComment() + "\n" +
+                    "date: " + new java.sql.Date(new Date().getTime()));
 
             PreparedStatement stmt = this.getPreparedStatement(query);
             stmt.setInt(1, entity.getArticle().getId());

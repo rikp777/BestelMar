@@ -4,6 +4,7 @@ import List from '../../components/user/List'
 import Create from '../../components/user/Create'
 import Read from '../../components/user/Read'
 import Update from "../../components/user/Update";
+import Delete from "../../components/user/Delete";
 
 export default [
   {
@@ -29,6 +30,11 @@ export default [
         name: 'userUpdate',
         path: ':id',
         component: Update,
+      },
+      {
+        name: 'userDelete',
+        path: ':id',
+        component: Delete,
       }
     ]
   }

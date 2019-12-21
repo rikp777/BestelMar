@@ -36,12 +36,20 @@
               >
                 Update
               </router-link>
-              <router-link
-                class="btn btn-danger btn-xs"
-                :to="{ name: 'userDelete', params: { id: user.id }}"
+              <button
+                v-if="user.blocked"
+                class="btn btn-success btn-xs"
+                @click="blockUser(user.id)"
               >
-                Delete
-              </router-link>
+                Unblock
+              </button>
+              <button
+                v-if="!user.blocked"
+                class="btn btn-danger btn-xs"
+                @click="blockUser(user.id)"
+              >
+                Block
+              </button>
             </td>
           </tr>
           </tbody>
@@ -71,6 +79,17 @@
             getAllUsers(){
                 this.$store.dispatch("getAllUsers");
             },
+          blockUser(id){
+            if(id){
+              this.$store.dispatch('userDelete', id)
+                .then(() => {
+                  console.log("Deactivate")
+                  this.getAllUsers()
+                }).catch(() => {
+                console.log("Not found")
+              })
+            }
+          }
         }
     }
 </script>
