@@ -27,7 +27,16 @@ public class OrderLogic {
 
         if(order == null){
             System.out.println("First order for table " + entity.getTable().getName());
-            return _orderRepository.add(entity);
+            _orderRepository.add(entity);
+
+
+            order = _orderRepository.getLastBy(entity.getTable());
+            System.out.println("To make sure order was created " + order.getTable().getName());
+
+            for(IArticleOrder articleOrder : entity.getArticleOrder()){
+                System.out.println("Making adding order " + articleOrder.getArticle().getName());
+                _articleOrderRepository.add(articleOrder, order);
+            }
         } else if(order.getStatus() == Status.Paid){
             System.out.println("Order has been paid so we make a new order");
             return _orderRepository.add(entity);
@@ -52,10 +61,12 @@ public class OrderLogic {
 
     public IOrder getLastBy(ITable table) {
         IOrder order = _orderRepository.getLastBy(table);
-        order.setTable(_tableRepository.getBy(order.getTable().getId()));
-        order.setArticleOrder(_articleOrderRepository.getAll(order.getId()));
-
-        return order;
+        if(order != null){
+            order.setTable(_tableRepository.getBy(order.getTable().getId()));
+            order.setArticleOrder(_articleOrderRepository.getAll(order.getId()));
+            return order;
+        }
+        return null;
     }
 
     public IOrder getLastBy(IUser user) {

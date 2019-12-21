@@ -140,11 +140,20 @@ export const mutations = {
     //     state.order.articleOrder.extend(webSocketData.articleOrder)
     //   }
     // }
-    //console.log(webSocketData.articleOrder)
+
 
     state.order = webSocketData;
-    state.orders.find(order => order.table.id === webSocketData.table.id).articleOrder = webSocketData.articleOrder;
+    let order = state.orders.find(order => order.table.id === webSocketData.table.id)
+    if(order){
+      console.log("Order for table does exist")
+      order.articleOrder = webSocketData.articleOrder;
+    }else{
+      console.log("New table will be pushed")
+      state.orders.push(webSocketData);
+    }
 
+    console.log(state.orders)
+    //console.log(webSocketData.articleOrder)
     //console.log(state.orders.find(order => order.table.id === webSocketData.table.id).articleOrder)
 
     // if(state.orders.length){
