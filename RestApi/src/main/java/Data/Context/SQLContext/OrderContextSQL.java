@@ -211,7 +211,7 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
                         resultSet.getInt("id"),
                         resultSet.getDate("date")
                 );
-                System.out.println(resultSet.getString("status_name"));
+                //System.out.println(resultSet.getString("status_name"));
                 orderDto.setStatus(Status.valueOf(resultSet.getString("status_name")));
                 orderDto.setTable(new TableContextSQL().read(resultSet.getInt("table_id")));
             }

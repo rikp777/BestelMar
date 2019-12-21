@@ -177,7 +177,6 @@ public class ArticleOrderContextSQL extends SQLConnector implements IArticleOrde
                 "INNER JOIN status as s on s.id = ao.status_id " +
                 "WHERE ao.order_id = ? " +
                 "ORDER BY ao.id DESC ";
-//        String query = "SELECT * FROM article_order WHERE order_id = ? ORDER BY id DESC";
 
         try{
             this.open();

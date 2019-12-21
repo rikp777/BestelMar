@@ -35,16 +35,15 @@ public class OrderSocketController {
 
             articleOrders.add(articleOrder);
         }
-
         order.setDate(new Date());
-
         order.setArticleOrder(articleOrders);
 
-        System.out.println("tafeltje: "+ order.getTable().getId());
 
         orderLogic.add(order);
+        IOrder orderdb = orderLogic.getLastBy(voOrder.getTable());
+        System.out.println(orderdb.getArticleOrder().size());
 
-        return order;
+        return orderdb;
     }
 
     @SendTo("/global/orderwebStatus/table/{id}")

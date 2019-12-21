@@ -130,37 +130,62 @@ export const mutations = {
     state.order = order
   },
   setWebSocketData(state, webSocketData){
-    Array.prototype.extend = function (other_array) {
-      other_array.forEach(function(v) {this.push(v)}, this);
-    }
+    // Array.prototype.extend = function (other_array) {
+    //   other_array.forEach(function(v) {this.push(v)}, this);
+    // }
 
-    if(state.order){
-      if(state.order.table.id == webSocketData.table.id){
+    // if(state.order){
+    //   if(state.order.table.id == webSocketData.table.id){
+    //
+    //     state.order.articleOrder.extend(webSocketData.articleOrder)
+    //   }
+    // }
+    //console.log(webSocketData.articleOrder)
 
-        state.order.articleOrder.extend(webSocketData.articleOrder)
-      }
-    }
-    if(state.orders.length){
-      let foundTable = state.orders.filter(function(el){
-        // console.log(el.table.id)
-        if (el.table === webSocketData.table){
-          console.log("Table math: " + el.table.id + " with " + webSocketData.table.id)
-          return true
-        }
-        return false;
-      });
-      console.log("found: " + foundTable)
-      if(foundTable.length > 0){
-        state.orders.forEach((el, index) => {
+    state.order = webSocketData;
+    state.orders.find(order => order.table.id === webSocketData.table.id).articleOrder = webSocketData.articleOrder;
 
-          if (el.table.id === webSocketData.table.id) {
-            el.articleOrder.extend(webSocketData.articleOrder);
-          }
-        })
-      }else{
-        state.orders.push(webSocketData)
-      }
-    }
+    //console.log(state.orders.find(order => order.table.id === webSocketData.table.id).articleOrder)
+
+    // if(state.orders.length){
+    //   let foundTable = state.orders.filter(function(el){
+    //     // console.log(el.table.id)
+    //     if (el.table.id === webSocketData.table.id){
+    //       console.log("Table math: " + el.table.id + " with " + webSocketData.table.id)
+    //       return true
+    //     }
+    //     return false;
+    //   });
+    //   console.log("found: " + foundTable)
+    //   if(foundTable.length){
+    //     // console.log("replacing data ")
+    //     // console.log(state.orders)
+    //
+    //
+    //     // state.orders.find(order => order.id === webSocketData.id).articleOrder = webSocketData.articleOrder
+    //     //
+    //     // console.log(state.orders)
+    //
+    //     //console.log(state.orders[0].length)
+    //     // state.orders.forEach((el, index) => {
+    //
+    //
+    //       // if (el.table.id === webSocketData.table.id) {
+    //       //   Vue.set(state.orders, state.orders.findIndex(o => o.id === webSocketData.id), webSocketData)
+    //       //   console.log("replacing data ")
+    //       //   // el.articleOrder = webSocketData.articleOrder;
+    //       //   // el.articleOrder.
+    //       //   // console.log(el.articleOrder);
+    //       //   // Vue.set(state.orders, index, webSocketData)
+    //       //   //state.orders[index].articleOrder = webSocketData.articleOrder
+    //       //   // el.articleOrder.extend(webSocketData.articleOrder);
+    //       // }
+    //     // })
+    //   }else{
+    //     console.log("pushing websocket data to existing data")
+    //     state.orders.push(webSocketData)
+    //   }
+    // }
   }
 };
 
