@@ -102,7 +102,7 @@
         this.$set(article, 'comment', $event.target.value)
       },
       connect(){
-        this.$store.dispatch("connectGlobalOrder")
+        this.$store.dispatch("connectGlobal")
       },
       sendOrder(){
         this.$store.dispatch("createOrder", this.order).then(() => {

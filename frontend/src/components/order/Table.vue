@@ -113,6 +113,11 @@
       },
       getOrderTable(tableId){
         this.$store.dispatch("getOrderTable", tableId)
+      },
+      connect(tableId){
+        this.$store.dispatch("connectGlobal").then(() => {
+          this.$store.dispatch("subscribeGlobalOrderTable", tableId)
+        })
       }
     },
     computed: {
@@ -125,6 +130,7 @@
     },
     mounted() {
       this.getOrderTable(this.tableId)
+      this.connect(this.tableId)
     }
   }
 </script>

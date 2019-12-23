@@ -2,6 +2,7 @@ package RestApi.VOModels;
 
 import Interfaces.model.IArticleOrder;
 import Interfaces.model.ITable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import models.Status;
 
 import java.util.ArrayList;
@@ -12,17 +13,19 @@ public class VOOrder {
     private int id;
     private Date date;
     private Status status;
-    private String articleOrderLink;
-    private String tableLink;
+    @JsonProperty("articleOrder")
+    private List<VOArticleOrder> articleOrder;
+    @JsonProperty("table")
+    private VOTable table;
 
     public VOOrder(){
 
     }
-    public VOOrder(int id, Date date, String tableLink, String articleOrderLink){
+    public VOOrder(int id, Date date, List<VOArticleOrder> articleOrder, VOTable table){
         this.id = id;
         this.date = date;
-        this.tableLink = tableLink;
-        this.articleOrderLink = articleOrderLink;
+        this.table = table;
+        this.articleOrder = articleOrder;
     }
 
     public int getId() {
@@ -39,17 +42,17 @@ public class VOOrder {
         this.date = date;
     }
 
-    public String getTableLink() {
-        return tableLink;
+    public VOTable getTable() {
+        return table;
     }
-    public void setTableLink(String tableLink) {
-        this.tableLink = tableLink;
+    public void setTable(VOTable table) {
+        this.table = table;
     }
 
-    public String getArticleOrderLink() {
-        return this.articleOrderLink;
+    public List<VOArticleOrder> getArticleOrder() {
+        return this.articleOrder;
     }
-    public void setArticleOrderLink(String articleOrderLink) {
-        this.articleOrderLink = articleOrderLink;
+    public void setArticleOrder(List<VOArticleOrder> articleOrder) {
+        this.articleOrder = articleOrder;
     }
 }

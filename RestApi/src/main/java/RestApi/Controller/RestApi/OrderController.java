@@ -147,16 +147,16 @@ public class OrderController { ;
         );
     }
 
-    public VOOrder setResource(IOrder order, String tableLink, String articleOrderLink){
-        VOOrder voOrder = new VOOrder();
-
-        voOrder.setId(order.getId());
-        voOrder.setDate(order.getDate());
-
-        voOrder.setTableLink(tableLink);
-        voOrder.setArticleOrderLink(articleOrderLink);
-
-        return voOrder;
-    }
+//    public VOOrder setResource(IOrder order, String tableLink, String articleOrderLink){
+//        VOOrder voOrder = new VOOrder();
+//
+//        voOrder.setId(order.getId());
+//        voOrder.setDate(order.getDate());
+//
+//        voOrder.setTableLink(tableLink);
+//        voOrder.setArticleOrderLink(articleOrderLink);
+//
+//        return voOrder;
+//    }
 }
 

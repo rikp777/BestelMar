@@ -49,7 +49,13 @@ const actions = {
   },
 
 
-
+  sendGlobalOrderTable(context, payload) {
+    if (this.stompClient && this.stompClient.connected) {
+      this.stompClient.send('/send-data/orderweb/table/' + payload.table.id, JSON.stringify(payload), {})
+    }else{
+      console.log("Can not send data not connected")
+    }
+  },
   sendGlobalOrder(context, payload) {
     if (this.stompClient && this.stompClient.connected) {
       this.stompClient.send('/send-data/orderweb', JSON.stringify(payload.table), {})
@@ -57,7 +63,7 @@ const actions = {
       console.log("Can not send data not connected")
     }
   },
-  connectGlobalOrder(context) {
+  connectGlobal(context) {
     return new Promise((resolve, reject) => {
       this.socket = new SockJS('http://localhost:8085/websocket-endpoint');
       this.stompClient = Stomp.over(this.socket);
@@ -76,6 +82,16 @@ const actions = {
       this.stompClient.subscribe('/global/orderweb', (tick) => {
         let data = JSON.parse(tick.body)
         context.commit("setWebSocketDataOrders", data);
+      })
+    }else{
+      console.log("Can not subscribe not connected")
+    }
+  },
+  subscribeGlobalOrderTable(context, id){
+    if (this.stompClient && this.stompClient.connected) {
+      this.stompClient.subscribe('/global/orderweb/table/' + id, (tick) => {
+        let data = JSON.parse(tick.body)
+        context.commit("setWebSocketDataOrder", data);
       })
     }else{
       console.log("Can not subscribe not connected")
@@ -145,7 +161,7 @@ export const mutations = {
     state.order = order
   },
   setWebSocketDataOrder(state, webSocketData){
-    state.data = webSocketData;
+    state.order = webSocketData;
   },
   setWebSocketDataOrders(state, webSocketData){
     let order = state.orders.find(order => order.table.id === webSocketData.table.id)
