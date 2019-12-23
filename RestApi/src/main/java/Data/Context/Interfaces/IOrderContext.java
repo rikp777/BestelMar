@@ -6,6 +6,7 @@ import Interfaces.model.IUser;
 import java.util.List;
 
 public interface IOrderContext extends ICrudContext<IOrder> {
+    boolean pay(IOrder entity);
     boolean create(IOrder entity, IUser user);
     IOrder readLast(IUser user);
     IOrder readLast(ITable table);

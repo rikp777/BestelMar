@@ -3,11 +3,11 @@
     <div class="card-body" v-if="order">
 
 
-      <h5 class="card-title">Table Name:  {{order.table.name}}</h5>
+      <h5 class="card-title">Table Name:  {{order.table.name}} <small>- Status: <span class="badge badge-pill badge-primary">{{order.status}}</span></small></h5>
 
 
       <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target=".bd-example-modal-xl">Pay & reciept - Summary</button>
-      <button type="button" class="btn btn-primary mb-2" @click="pay">Pay the receipt</button>
+      <button type="button" class="btn btn-primary mb-2" @click="pay(order)">Pay the receipt</button>
 
       <div class="list-group" v-for="articleOrder in order.articleOrder">
         <a href="#" class="list-group-item list-group-item-action">
@@ -86,7 +86,7 @@
                   </div>
                 </div>
                 <div class="card-footer bg-white">
-                  <button class="btn btn-primary float-right" @click="pay">Pay the receipt</button>
+                  <button class="btn btn-primary float-right" @click="pay(order)">Pay the receipt</button>
                   <p class="mb-0">BestelMar receipt</p>
                 </div>
               </div>
@@ -102,16 +102,17 @@
 <script>
   export default {
     name: "order-table",
+    props: ['tableId'],
     data(){
       return {
       }
     },
     methods: {
-      getOrderTable(id) {
-        this.$store.dispatch("getOrderTable", id)
+      pay(order){
+        this.$store.dispatch("payTableOrder", order)
       },
-      pay(){
-
+      getOrderTable(tableId){
+        this.$store.dispatch("getOrderTable", tableId)
       }
     },
     computed: {
@@ -123,7 +124,7 @@
       }
     },
     mounted() {
-      this.getOrderTable(1)
+      this.getOrderTable(this.tableId)
     }
   }
 </script>

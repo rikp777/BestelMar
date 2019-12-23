@@ -20,36 +20,37 @@ public class OrderLogic {
         this._tableRepository = new TableRepository();
         this._articleOrderRepository = new ArticleOrderRepository();
     }
-
+    public boolean pay(IOrder entity){
+        return _orderRepository.pay(entity);
+    }
 
     public boolean add(IOrder entity) {
+        boolean success = false;
         IOrder order = _orderRepository.getLastBy(entity.getTable());
 
-        if(order == null){
-            System.out.println("First order for table " + entity.getTable().getName());
-            _orderRepository.add(entity);
+        if(order == null || order.getStatus() == Status.Paid){
+            System.out.println("First order or table has been paid: " + entity.getTable().getName());
 
+            success = _orderRepository.add(entity);
 
+            //we dont know the id of the created order so we need to get that in order to create an articleorder
             order = _orderRepository.getLastBy(entity.getTable());
-            System.out.println("To make sure order was created " + order.getTable().getName());
 
             for(IArticleOrder articleOrder : entity.getArticleOrder()){
                 System.out.println("Making adding order " + articleOrder.getArticle().getName());
-                _articleOrderRepository.add(articleOrder, order);
+                success = _articleOrderRepository.add(articleOrder, order);
             }
-        } else if(order.getStatus() == Status.Paid){
-            System.out.println("Order has been paid so we make a new order");
-            return _orderRepository.add(entity);
+
+            return success;
+
         }else{
             System.out.println("Order not paid yet " + entity.getTable().getName());
             for(IArticleOrder articleOrder : entity.getArticleOrder()){
                 System.out.println("Making adding order " + articleOrder.getArticle().getName());
-                _articleOrderRepository.add(articleOrder, order);
+                success = _articleOrderRepository.add(articleOrder, order);
             }
+            return success;
         }
-
-
-        return false;
     }
     public boolean edit(IOrder entity) {
         return _orderRepository.edit(entity);
@@ -68,7 +69,6 @@ public class OrderLogic {
         }
         return null;
     }
-
     public IOrder getLastBy(IUser user) {
         IOrder order = _orderRepository.getLastBy(user);
         order.setTable(_tableRepository.getBy(order.getTable().getId()));

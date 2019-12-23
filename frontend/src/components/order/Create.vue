@@ -1,11 +1,11 @@
 <template>
   <div>
-    <order-table></order-table>
+    <order-table v-if="order.table.id" :table-id="order.table.id"/>
     <div class="card">
       <div class="card-body">
-        <form @submit.prevent="sendOrder">
+        <form @submit.prevent="sendOrder()">
           <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-6" v-if="order.table.id">
               <label>Articles</label>
               <multiselect
                 v-if="articles.length"
@@ -31,7 +31,7 @@
                 </template>
               </multiselect>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-6" v-if="!order.table.id">
               <label>Table that places an ordering</label>
               <multiselect
                 v-if="tables.length"
@@ -44,8 +44,7 @@
                 :preserve-search="true"
                 placeholder="Choose one"
                 label="name"
-                track-by="name"
-                :preselect-first="true">
+                track-by="name">
                 <template
                   slot="selection"
                   slot-scope="{ values, search, isOpen }">
@@ -102,11 +101,13 @@
       addComment(article, $event){
         this.$set(article, 'comment', $event.target.value)
       },
-      sendOrder () {
-        this.$store.dispatch("sendOrder", this.order);
-      },
-      connect () {
+      connect(){
         this.$store.dispatch("connectGlobalOrder")
+      },
+      sendOrder(){
+        this.$store.dispatch("createOrder", this.order).then(() => {
+          this.$store.dispatch("sendGlobalOrder", this.order)
+        })
       },
       getAllArticles(){
         this.$store.dispatch("getAllArticles");
@@ -116,6 +117,9 @@
       },
     },
     computed: {
+      table(){
+        return this.order.table;
+      },
       tables(){
         return this.$store.getters.tables
       },
@@ -123,8 +127,15 @@
         return this.$store.getters.articles
       }
     },
+    watch: {
+      table: function(newValue, oldValue) {
+        if(newValue != oldValue){
+          this.connect(newValue.id)
+        }
+      }
+    },
     mounted(){
-      this.connect();
+      this.order.table.id = null;
       this.getAllArticles();
       this.getAllTables();
     }

@@ -26,6 +26,24 @@ import java.util.logging.Logger;
 public class OrderContextSQL extends SQLConnector implements IOrderContext{
     private final static Logger LOGGER = Logger.getLogger(OrderContextSQL.class.getName());
 
+
+    public boolean pay(IOrder entity){
+        String query = "UPDATE Orders SET status_id = ? WHERE id = ?";
+        try {
+            this.open();
+            PreparedStatement stmt = this.getPreparedStatement(query);
+            stmt.setInt(1, 4);
+            stmt.setInt(2, entity.getId());
+
+            LOGGER.log(Level.INFO, "Order payed: " + entity.getDate() + " order id: " + entity.getId());
+            return this.executeUpdate(stmt) != 0;
+        }catch (Exception e){
+            LOGGER.log(Level.WARNING, e.getMessage());
+        }finally {
+            this.close();
+        }
+        return false;
+    }
     public boolean create(IOrder entity, IUser user) {
         String query = "INSERT INTO Orders (date, table_id, user_id)" +
                 "VALUES (?, ?, ?) ";

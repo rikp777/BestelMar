@@ -10,9 +10,9 @@ const apiUrl = "order"
 const state = {
   orders: {},
   order: null,
+  webSocketOrder: null,
   isLoading: true,
-  connected: false,
-  webSocketData: [],
+  connected: false
 };
 
 // Getters
@@ -47,32 +47,43 @@ const actions = {
         throw error
       })
   },
-  sendOrder(context, payload) {
-    console.log("raak")
+
+
+
+  sendGlobalOrder(context, payload) {
     if (this.stompClient && this.stompClient.connected) {
-      this.stompClient.send('/send-data/orderweb', JSON.stringify(payload), {})
-    }
-  },
-  sendStatus(context, payload){
-    if (this.stompClient && this.stompClient.connected) {
-      this.stompClient.send('/send-data/orderweb', JSON.stringify(payload), {})
+      this.stompClient.send('/send-data/orderweb', JSON.stringify(payload.table), {})
+    }else{
+      console.log("Can not send data not connected")
     }
   },
   connectGlobalOrder(context) {
-    this.socket = new SockJS('http://localhost:8085/websocket-endpoint');
-    this.stompClient = Stomp.over(this.socket);
-    this.stompClient.connect({}, (frame) => {
-      context.connected = true;
-      this.stompClient.subscribe('/global/orderweb', (tick) => {
-        let data = JSON.parse(tick.body)
-        context.commit("setWebSocketData", data);
-        //context.webSocketData.push(tick)
+    return new Promise((resolve, reject) => {
+      this.socket = new SockJS('http://localhost:8085/websocket-endpoint');
+      this.stompClient = Stomp.over(this.socket);
+      this.stompClient.connect({}, (frame) => {
+        context.connected = true;
+        resolve()
+      }, (error) => {
+        console.log(error);
+        context.connected = false
+        reject(error);
       })
-    }, (error) => {
-      console.log(error);
-      context.connected = false
     })
   },
+  subscribeGlobalOrder(context){
+    if (this.stompClient && this.stompClient.connected) {
+      this.stompClient.subscribe('/global/orderweb', (tick) => {
+        let data = JSON.parse(tick.body)
+        context.commit("setWebSocketDataOrders", data);
+      })
+    }else{
+      console.log("Can not subscribe not connected")
+    }
+  },
+
+
+
   disconnect(context) {
     if (this.stompClient) {
       this.stompClient.disconnect()
@@ -112,7 +123,11 @@ const actions = {
       }).catch((error) => {
         throw error
       })
+  },
+  payTableOrder(context, payload){
+    return apiService.post(apiUrl + "/table/" + payload.table.id + "/pay", payload)
   }
+
 };
 
 // Mutations
@@ -129,8 +144,10 @@ export const mutations = {
   setOrder(state, order){
     state.order = order
   },
-  setWebSocketData(state, webSocketData){
-    state.order = webSocketData;
+  setWebSocketDataOrder(state, webSocketData){
+    state.data = webSocketData;
+  },
+  setWebSocketDataOrders(state, webSocketData){
     let order = state.orders.find(order => order.table.id === webSocketData.table.id)
     if(order){
       console.log("Order for table does exist")
@@ -139,8 +156,6 @@ export const mutations = {
       console.log("New table will be pushed")
       state.orders.push(webSocketData);
     }
-
-    console.log(state.orders)
   }
 };
 

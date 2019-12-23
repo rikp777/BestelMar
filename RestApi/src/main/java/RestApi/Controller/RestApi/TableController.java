@@ -51,7 +51,7 @@ public class TableController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("No table found");
     }
 
-    @GetMapping("table/{id}")
+    @GetMapping("/table/{id}")
     public ResponseEntity read(@PathVariable int id){
         if(tableLogic.getBy(id) != null){
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(

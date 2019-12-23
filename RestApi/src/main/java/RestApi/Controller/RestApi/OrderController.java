@@ -1,21 +1,27 @@
 package RestApi.Controller.RestApi;
 
+import Interfaces.model.IArticleOrder;
 import Interfaces.model.IOrder;
 import Interfaces.model.ITable;
 import Interfaces.model.IUser;
+import Logic.Models.ArticleOrder;
+import Logic.Models.Order;
 import Logic.OrderLogic;
 import Logic.TableLogic;
 import Logic.UserLogic;
+import RestApi.VOModels.VOArticle;
 import RestApi.VOModels.VOOrder;
+import RestApi.VOModels.VOOrderCreate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 @RestController
-@RequestMapping("/order")
 public class OrderController { ;
     private OrderLogic orderLogic = new OrderLogic();
     private UserLogic userLogic = new UserLogic();
@@ -66,21 +72,63 @@ public class OrderController { ;
 //        return null;
 //    }
 //
-    @GetMapping("/last")
+
+    @PostMapping("/order")
+    public ResponseEntity create(@RequestBody VOOrderCreate voOrderCreate){
+        IOrder order = new Order();
+        order.setTable(voOrderCreate.getTable());
+
+        List<IArticleOrder> articleOrders = new ArrayList<>();
+        for (VOArticle article: voOrderCreate.getArticles()) {
+            IArticleOrder articleOrder = new ArticleOrder();
+
+            articleOrder.setArticle(article);
+            articleOrder.setPrice(article.getPrice());
+            articleOrder.setComment(article.getComment());
+
+            articleOrders.add(articleOrder);
+        }
+        order.setDate(new Date());
+        order.setArticleOrder(articleOrders);
+
+        if(orderLogic.add(order)){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(
+                    orderLogic.getLastBy(voOrderCreate.getTable())
+            );
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Something went wrong");
+    }
+
+
+    @PostMapping("/order/table/{tableId}/pay")
+    public ResponseEntity payTableOrder(@PathVariable int tableId){
+        ITable table = tableLogic.getBy(tableId);
+        IOrder order = orderLogic.getLastBy(table);
+        System.out.println(order.getId());
+        if(orderLogic.pay(order)){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(
+                    "Order has been payed for table" + table.getName()
+            );
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Something went wrong");
+    }
+
+
+    @GetMapping("/order/last")
     public ResponseEntity readLast() {
         List<IOrder> orders = orderLogic.getLast();
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(
                 orders
         );
     }
-    @GetMapping("/")
+    @GetMapping("/order")
     public ResponseEntity read() {
         List<IOrder> orders = orderLogic.getAll();
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(
                 orders
         );
     }
-    @GetMapping("/user/{userID}")
+    @GetMapping("/order/user/{userID}")
     public ResponseEntity readLastByUser(@PathVariable int userID) {
         IUser user = userLogic.getBy(userID);
         IOrder order = orderLogic.getLastBy(user);
@@ -89,7 +137,7 @@ public class OrderController { ;
                 order
         );
     }
-    @GetMapping("/table/{tableId}")
+    @GetMapping("/order/table/{tableId}")
     public ResponseEntity readLastByTable(@PathVariable int tableId) {
         ITable table = tableLogic.getBy(tableId);
         IOrder order = orderLogic.getLastBy(table);

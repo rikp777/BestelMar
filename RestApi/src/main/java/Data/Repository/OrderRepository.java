@@ -15,6 +15,9 @@ public class OrderRepository implements IOrderRepository {
         this._orderContext = new OrderContextSQL();
     }
 
+    public boolean pay(IOrder entity) {
+        return _orderContext.pay(entity);
+    }
     public boolean add(IOrder entity, IUser user) {
         return _orderContext.create(entity, user);
     }

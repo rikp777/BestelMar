@@ -53,7 +53,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("No users found");
     }
 
-    @GetMapping("user/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity read(@PathVariable int id){
         if(userLogic.getBy(id) != null){
             IUser user = userLogic.getBy(id);

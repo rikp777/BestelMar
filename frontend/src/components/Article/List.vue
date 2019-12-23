@@ -30,7 +30,7 @@
           <tr v-for="article in articles">
             <td>{{article.name}}</td>
             <td>{{article.description}}l</td>
-            <td>€{{article.price}}</td>
+            <td>€{{article.price.toFixed(2)}}</td>
             <td class="text-center">
               <router-link
                 class="btn btn-warning btn-xs"

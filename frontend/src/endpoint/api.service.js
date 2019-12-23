@@ -22,7 +22,7 @@ const apiService  = {
 
   query(resource, params) {
     return Vue.axios
-      .get(`${resource}`, params)
+      .get(`${resource}/`, params)
       .catch(error => {
         throw `[SuperFit] ApiService ${resource} \n ${error}`;
       });

@@ -25,9 +25,6 @@ public class ArticleController {
 
     @PutMapping("/article/{id}")
     public ResponseEntity update(@RequestBody Article article){
-        if(articleLogic.getBy(article.getName()) != null){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Article Already exists");
-        }
         if(articleLogic.edit(article)){
             return ResponseEntity.status(HttpStatus.CREATED).body(article);
         }
@@ -55,7 +52,7 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("No article found");
     }
 
-    @GetMapping("article/{id}")
+    @GetMapping("/article/{id}")
     public ResponseEntity read(@PathVariable int id){
         if(articleLogic.getBy(id) != null){
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(

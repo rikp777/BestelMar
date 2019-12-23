@@ -8,6 +8,7 @@ import Logic.Models.Order;
 import Logic.OrderLogic;
 import RestApi.VOModels.VOArticle;
 import RestApi.VOModels.VOOrderCreate;
+import RestApi.VOModels.VOTable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -21,56 +22,34 @@ public class OrderSocketController {
 
     @SendTo("/global/orderweb")
     @MessageMapping("/orderweb")
-    public IOrder orderCreate(VOOrderCreate voOrder){
-        IOrder order = new Order();
-        order.setTable(voOrder.getTable());
-
-        List<IArticleOrder> articleOrders = new ArrayList<>();
-        for (VOArticle article: voOrder.getArticles()) {
-            IArticleOrder articleOrder = new ArticleOrder();
-
-            articleOrder.setArticle(article);
-            articleOrder.setPrice(article.getPrice());
-            articleOrder.setComment(article.getComment());
-
-            articleOrders.add(articleOrder);
-        }
-        order.setDate(new Date());
-        order.setArticleOrder(articleOrders);
-
-
-        orderLogic.add(order);
-        IOrder orderdb = orderLogic.getLastBy(voOrder.getTable());
-        System.out.println(orderdb.getArticleOrder().size());
-
-        return orderdb;
+    public IOrder orderCreate(VOTable voTable){
+        System.out.println("Websocket table received " + voTable.getName());
+        return orderLogic.getLastBy(voTable);
     }
 
-    @SendTo("/global/orderwebStatus/table/{id}")
-    @MessageMapping("/orderweb/table/{id}")
-    public IOrder orderStatus(VOOrderCreate voOrder) {
-        IOrder order = new Order();
-        order.setTable(voOrder.getTable());
-
-        List<IArticleOrder> articleOrders = new ArrayList<>();
-        for (VOArticle article: voOrder.getArticles()) {
-            IArticleOrder articleOrder = new ArticleOrder();
-
-            articleOrder.setArticle(article);
-            articleOrder.setPrice(article.getPrice());
-            articleOrder.setComment(article.getComment());
-
-            articleOrders.add(articleOrder);
-        }
-
-        order.setDate(new Date());
-
-        order.setArticleOrder(articleOrders);
-
-        System.out.println("tafeltje: "+ order.getTable().getId());
-
-        //orderLogic.add(order);
-
-        return order;
-    }
+//    @SendTo("/global/orderweb/table/{id}")
+//    @MessageMapping("/orderweb/table/{id}")
+//    public IOrder order(VOOrderCreate voOrder) {
+//        IOrder order = new Order();
+//        order.setTable(voOrder.getTable());
+//
+//        List<IArticleOrder> articleOrders = new ArrayList<>();
+//        for (VOArticle article: voOrder.getArticles()) {
+//            IArticleOrder articleOrder = new ArticleOrder();
+//
+//            articleOrder.setArticle(article);
+//            articleOrder.setPrice(article.getPrice());
+//            articleOrder.setComment(article.getComment());
+//
+//            articleOrders.add(articleOrder);
+//        }
+//
+//        order.setDate(new Date());
+//        order.setArticleOrder(articleOrders);
+//        orderLogic.add(order);
+//
+//        System.out.println("tafeltje: "+ order.getTable().getId());
+//
+//        return orderLogic.getLastBy(voOrder.getTable());
+//    }
 }

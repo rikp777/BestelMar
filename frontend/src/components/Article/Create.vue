@@ -10,13 +10,13 @@
           </div>
           <div class="col">
             <label>Price</label>
-            <input v-model="article.price" type="number" class="form-control">
+            <input v-model="article.price" type="number" class="form-control" step="any">
           </div>
         </div>
         <div class="form-row">
           <div class="col">
             <label for="validationTextarea">Description</label>
-            <textarea v-model="article.description" class="form-control" id="validationTextarea" placeholder="Required example textarea" required></textarea>
+            <textarea v-model="article.description" class="form-control" id="validationTextarea" placeholder="Required example textarea"></textarea>
           </div>
         </div>
         <div class="row mt-2">
