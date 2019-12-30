@@ -9,8 +9,8 @@ import java.util.List;
 
 public class TableRepository implements ITableRepository {
     private ITableContext _articleContext;
-    public TableRepository(){
-        this._articleContext = new TableContextSQL();
+    public TableRepository(ITableContext tableContext){
+        this._articleContext = tableContext;
     }
 
 

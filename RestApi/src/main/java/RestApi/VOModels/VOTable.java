@@ -11,6 +11,9 @@ public class VOTable implements ITable {
     VOTable(){
 
     }
+    VOTable(int id){
+        this.id = id;
+    }
     VOTable(int id, String name, String description, boolean disabled){
         this.id = id;
         this.name = name;

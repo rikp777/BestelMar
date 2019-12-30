@@ -10,4 +10,9 @@ public interface IOrderRepository extends ICrudRepository<IOrder> {
     IOrder getLastBy(IUser user);
     IOrder getLastBy(ITable table);
     List<IOrder> getAll(IUser user);
+    List<IOrder> getLast();
+
+
+    boolean pay(IOrder entity);
+
 }

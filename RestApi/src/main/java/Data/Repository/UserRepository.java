@@ -9,8 +9,8 @@ import java.util.List;
 
 public class UserRepository implements IUserRepository {
     private IUserContext _userContext;
-    public UserRepository(){
-        this._userContext = new UserContextSQL();
+    public UserRepository(IUserContext userContext){
+        this._userContext = userContext;
     }
 
 

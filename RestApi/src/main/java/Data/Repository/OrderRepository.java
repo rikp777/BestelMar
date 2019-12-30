@@ -11,8 +11,8 @@ import java.util.List;
 
 public class OrderRepository implements IOrderRepository {
     private IOrderContext _orderContext;
-    public OrderRepository(){
-        this._orderContext = new OrderContextSQL();
+    public OrderRepository(IOrderContext _orderContext){
+        this._orderContext = _orderContext;
     }
 
     public boolean pay(IOrder entity) {

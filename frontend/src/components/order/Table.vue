@@ -6,8 +6,8 @@
       <h5 class="card-title">Table Name:  {{order.table.name}} <small>- Status: <span class="badge badge-pill badge-primary">{{order.status}}</span></small></h5>
 
 
-      <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target=".bd-example-modal-xl">Pay & reciept - Summary</button>
-      <button type="button" class="btn btn-primary mb-2" @click="pay(order)">Pay the receipt</button>
+      <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target=".bd-example-modal-xl"><span v-if="order.status != 'Paid'">Pay &</span> Reciept - Summary</button>
+      <button type="button" class="btn btn-primary mb-2" @click="pay(order)" v-if="order.status != 'Paid'">Pay the receipt</button>
 
       <div class="list-group" v-for="articleOrder in order.articleOrder">
         <a href="#" class="list-group-item list-group-item-action">
@@ -86,7 +86,7 @@
                   </div>
                 </div>
                 <div class="card-footer bg-white">
-                  <button class="btn btn-primary float-right" @click="pay(order)">Pay the receipt</button>
+                  <button class="btn btn-primary float-right" @click="pay(order)" data-dismiss="modal" v-if="order.status != 'Paid'">Pay the receipt</button>
                   <p class="mb-0">BestelMar receipt</p>
                 </div>
               </div>
@@ -109,7 +109,9 @@
     },
     methods: {
       pay(order){
-        this.$store.dispatch("payTableOrder", order)
+        this.$store.dispatch("payTableOrder", order).then(() => {
+          this.getOrderTable(this.tableId)
+        })
       },
       getOrderTable(tableId){
         this.$store.dispatch("getOrderTable", tableId)

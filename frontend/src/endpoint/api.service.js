@@ -17,7 +17,7 @@ const apiService  = {
 
   setHeader() {
     console.log("auth")
-    Vue.axios.defaults.headers.common["Authorization"] = `${cookie.getToken()}`
+    Vue.axios.defaults.headers.common["Authorization"] = `${cookie.getToken('user')}`
   },
 
   query(resource, params) {

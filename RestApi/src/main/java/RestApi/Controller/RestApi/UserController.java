@@ -1,7 +1,9 @@
 package RestApi.Controller.RestApi;
 
+import Data.Context.MemoryContext.UserContextMemory;
+import Data.Repository.UserRepository;
 import Interfaces.model.IUser;
-import Logic.UserLogic;
+import logic.UserLogic;
 import RestApi.VOModels.VOUser;
 import models.User;
 import org.springframework.http.HttpStatus;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
-    private UserLogic userLogic = new UserLogic();
+    private UserLogic userLogic = new UserLogic(new UserRepository(new UserContextMemory()));
 
     @PostMapping("/user")
     public ResponseEntity create(@RequestBody User user){

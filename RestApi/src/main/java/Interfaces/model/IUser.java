@@ -22,8 +22,8 @@ public interface IUser {
     String getPassword();
     void setPassword(String password);
 
-    List<IRole> getRoles();
-    void setRoles(List<IRole> roles);
+    List<IRight> getRights();
+    void setRights(List<IRight> rights);
 
     List<IOrder> getOrders();
     void setOrders(List<IOrder> orders);

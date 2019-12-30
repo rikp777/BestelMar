@@ -2,6 +2,7 @@ import Vue from 'vue'
 import SockJS from 'sockjs-client'
 import Stomp from 'webstomp-client'
 import apiService from "../../endpoint/api.service";
+import cookieService from "../../helpers/cookie.service";
 
 const apiUrl = "order"
 
@@ -17,6 +18,9 @@ const state = {
 
 // Getters
 const getters = {
+  orderTable(state) {
+    return cookieService.getToken('table')
+  },
   orders(state) {
     return state.orders;
   },
@@ -88,6 +92,7 @@ const actions = {
     }
   },
   subscribeGlobalOrderTable(context, id){
+    cookieService.saveToken("table", id)
     if (this.stompClient && this.stompClient.connected) {
       this.stompClient.subscribe('/global/orderweb/table/' + id, (tick) => {
         let data = JSON.parse(tick.body)
@@ -101,10 +106,13 @@ const actions = {
 
 
   disconnect(context) {
-    if (this.stompClient) {
-      this.stompClient.disconnect()
-    }
-    context.connected = false
+    return new Promise((resolve) => {
+      if (this.stompClient) {
+        this.stompClient.disconnect()
+        context.connected = false
+        resolve()
+      }
+    })
   },
   tickleConnection(context) {
     this.connected ? this.disconnect() : this.connect()
@@ -141,6 +149,7 @@ const actions = {
       })
   },
   payTableOrder(context, payload){
+    cookieService.destroyToken("table")
     return apiService.post(apiUrl + "/table/" + payload.table.id + "/pay", payload)
   }
 

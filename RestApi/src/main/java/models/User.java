@@ -1,6 +1,7 @@
 package models;
 
 import Interfaces.model.IOrder;
+import Interfaces.model.IRight;
 import Interfaces.model.IRole;
 import Interfaces.model.IUser;
 
@@ -14,7 +15,7 @@ public class User implements IUser {
     private String lastName;
     private boolean blocked;
     private String password;
-    private List<IRole> roles;
+    private List<IRight> rights;
     private List<IOrder> orders;
 
     public User(){
@@ -76,11 +77,10 @@ public class User implements IUser {
         this.password = password;
     }
 
-    public List<IRole> getRoles() {
-        return roles;
+    public List<IRight> getRights() {
+        return rights;
     }
-
-    public void setRoles(List<IRole> roles) {
-        this.roles = roles;
+    public void setRights(List<IRight> rights) {
+        this.rights = rights;
     }
 }

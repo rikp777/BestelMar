@@ -2,7 +2,7 @@ package Data.Context.SQLContext;
 
 import Data.Context.Interfaces.IUserContext;
 import Data.DTO.UserDto;
-import Data.Helpers.SQLConnector;
+import Data.Context.SQLContext.Helpers.SQLConnector;
 import Interfaces.model.IUser;
 
 
@@ -121,6 +121,7 @@ public class UserContextSQL extends SQLConnector implements IUserContext {
                         resultSet.getString("last_name"),
                         resultSet.getBoolean("blocked")
                 );
+                userDto.setRights(new RightContextSQL().list(userDto));
             }
         }catch (Exception e){
             LOGGER.log(Level.WARNING, e.getMessage());

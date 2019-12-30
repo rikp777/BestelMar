@@ -70,13 +70,13 @@ const mutations = {
     state.isAuthenticated = true;
     state.user = payload;
     state.errors = {};
-    cookie.saveToken(payload)
+    cookie.saveToken('user', payload)
   },
   AuthPurge(state){
     state.isAuthenticated = false;
     state.user = [];
     state.errors = {};
-    cookie.destroyToken();
+    cookie.destroyToken('user');
   }
 };
 

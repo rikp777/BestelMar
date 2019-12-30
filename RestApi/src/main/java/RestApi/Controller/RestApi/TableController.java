@@ -1,6 +1,8 @@
 package RestApi.Controller.RestApi;
 
-import Logic.TableLogic;
+import Data.Context.MemoryContext.TableContextMemory;
+import Data.Repository.TableRepository;
+import logic.TableLogic;
 import RestApi.VOModels.VOTable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TableController {
-    private TableLogic tableLogic = new TableLogic();
+    private TableLogic tableLogic = new TableLogic(new TableRepository(new TableContextMemory()));
 
 
     @PostMapping("/table")

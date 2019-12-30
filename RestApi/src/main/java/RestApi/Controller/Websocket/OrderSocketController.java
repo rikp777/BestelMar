@@ -1,24 +1,24 @@
 package RestApi.Controller.Websocket;
 
 
+import Data.Context.MemoryContext.TableContextMemory;
+import Data.Repository.TableRepository;
+import Factory.Factory;
 import Interfaces.model.IOrder;
-import Interfaces.model.ITable;
-import Logic.OrderLogic;
-import Logic.TableLogic;
-import RestApi.VOModels.VOArticleOrder;
+import logic.Interfaces.IOrderLogic;
+import logic.OrderLogic;
+import logic.TableLogic;
 import RestApi.VOModels.VOOrder;
 import RestApi.VOModels.VOTable;
-import models.Order;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 @Controller
 public class OrderSocketController {
-    private OrderLogic orderLogic = new OrderLogic();
-    private TableLogic tableLogic = new TableLogic();
+    private IOrderLogic orderLogic = Factory.OrderLogic();
+    private TableLogic tableLogic = new TableLogic(new TableRepository(new TableContextMemory()));
 
     @SendTo("/global/orderweb")
     @MessageMapping("/orderweb")

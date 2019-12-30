@@ -1,14 +1,16 @@
-package Logic;
+package logic;
 
+import Data.Repository.Interfaces.ITableRepository;
 import Data.Repository.TableRepository;
 import Interfaces.model.ITable;
+import logic.Interfaces.ITableLogic;
 
 import java.util.List;
 
-public class TableLogic {
-    private TableRepository _tableRepository;
-    public TableLogic() {
-        this._tableRepository = new TableRepository();
+public class TableLogic implements ITableLogic {
+    private ITableRepository _tableRepository;
+    public TableLogic(ITableRepository tableRepository) {
+        this._tableRepository = tableRepository;
     }
 
 

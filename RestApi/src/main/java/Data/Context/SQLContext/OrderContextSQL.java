@@ -1,24 +1,17 @@
 package Data.Context.SQLContext;
 
-import Data.Context.Interfaces.IArticleContext;
 import Data.Context.Interfaces.IOrderContext;
-import Data.Context.Interfaces.IUserContext;
 import Data.DTO.OrderDto;
 import Data.DTO.TableDto;
-import Data.Helpers.SQLConnector;
-import Interfaces.model.IArticle;
+import Data.Context.SQLContext.Helpers.SQLConnector;
 import Interfaces.model.IOrder;
 import Interfaces.model.ITable;
 import Interfaces.model.IUser;
 import models.*;
-import models.Article;
 
-import javax.swing.plaf.synth.SynthScrollBarUI;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;

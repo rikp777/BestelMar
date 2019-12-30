@@ -15,6 +15,9 @@ const state = {
 
 // Getters
 const getters = {
+  tablesActive(state){
+    return state.tables.filter(t => t.disabled === false);
+  },
   tables(state) {
     return state.tables
   },

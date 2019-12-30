@@ -1,16 +1,21 @@
 package RestApi.Controller.RestApi;
 
+import Data.Context.MemoryContext.TableContextMemory;
+import Data.Context.MemoryContext.UserContextMemory;
+import Data.DTO.ArticleOrderDto;
+import Data.DTO.OrderDto;
+import Data.Repository.TableRepository;
+import Data.Repository.UserRepository;
+import Factory.Factory;
 import Interfaces.model.IArticleOrder;
 import Interfaces.model.IOrder;
 import Interfaces.model.ITable;
 import Interfaces.model.IUser;
-import Logic.Models.ArticleOrder;
-import Logic.Models.Order;
-import Logic.OrderLogic;
-import Logic.TableLogic;
-import Logic.UserLogic;
+import logic.Interfaces.IOrderLogic;
+import logic.OrderLogic;
+import logic.TableLogic;
+import logic.UserLogic;
 import RestApi.VOModels.VOArticle;
-import RestApi.VOModels.VOOrder;
 import RestApi.VOModels.VOOrderCreate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +28,9 @@ import java.util.List;
 
 @RestController
 public class OrderController { ;
-    private OrderLogic orderLogic = new OrderLogic();
-    private UserLogic userLogic = new UserLogic();
-    private TableLogic tableLogic = new TableLogic();
+    private IOrderLogic orderLogic = Factory.OrderLogic();
+    private UserLogic userLogic = new UserLogic(new UserRepository(new UserContextMemory()));
+    private TableLogic tableLogic = new TableLogic(new TableRepository(new TableContextMemory()));
 
 
 //    @GetMapping("/")
@@ -72,15 +77,21 @@ public class OrderController { ;
 //        return null;
 //    }
 //
+    @PutMapping("/order")
+    public ResponseEntity updateArticleOrder(@RequestBody VOOrderCreate voOrderCreate){
 
+
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Something went wrong");
+    }
     @PostMapping("/order")
     public ResponseEntity create(@RequestBody VOOrderCreate voOrderCreate){
-        IOrder order = new Order();
+        IOrder order = new OrderDto();
         order.setTable(voOrderCreate.getTable());
 
         List<IArticleOrder> articleOrders = new ArrayList<>();
         for (VOArticle article: voOrderCreate.getArticles()) {
-            IArticleOrder articleOrder = new ArticleOrder();
+            IArticleOrder articleOrder = new ArticleOrderDto();
 
             articleOrder.setArticle(article);
             articleOrder.setPrice(article.getPrice());
@@ -116,7 +127,7 @@ public class OrderController { ;
 
     @GetMapping("/order/last")
     public ResponseEntity readLast() {
-        List<IOrder> orders = orderLogic.getLast();
+        List<IOrder> orders = orderLogic.getAllLast();
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(
                 orders
         );

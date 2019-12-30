@@ -1,23 +1,27 @@
-package Logic;
+package logic;
 
+import Data.Context.MemoryContext.TableContextMemory;
 import Data.Repository.ArticleOrderRepository;
+import Data.Repository.Interfaces.IArticleRepository;
+import Data.Repository.Interfaces.IOrderRepository;
 import Data.Repository.OrderRepository;
 import Data.Repository.TableRepository;
 import Interfaces.model.IArticleOrder;
 import Interfaces.model.IOrder;
 import Interfaces.model.ITable;
 import Interfaces.model.IUser;
+import logic.Interfaces.IOrderLogic;
 import models.Status;
 
 import java.util.List;
 
-public class OrderLogic {
+public class OrderLogic implements IOrderLogic {
     private ArticleOrderRepository _articleOrderRepository;
     private TableRepository _tableRepository;
-    private OrderRepository _orderRepository;
-    public OrderLogic() {
-        this._orderRepository = new OrderRepository();
-        this._tableRepository = new TableRepository();
+    private IOrderRepository _orderRepository;
+    public OrderLogic(IOrderRepository orderRepository) {
+        this._orderRepository = orderRepository;
+        this._tableRepository = new TableRepository(new TableContextMemory());
         this._articleOrderRepository = new ArticleOrderRepository();
     }
     public boolean pay(IOrder entity){
@@ -83,7 +87,9 @@ public class OrderLogic {
 
         return orderr;
     }
-
+    public IOrder getBy(int id){
+        return _orderRepository.getBy(id);
+    }
 
 
     public List<IOrder> getAll() {
@@ -105,7 +111,7 @@ public class OrderLogic {
         }
         return orders;
     }
-    public List<IOrder> getLast(){
+    public List<IOrder> getAllLast(){
         List<IOrder> orders = _orderRepository.getLast();
         for (IOrder order : orders) {
             order.setTable(_tableRepository.getBy(order.getTable().getId()));

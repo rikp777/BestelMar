@@ -11,8 +11,8 @@ import java.util.List;
 
 public class ArticleRepository implements IArticleRepository {
     private IArticleContext _articleContext;
-    public ArticleRepository(){
-        this._articleContext = new ArticleContextSQL();
+    public ArticleRepository(IArticleContext _articleContext){
+        this._articleContext = _articleContext;
     }
 
 

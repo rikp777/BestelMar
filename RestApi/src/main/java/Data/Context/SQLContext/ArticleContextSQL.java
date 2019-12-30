@@ -1,13 +1,9 @@
 package Data.Context.SQLContext;
 
 import Data.Context.Interfaces.IArticleContext;
-import Data.Context.Interfaces.IUserContext;
 import Data.DTO.ArticleDto;
-import Data.Helpers.SQLConnector;
+import Data.Context.SQLContext.Helpers.SQLConnector;
 import Interfaces.model.IArticle;
-import Interfaces.model.IUser;
-import models.Article;
-import models.Article;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

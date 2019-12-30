@@ -5,7 +5,7 @@
       <div class="card-body">
         <form @submit.prevent="sendOrder()">
           <div class="form-row">
-            <div class="form-group col-md-6" v-if="order.table.id">
+            <div class="form-group col-md-6" v-if="order.table.id && orderd.status != 'Paid'">
               <label>Articles</label>
               <multiselect
                 v-if="articles.length"
@@ -76,7 +76,11 @@
               </div>
             </div>
           </div>
-          <button class="btn btn-primary" type="submit">Create order</button>
+          {{order.table.id}}
+          <div v-if="orderd.status != 'Paid'">
+            <button class="btn btn-primary" type="submit" >Create order</button>
+          </div>
+          <div v-else>Thanks for your visit - everything has been paid! - When your table is released by the barista this page is no longer available</div>
         </form>
       </div>
     </div>
@@ -92,7 +96,7 @@
       return {
         webSocketData: [],
         order: {
-          table: [],
+          table: {},
           articles: [],
         }
       }
@@ -105,6 +109,7 @@
         this.$store.dispatch("connectGlobal")
       },
       sendOrder(){
+        console.log(this.order)
         this.$store.dispatch("createOrder", this.order).then(() => {
           this.$store.dispatch("sendGlobalOrder", this.order)
         })
@@ -115,27 +120,44 @@
       getAllTables(){
         this.$store.dispatch("getAllTables");
       },
+      getOrderTable(tableId){
+        this.$store.dispatch("getOrderTable", tableId)
+      },
     },
     computed: {
       table(){
         return this.order.table;
       },
       tables(){
-        return this.$store.getters.tables
+        return this.$store.getters.tablesActive
       },
       articles(){
         return this.$store.getters.articles
+      },
+      orderd() {
+        return this.$store.getters.order;
+      },
+      orderTable(){
+        return this.$store.getters.orderTable
       }
     },
     watch: {
       table: function(newValue, oldValue) {
         if(newValue != oldValue){
-          this.connect(newValue.id)
+          this.$store.dispatch("disconnect").then(() => {
+            this.getOrderTable(newValue.id)
+            this.connect(newValue.id)
+          })
         }
       }
     },
     mounted(){
       this.order.table.id = null;
+      if(this.orderTable){
+        //this.$set(this.order.table, "id", this.orderTable)
+        this.order.table.id = this.orderTable
+      }
+
       this.getAllArticles();
       this.getAllTables();
     }
