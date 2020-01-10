@@ -1,6 +1,7 @@
 package logic;
 
 import Data.Repository.Interfaces.IUserRepository;
+import Factory.Factory;
 import Interfaces.model.IUser;
 import logic.Interfaces.IUserLogic;
 
@@ -69,13 +70,17 @@ public class UserLogic implements IUserLogic {
 
 
     public static boolean checkRight(String authUser, Right hasRight){
+        System.out.println(authUser + " " + hasRight.toString());
         AtomicBoolean success = new AtomicBoolean(false);
 
-//        new UserRepository().getBy(authUser).getRights().forEach(r -> {
-//            if(r.getName().equals(hasRight.toString())){ ;
-//                success.set(true);
-//            }
-//        });
+
+        Factory.UserLogic().getBy(authUser).getRights().forEach(r -> {
+            System.out.println(r.getName() + " == " + hasRight);
+            if(r.getName().equals(hasRight.toString())){ ;
+                success.set(true);
+            }
+        });
+        System.out.println(success.get());
 
         return success.get();
     }

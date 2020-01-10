@@ -14,6 +14,12 @@
           >
             <b>+</b> Add new order
           </router-link>
+          <router-link
+            class="btn btn-secondary"
+            :to="{ name: 'orderHistory'}"
+          >
+            History
+          </router-link>
         </div>
       </div>
       <h3 class="card-title">Current Orders</h3>
@@ -75,8 +81,11 @@
       },
       updateOrderTableStatus(orderIndex, articleOrderIndex){
         this.orders[orderIndex].articleOrder[articleOrderIndex].status = "Waiting"
-        console.log(this.orders[orderIndex])
-        this.$store.dispatch("sendGlobalOrderTable", this.orders[orderIndex])
+
+        this.$store.dispatch("sendGlobalOrderTable", this.orders[orderIndex]).then(() => {
+          console.log(this.orders[orderIndex])
+          this.$store.dispatch("updateOrder", this.orders[orderIndex])
+        })
       }
     },
     computed: {

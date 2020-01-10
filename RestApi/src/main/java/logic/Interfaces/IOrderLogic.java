@@ -14,4 +14,5 @@ public interface IOrderLogic extends ILogic<IOrder> {
 
 
     boolean pay(IOrder entity);
+    boolean getPaid(ITable entity);
 }

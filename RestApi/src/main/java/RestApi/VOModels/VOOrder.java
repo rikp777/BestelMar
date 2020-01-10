@@ -1,6 +1,7 @@
 package RestApi.VOModels;
 
 import Interfaces.model.IArticleOrder;
+import Interfaces.model.IOrder;
 import Interfaces.model.ITable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import models.Status;

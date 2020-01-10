@@ -1,35 +1,35 @@
 <template>
   <div>
-    <order-table v-if="order.table.id" :table-id="order.table.id"/>
+    <order-table @paid="orderPaid" v-if="order.table.id" :table-id="order.table.id"/>
     <div class="card">
       <div class="card-body">
         <form @submit.prevent="sendOrder()">
           <div class="form-row">
-            <div class="form-group col-md-6" v-if="order.table.id && orderd.status != 'Paid'">
-              <label>Articles</label>
-              <multiselect
-                v-if="articles.length"
-                v-model="order.articles"
-                :options="articles"
-                :multiple="true"
-                :close-on-select="false"
-                :clear-on-select="false"
-                :preserve-search="true"
-                :allow-empty="false"
-                placeholder="Pick some"
-                label="name"
-                track-by="name"
-                :preselect-first="true">
-                <template
-                  slot="selection"
-                  slot-scope="{ values, search, isOpen }">
-                  <span
-                    class="multiselect__single"
-                    v-if="values.length &amp;&amp; !isOpen">
-                    {{ values.length }} options selected
-                  </span>
-                </template>
-              </multiselect>
+            <div class="form-group col-md-6" v-if="order.table.id">
+                <label>Articles</label>
+                <multiselect
+                  v-if="articles.length"
+                  v-model="order.articles"
+                  :options="articles"
+                  :multiple="true"
+                  :close-on-select="false"
+                  :clear-on-select="false"
+                  :preserve-search="true"
+                  :allow-empty="false"
+                  placeholder="Pick some"
+                  label="name"
+                  track-by="name"
+                  :preselect-first="true">
+                  <template
+                    slot="selection"
+                    slot-scope="{ values, search, isOpen }">
+                    <span
+                      class="multiselect__single"
+                      v-if="values.length &amp;&amp; !isOpen">
+                      {{ values.length }} options selected
+                    </span>
+                  </template>
+                </multiselect>
             </div>
             <div class="form-group col-md-6" v-if="!order.table.id">
               <label>Table that places an ordering</label>
@@ -76,11 +76,12 @@
               </div>
             </div>
           </div>
-          {{order.table.id}}
-          <div v-if="orderd.status != 'Paid'">
+          <div>
             <button class="btn btn-primary" type="submit" >Create order</button>
           </div>
-          <div v-else>Thanks for your visit - everything has been paid! - When your table is released by the barista this page is no longer available</div>
+<!--          <div v-if="orderPaid">-->
+<!--            <button class="btn btn-primary" type="submit">Thanks for your visit - everything has been paid! - When your table is released by the barista this page is no longer available</button>-->
+<!--          </div>-->
         </form>
       </div>
     </div>
@@ -102,6 +103,10 @@
       }
     },
     methods: {
+      orderPaid(value){
+        console.log("received order paid")
+        this.order.table = {};
+      },
       addComment(article, $event){
         this.$set(article, 'comment', $event.target.value)
       },
@@ -120,9 +125,6 @@
       getAllTables(){
         this.$store.dispatch("getAllTables");
       },
-      getOrderTable(tableId){
-        this.$store.dispatch("getOrderTable", tableId)
-      },
     },
     computed: {
       table(){
@@ -134,20 +136,14 @@
       articles(){
         return this.$store.getters.articles
       },
-      orderd() {
-        return this.$store.getters.order;
-      },
       orderTable(){
         return this.$store.getters.orderTable
-      }
+      },
     },
     watch: {
       table: function(newValue, oldValue) {
         if(newValue != oldValue){
-          this.$store.dispatch("disconnect").then(() => {
-            this.getOrderTable(newValue.id)
-            this.connect(newValue.id)
-          })
+          this.$store.dispatch("getOrderForTablePaid", newValue.id)
         }
       }
     },
@@ -155,9 +151,8 @@
       this.order.table.id = null;
       if(this.orderTable){
         //this.$set(this.order.table, "id", this.orderTable)
-        this.order.table.id = this.orderTable
+        this.order.table.id = this.orderTable;
       }
-
       this.getAllArticles();
       this.getAllTables();
     }

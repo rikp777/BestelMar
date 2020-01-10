@@ -212,7 +212,7 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
                 "FROM orders " +
                 "INNER JOIN status on status.id = orders.status_id " +
                 "WHERE table_id = ? " +
-                "ORDER BY date DESC " +
+                "ORDER BY orders.id DESC " +
                 "LIMIT 1";
         //String query = "SELECT * FROM orders WHERE table_id = ? ORDER BY date desc LIMIT 1";
         try{
@@ -240,7 +240,15 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
 
     public List<IOrder> listLast(){
         List<IOrder> orders = new ArrayList<>();
-        String query = "SELECT status.name as status_name, n.* FROM orders n INNER JOIN status on status.id = n.status_id INNER JOIN ( SELECT id, MAX(date) AS date, table_id FROM orders GROUP BY table_id ) AS max USING (table_id, date)";
+        String query = "SELECT ord.id, s.name as status_name, o.date, o.user_id, o.table_id \n" +
+                "FROM orders as o \n" +
+                "JOIN ( \n" +
+                "    SELECT MAX(orders.id) as id,  orders.date\n" +
+                "    FROM orders \n" +
+                "    GROUP BY orders.table_id\n" +
+                ") as ord on o.id = ord.id\n" +
+                "JOIN status as s on s.id = o.status_id \n" +
+                "ORDER BY o.table_id";
 
         try{
             this.open();
@@ -249,8 +257,8 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
 
             while (resultSet.next()){
                 OrderDto orderDto = new OrderDto(
-                        resultSet.getInt("n.id"),
-                        resultSet.getDate("n.date")
+                        resultSet.getInt("id"),
+                        resultSet.getDate("date")
                 );
                 orderDto.setStatus(Status.valueOf(resultSet.getString("status_name")));
                 System.out.println("nu ben ik hier "+ orderDto.getId() + " asdf "+ resultSet.getInt("table_id"));
@@ -269,7 +277,7 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
     }
     public List<IOrder> list() {
         List<IOrder> orders = new ArrayList<>();
-        String query = "SELECT * FROM orders";
+        String query = "SELECT *, status.name as status_name FROM `orders` Inner Join status on status.id = orders.status_id";
 
         try{
             this.open();
@@ -281,6 +289,8 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
                         resultSet.getInt("id"),
                         resultSet.getDate("date")
                 );
+                orderDto.setStatus(Status.valueOf(resultSet.getString("status_name")));
+
                 ITable table = new TableDto();
                 table.setId(resultSet.getInt("table_id"));
                 orderDto.setTable(table);

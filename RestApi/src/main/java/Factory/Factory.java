@@ -1,21 +1,9 @@
 package Factory;
 
-import Data.Context.Interfaces.IArticleContext;
-import Data.Context.Interfaces.IOrderContext;
-import Data.Context.Interfaces.ITableContext;
-import Data.Context.Interfaces.IUserContext;
-import Data.Context.MemoryContext.ArticleContextMemory;
-import Data.Context.MemoryContext.OrderContextMemory;
-import Data.Context.MemoryContext.TableContextMemory;
-import Data.Context.MemoryContext.UserContextMemory;
-import Data.Context.SQLContext.ArticleContextSQL;
-import Data.Context.SQLContext.OrderContextSQL;
-import Data.Context.SQLContext.TableContextSQL;
-import Data.Context.SQLContext.UserContextSQL;
-import Data.Repository.ArticleRepository;
-import Data.Repository.OrderRepository;
-import Data.Repository.TableRepository;
-import Data.Repository.UserRepository;
+import Data.Context.Interfaces.*;
+import Data.Context.MemoryContext.*;
+import Data.Context.SQLContext.*;
+import Data.Repository.*;
 import logic.ArticleLogic;
 import logic.Interfaces.IArticleLogic;
 import logic.Interfaces.IOrderLogic;
@@ -30,13 +18,13 @@ public class Factory {
 
 
 
-    public static IUserLogic userLogic(ContextType contextType){
-        return new UserLogic(new UserRepository(getUserContext(contextType)));
+    public static IUserLogic UserLogic(ContextType contextType){
+        return new UserLogic(new UserRepository(GetUserContext(contextType)));
     }
-    public static IUserLogic userLogic(){
-        return new UserLogic(new UserRepository(getUserContext(contextTypeStatic)));
+    public static IUserLogic UserLogic(){
+        return new UserLogic(new UserRepository(GetUserContext(contextTypeStatic)));
     }
-    private static IUserContext getUserContext(ContextType contextType){
+    private static IUserContext GetUserContext(ContextType contextType){
         switch (contextType){
             case SQL:
                 return new UserContextSQL();
@@ -50,13 +38,13 @@ public class Factory {
 
 
 
-    public static ITableLogic tableLogic(ContextType contextType){
-        return new TableLogic(new TableRepository(getTableContext(contextType)));
+    public static ITableLogic TableLogic(ContextType contextType){
+        return new TableLogic(new TableRepository(GetTableContext(contextType)));
     }
-    public static ITableLogic tableLogic(){
-        return new TableLogic(new TableRepository(getTableContext(contextTypeStatic)));
+    public static ITableLogic TableLogic(){
+        return new TableLogic(new TableRepository(GetTableContext(contextTypeStatic)));
     }
-    private static ITableContext getTableContext(ContextType contextType){
+    private static ITableContext GetTableContext(ContextType contextType){
         switch (contextType){
             case SQL:
                 return new TableContextSQL();
@@ -71,12 +59,12 @@ public class Factory {
 
 
     public static IArticleLogic ArticleLogic(ContextType contextType){
-        return new ArticleLogic(new ArticleRepository(getArticleContext(contextType)));
+        return new ArticleLogic(new ArticleRepository(GetArticleContext(contextType)));
     }
     public static IArticleLogic ArticleLogic(){
-        return new ArticleLogic(new ArticleRepository(getArticleContext(contextTypeStatic)));
+        return new ArticleLogic(new ArticleRepository(GetArticleContext(contextTypeStatic)));
     }
-    private static IArticleContext getArticleContext(ContextType contextType){
+    private static IArticleContext GetArticleContext(ContextType contextType){
         switch (contextType){
             case SQL:
                 return new ArticleContextSQL();
@@ -91,12 +79,20 @@ public class Factory {
 
 
     public static IOrderLogic OrderLogic(ContextType contextType){
-        return new OrderLogic(new OrderRepository(getOrderContext(contextType)));
+        return new OrderLogic(
+                new OrderRepository(GetOrderContext(contextType)),
+                new TableRepository(GetTableContext(contextType)),
+                new ArticleOrderRepository(getArticleOrderContext(contextType))
+        );
     }
     public static IOrderLogic OrderLogic(){
-        return new OrderLogic(new OrderRepository(getOrderContext(contextTypeStatic)));
+        return new OrderLogic(
+                new OrderRepository(GetOrderContext(contextTypeStatic)),
+                new TableRepository(GetTableContext(contextTypeStatic)),
+                new ArticleOrderRepository(getArticleOrderContext(contextTypeStatic))
+        );
     }
-    private static IOrderContext getOrderContext(ContextType contextType){
+    private static IOrderContext GetOrderContext(ContextType contextType){
         switch (contextType){
             case SQL:
                 return new OrderContextSQL();
@@ -105,4 +101,18 @@ public class Factory {
         }
         throw new IllegalArgumentException("Order Context type none existent");
     }
+
+
+
+
+    private static IArticleOrderContext getArticleOrderContext(ContextType contextType){
+        switch (contextType){
+            case SQL:
+                return new ArticleOrderContextSQL();
+            case MEMORY:
+                return new ArticleOrderContextMemory();
+        }
+        throw new IllegalArgumentException("ArticleOrder Context type none existent");
+    }
+
 }

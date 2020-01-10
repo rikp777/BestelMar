@@ -114,6 +114,8 @@ public class OrderContextMemory implements IOrderContext {
                 entity.getArticleOrder()
         );
         order.setStatus(Status.Paid);
+        order.setTable(new TableContextMemory().read(entity.getTable()));
+        order.setArticleOrder(new ArticleOrderContextMemory().list(entity.getId()));
 
         OrderDto old;
 

@@ -9,6 +9,7 @@ const apiUrl = "order"
 
 // Initial State
 const state = {
+  orderPaid: false,
   orders: {},
   order: null,
   webSocketOrder: null,
@@ -26,6 +27,9 @@ const getters = {
   },
   order(state) {
     return state.order
+  },
+  orderPaid(state){
+    return state.orderPaid
   },
   totalPrice(state){
     return state.order.articleOrder.reduce((acc, item) => acc + item.price, 0).toFixed(2);
@@ -51,18 +55,19 @@ const actions = {
         throw error
       })
   },
+  updateOrder(context, payload){
+    return apiService.put(apiUrl, payload.id, payload)
+      .then(({data}) => {
+        context.commit("setOrder", data);
+      }).catch((error) => {
+        throw error
+      })
+  },
 
 
   sendGlobalOrderTable(context, payload) {
     if (this.stompClient && this.stompClient.connected) {
       this.stompClient.send('/send-data/orderweb/table/' + payload.table.id, JSON.stringify(payload), {})
-    }else{
-      console.log("Can not send data not connected")
-    }
-  },
-  sendGlobalOrder(context, payload) {
-    if (this.stompClient && this.stompClient.connected) {
-      this.stompClient.send('/send-data/orderweb', JSON.stringify(payload.table), {})
     }else{
       console.log("Can not send data not connected")
     }
@@ -80,6 +85,13 @@ const actions = {
         reject(error);
       })
     })
+  },
+  sendGlobalOrder(context, payload) {
+    if (this.stompClient && this.stompClient.connected) {
+      this.stompClient.send('/send-data/orderweb', JSON.stringify(payload.table), {})
+    }else{
+      console.log("Can not send data not connected")
+    }
   },
   subscribeGlobalOrder(context){
     if (this.stompClient && this.stompClient.connected) {
@@ -148,8 +160,16 @@ const actions = {
         throw error
       })
   },
+  getOrderForTablePaid(context, slug){
+    return apiService.get(apiUrl, "table/" + slug + "/paid").then(({data}) =>{
+      context.commit("setOrderPaid", data)
+    }).catch((error) => {
+      throw error
+    })
+  },
   payTableOrder(context, payload){
     cookieService.destroyToken("table")
+    context.commit("reset")
     return apiService.post(apiUrl + "/table/" + payload.table.id + "/pay", payload)
   }
 
@@ -157,6 +177,11 @@ const actions = {
 
 // Mutations
 export const mutations = {
+  reset(state){
+    state.order = null;
+    state.orderPaid = false;
+    console.log(state.orderPaid)
+  },
   startLoading(state) {
     state.isLoading = true;
   },
@@ -168,6 +193,9 @@ export const mutations = {
   },
   setOrder(state, order){
     state.order = order
+  },
+  setOrderPaid(state, status){
+    state.orderPaid = status
   },
   setWebSocketDataOrder(state, webSocketData){
     state.order = webSocketData;

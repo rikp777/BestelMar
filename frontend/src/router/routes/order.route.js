@@ -1,6 +1,7 @@
 import Create from "../../components/order/Create.vue";
 import Index from "../../components/order/Index.vue";
 import List from "../../components/order/List.vue";
+import History from "../../components/order/History";
 
 export default [
   {
@@ -17,6 +18,11 @@ export default [
         path: 'create',
         component: Create,
       },
+      {
+        name: 'orderHistory',
+        path: 'history',
+        component: History
+      }
     ]
   }
 ]

@@ -1,5 +1,7 @@
 package logic.Interfaces;
 
+import Interfaces.model.IUser;
+
 import java.util.List;
 
 public interface ILogic<T>{

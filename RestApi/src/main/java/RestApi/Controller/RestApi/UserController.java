@@ -2,7 +2,9 @@ package RestApi.Controller.RestApi;
 
 import Data.Context.MemoryContext.UserContextMemory;
 import Data.Repository.UserRepository;
+import Factory.Factory;
 import Interfaces.model.IUser;
+import logic.Interfaces.IUserLogic;
 import logic.UserLogic;
 import RestApi.VOModels.VOUser;
 import models.User;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
-    private UserLogic userLogic = new UserLogic(new UserRepository(new UserContextMemory()));
+    private IUserLogic userLogic = Factory.UserLogic();
 
     @PostMapping("/user")
     public ResponseEntity create(@RequestBody User user){

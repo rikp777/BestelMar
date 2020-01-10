@@ -11,8 +11,8 @@ import java.util.List;
 
 public class ArticleOrderRepository implements IArticleOrderRepository {
     private IArticleOrderContext _articleOrderContext;
-    public ArticleOrderRepository(){
-        this._articleOrderContext = new ArticleOrderContextSQL();
+    public ArticleOrderRepository(IArticleOrderContext _articleOrderContext){
+        this._articleOrderContext = _articleOrderContext;
     }
 
     public boolean add(IArticleOrder entity, IOrder order) {

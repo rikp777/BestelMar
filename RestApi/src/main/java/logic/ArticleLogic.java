@@ -10,16 +10,14 @@ import java.util.List;
 
 public class ArticleLogic implements IArticleLogic {
     private IArticleRepository _articleRepository;
-    private UserRepository _userRepository;
 
     public ArticleLogic(IArticleRepository articleRepository) {
         this._articleRepository = articleRepository;
-        //this._userRepository = new UserRepository();
     }
 
 
-    public boolean add(IArticle entity) {
-        //if(!UserLogic.checkRight(authUser, Right.Admin) || UserLogic.checkRight(authUser, Right.Employee)) return false;
+    public boolean add(IArticle entity, String authUser) {
+        if(!UserLogic.checkRight(authUser, Right.Admin) || UserLogic.checkRight(authUser, Right.Employee)) return false;
 
 
         if(_articleRepository.getBy(entity.getName()) != null) return false;
@@ -28,17 +26,17 @@ public class ArticleLogic implements IArticleLogic {
 
         return _articleRepository.add(entity);
     }
-    public boolean edit(IArticle entity) {
-        //if(!UserLogic.checkRight(authUser, Right.Admin) || UserLogic.checkRight(authUser, Right.Employee)) return false;
+    public boolean edit(IArticle entity, String authUser) {
+        if(!(UserLogic.checkRight(authUser, Right.Admin) || UserLogic.checkRight(authUser, Right.Employee))) return false;
 
-
+        System.out.println("Raak");
         if(!validation(entity)) return false;
 
 
         return _articleRepository.edit(entity);
     }
-    public boolean remove(IArticle entity) {
-        //if(!UserLogic.checkRight(authUser, Right.Admin) || UserLogic.checkRight(authUser, Right.Employee)) return false;
+    public boolean remove(IArticle entity, String authUser) {
+        if(!UserLogic.checkRight(authUser, Right.Admin) || UserLogic.checkRight(authUser, Right.Employee)) return false;
 
 
         if(_articleRepository.getBy(entity) == null) return false;
@@ -46,6 +44,8 @@ public class ArticleLogic implements IArticleLogic {
 
         return _articleRepository.remove(entity);
     }
+
+
 
 
 
@@ -73,5 +73,18 @@ public class ArticleLogic implements IArticleLogic {
         if(article.getDescription().length() > 300) return false;
 
         return true;
+    }
+
+
+
+
+    public boolean add(IArticle entity) {
+        return false;
+    }
+    public boolean edit(IArticle entity) {
+        return false;
+    }
+    public boolean remove(IArticle entity) {
+        return false;
     }
 }

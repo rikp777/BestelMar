@@ -21,11 +21,13 @@ public class ArticleOrderDto implements IArticleOrder {
         this.price = price;
         this.comment = comment;
         this.article = article;
+        this.status = Status.Placed;
     }
     public ArticleOrderDto(int id, Double price, String comment){
         this.id = id;
         this.price = price;
         this.comment = comment;
+        this.status = Status.Placed;
     }
 
     public String getComment(){

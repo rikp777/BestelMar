@@ -2,8 +2,10 @@ package logic;
 
 import Data.Context.MemoryContext.TableContextMemory;
 import Data.Repository.ArticleOrderRepository;
+import Data.Repository.Interfaces.IArticleOrderRepository;
 import Data.Repository.Interfaces.IArticleRepository;
 import Data.Repository.Interfaces.IOrderRepository;
+import Data.Repository.Interfaces.ITableRepository;
 import Data.Repository.OrderRepository;
 import Data.Repository.TableRepository;
 import Interfaces.model.IArticleOrder;
@@ -16,16 +18,23 @@ import models.Status;
 import java.util.List;
 
 public class OrderLogic implements IOrderLogic {
-    private ArticleOrderRepository _articleOrderRepository;
-    private TableRepository _tableRepository;
+    private IArticleOrderRepository _articleOrderRepository;
+    private ITableRepository _tableRepository;
     private IOrderRepository _orderRepository;
-    public OrderLogic(IOrderRepository orderRepository) {
+    public OrderLogic(IOrderRepository orderRepository, ITableRepository tableRepository, IArticleOrderRepository articleOrderRepository) {
         this._orderRepository = orderRepository;
-        this._tableRepository = new TableRepository(new TableContextMemory());
-        this._articleOrderRepository = new ArticleOrderRepository();
+        this._tableRepository = tableRepository;
+        this._articleOrderRepository = articleOrderRepository;
     }
     public boolean pay(IOrder entity){
         return _orderRepository.pay(entity);
+    }
+    public boolean getPaid(ITable table){
+        IOrder lastOrder = this.getLastBy(table);
+        if(lastOrder.getStatus() == Status.Paid){
+            return true;
+        }
+        return false;
     }
 
     public boolean add(IOrder entity) {
@@ -41,7 +50,7 @@ public class OrderLogic implements IOrderLogic {
             order = _orderRepository.getLastBy(entity.getTable());
 
             for(IArticleOrder articleOrder : entity.getArticleOrder()){
-                System.out.println("Making adding order " + articleOrder.getArticle().getName());
+                System.out.println("Adding articleOrder " + articleOrder.getArticle().getName() + " to order");
                 success = _articleOrderRepository.add(articleOrder, order);
             }
 
@@ -99,7 +108,9 @@ public class OrderLogic implements IOrderLogic {
             order.setArticleOrder(_articleOrderRepository.getAll(order.getId()));
         }
         for (IOrder order : orders) {
-            System.out.println("size " + order.getArticleOrder().size());
+            if(order.getArticleOrder() != null){
+                System.out.println("size " + order.getArticleOrder().size());
+            }
         }
         return orders;
     }

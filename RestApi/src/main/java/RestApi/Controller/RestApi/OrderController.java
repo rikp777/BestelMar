@@ -11,7 +11,10 @@ import Interfaces.model.IArticleOrder;
 import Interfaces.model.IOrder;
 import Interfaces.model.ITable;
 import Interfaces.model.IUser;
+import RestApi.VOModels.VOOrder;
 import logic.Interfaces.IOrderLogic;
+import logic.Interfaces.ITableLogic;
+import logic.Interfaces.IUserLogic;
 import logic.OrderLogic;
 import logic.TableLogic;
 import logic.UserLogic;
@@ -29,8 +32,8 @@ import java.util.List;
 @RestController
 public class OrderController { ;
     private IOrderLogic orderLogic = Factory.OrderLogic();
-    private UserLogic userLogic = new UserLogic(new UserRepository(new UserContextMemory()));
-    private TableLogic tableLogic = new TableLogic(new TableRepository(new TableContextMemory()));
+    private IUserLogic userLogic = Factory.UserLogic();
+    private ITableLogic tableLogic = Factory.TableLogic();
 
 
 //    @GetMapping("/")
@@ -77,12 +80,14 @@ public class OrderController { ;
 //        return null;
 //    }
 //
-    @PutMapping("/order")
-    public ResponseEntity updateArticleOrder(@RequestBody VOOrderCreate voOrderCreate){
+    @PutMapping("/order/{id}")
+    public ResponseEntity updateArticleOrder(@RequestBody VOOrder voOrder){
 
-
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("Something went wrong");
+//        if(orderLogic.edit(order)){
+//            return ResponseEntity.status(HttpStatus.ACCEPTED).body(order);
+//        }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(voOrder);
+        //return ResponseEntity.status(HttpStatus.CONFLICT).body("Something went wrong");
     }
     @PostMapping("/order")
     public ResponseEntity create(@RequestBody VOOrderCreate voOrderCreate){
@@ -155,6 +160,14 @@ public class OrderController { ;
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(
                 order
+        );
+    }
+    @GetMapping("/order/table/{tableId}/paid")
+    public ResponseEntity checkPaidOrder(@PathVariable int tableId){
+        ITable table = tableLogic.getBy(tableId);
+        boolean check = orderLogic.getPaid(table);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(
+                check
         );
     }
 

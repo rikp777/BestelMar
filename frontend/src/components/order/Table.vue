@@ -1,14 +1,11 @@
 <template>
   <div class="card mb-2">
-    <div class="card-body" v-if="order">
 
-
-      <h5 class="card-title">Table Name:  {{order.table.name}} <small>- Status: <span class="badge badge-pill badge-primary">{{order.status}}</span></small></h5>
-
+    <div class="card-body" v-if="order && order.status !== 'Paid'">
+      <h5 class="card-title">Table Name:  {{order.table.name}}<small> - Status: <span class="badge badge-pill badge-primary">{{order.status}}</span></small> <br> Order Id: {{order.id}}</h5>
 
       <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target=".bd-example-modal-xl"><span v-if="order.status != 'Paid'">Pay &</span> Reciept - Summary</button>
       <button type="button" class="btn btn-primary mb-2" @click="pay(order)" v-if="order.status != 'Paid'">Pay the receipt</button>
-
       <div class="list-group" v-for="articleOrder in order.articleOrder">
         <a href="#" class="list-group-item list-group-item-action">
           <div class="d-flex w-100 justify-content-between">
@@ -96,6 +93,7 @@
       </div>
 
     </div>
+    <div v-else class="card-body"><h5 class="card-title">Make your order please, You will get an overview</h5></div>
   </div>
 </template>
 
@@ -109,6 +107,7 @@
     },
     methods: {
       pay(order){
+        this.$emit('paid', true)
         this.$store.dispatch("payTableOrder", order).then(() => {
           this.getOrderTable(this.tableId)
         })
@@ -123,6 +122,9 @@
       }
     },
     computed: {
+      orderPaid(){
+        return this.$store.getters.orderPaid
+      },
       order() {
         return this.$store.getters.order;
       },
@@ -131,8 +133,13 @@
       }
     },
     mounted() {
-      this.getOrderTable(this.tableId)
       this.connect(this.tableId)
+      this.$store.dispatch("getOrderForTablePaid", this.tableId).then(() => {
+        console.log(this.$store.getters.orderPaid)
+        if(this.$store.getters.orderPaid === false){
+          this.getOrderTable(this.tableId)
+        }
+      })
     }
   }
 </script>
