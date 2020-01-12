@@ -6,12 +6,23 @@ const AccessControl = {
       const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
       const requiresRoles = to.meta.requiresRoles;
 
-      let authUser = [];
-      if (store.getters.authUser.id !== undefined) {
+
+      let authUser = '';
+      if (store.getters.authUser !== undefined) {
         authUser = store.getters.authUser;
         store.dispatch("checkAuth");
-        console.log('user=' + authUser.lastName + ' to=' + to.name + ' path=' + to.path + ' auth=' + requiresAuth + ' requiredRoles=' + requiresRoles)
+        console.log('user=' + authUser + ' to=' + to.name + ' path=' + to.path + ' auth=' + requiresAuth + ' requiredRoles=' + requiresRoles)
       }
+
+
+      // if(this.hasRight(requiresRoles, authUser)){
+      //   next();
+      // }else{
+      //   console.log('unauthorized')
+      //   next('/auth/login')
+      // }
+
+
 
       if (requiresAuth && authUser.id === undefined) {
         console.log('not logged in');
@@ -47,8 +58,7 @@ const AccessControl = {
   },
   hasRight(requiresRoles, authUser) {
     let check = false;
-    console.log(authUser);
-    authUser.roles.forEach((item) => {
+    authUser.rights.forEach((item) => {
       if (requiresRoles.hasOwnProperty(item.id)) {
         check = true
       }

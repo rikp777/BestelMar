@@ -2,6 +2,7 @@ package Factory;
 
 import Data.Context.Interfaces.*;
 import Data.Context.MemoryContext.*;
+import Data.Context.MySQLContext.JDBIArticleContextSQL;
 import Data.Context.SQLContext.*;
 import Data.Repository.*;
 import logic.ArticleLogic;
@@ -70,7 +71,9 @@ public class Factory {
                 return new ArticleContextSQL();
             case MEMORY:
                 return new ArticleContextMemory();
-        }
+            case MYSQL:
+                return new JDBIArticleContextSQL();
+    }
         throw new IllegalArgumentException("Article Context type none existent");
     }
 

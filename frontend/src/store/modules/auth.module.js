@@ -22,6 +22,9 @@ const getters = {
   },
   authIsLoading(state){
     return state.isLoading;
+  },
+  getAuthErrors(state){
+    return state.errors;
   }
 };
 
@@ -32,13 +35,14 @@ const actions = {
       context.commit("setAuthLoading");
       apiService.post("/auth/login", credentials)
         .then(( response )  => {
-          context.commit("setAuthUser", credentials.email);
+          context.commit("setAuthUser", response.data);
           apiService.setHeader();
           context.commit("resetAuthLoading");
           resolve(response);
         })
         .catch(( error ) => {
-          context.commit("setAuthError", error.data);
+          console.log(error)
+          context.commit("setAuthError", error);
         });
     });
   },
@@ -67,10 +71,11 @@ const mutations = {
     state.errors = errors
   },
   setAuthUser(state, payload) {
+    console.log(payload)
     state.isAuthenticated = true;
     state.user = payload;
     state.errors = {};
-    cookie.saveToken('user', payload)
+    cookie.saveToken('user', payload.email)
   },
   AuthPurge(state){
     state.isAuthenticated = false;

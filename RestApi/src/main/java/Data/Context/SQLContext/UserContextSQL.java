@@ -17,6 +17,7 @@ public class UserContextSQL extends SQLConnector implements IUserContext {
     private final static Logger LOGGER = Logger.getLogger(UserContextSQL.class.getName());
 
     public boolean create(IUser entity) {
+        System.out.println("TEST");
         String query = "INSERT INTO users (first_name, last_name, email, password)" +
                 " VALUES (?, ?, ?, ?) ";
         try {
@@ -25,7 +26,7 @@ public class UserContextSQL extends SQLConnector implements IUserContext {
             stmt.setString(1, entity.getFirstName());
             stmt.setString(2, entity.getLastName());
             stmt.setString(3, entity.getEmail());
-            stmt.setString(4, "rik");
+            stmt.setString(4, entity.getPassword());
             LOGGER.log(Level.INFO, "User Created: " + entity.getEmail());
             return this.executeUpdate(stmt) != 0;
         } catch (Exception e){
@@ -122,6 +123,7 @@ public class UserContextSQL extends SQLConnector implements IUserContext {
                         resultSet.getBoolean("blocked")
                 );
                 userDto.setRights(new RightContextSQL().list(userDto));
+                System.out.println(userDto.getRights().size());
             }
         }catch (Exception e){
             LOGGER.log(Level.WARNING, e.getMessage());

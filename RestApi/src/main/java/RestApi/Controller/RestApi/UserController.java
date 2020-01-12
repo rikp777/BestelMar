@@ -4,6 +4,7 @@ import Data.Context.MemoryContext.UserContextMemory;
 import Data.Repository.UserRepository;
 import Factory.Factory;
 import Interfaces.model.IUser;
+import RestApi.VOModels.VOOrder;
 import logic.Interfaces.IUserLogic;
 import logic.UserLogic;
 import RestApi.VOModels.VOUser;
@@ -21,6 +22,7 @@ public class UserController {
 
     @PostMapping("/user")
     public ResponseEntity create(@RequestBody User user){
+        System.out.println(user.getFirstName());
         if(userLogic.getBy(user) != null){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User Already exists");
         }
@@ -62,13 +64,24 @@ public class UserController {
         if(userLogic.getBy(id) != null){
             IUser user = userLogic.getBy(id);
 
-
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(
                     setResource(user)
             );
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body("User not found");
     }
+    @GetMapping("/userby/{email}")
+    public ResponseEntity readBy(@PathVariable String email){
+        if(userLogic.getBy(email) != null){
+            IUser user = userLogic.getBy(email);
+
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(
+                    user
+            );
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("User not found");
+    }
+
 
 
     public VOUser setResource(IUser user){

@@ -2,5 +2,6 @@ package Factory;
 
 public enum ContextType {
     SQL,
-    MEMORY
+    MEMORY,
+    MYSQL,
 }

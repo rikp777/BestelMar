@@ -2,6 +2,7 @@ import Create from "../../components/order/Create.vue";
 import Index from "../../components/order/Index.vue";
 import List from "../../components/order/List.vue";
 import History from "../../components/order/History";
+import RightEnum from "../RightEnum";
 
 export default [
   {
@@ -12,6 +13,10 @@ export default [
         name: 'orderList',
         path: 'list',
         component: List,
+        meta: {
+          requiresAuth: true,
+          requiresRoles: [ RightEnum.Admin, RightEnum.Employee ]
+        }
       },
       {
         name: 'orderCreate',
@@ -21,7 +26,11 @@ export default [
       {
         name: 'orderHistory',
         path: 'history',
-        component: History
+        component: History,
+        meta: {
+          requiresAuth: true,
+          requiresRoles: [ RightEnum.Admin, RightEnum.Employee, RightEnum.Costumer ]
+        }
       }
     ]
   }

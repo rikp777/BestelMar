@@ -4,6 +4,12 @@
       <div class="card">
         <div class="card-header">login</div>
         <div class="card-body">
+          <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> Your password is probably wrong.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <form v-on:submit.prevent="onSubmit(form.email, form.password)" autocomplete="off">
             <div class="form-group row">
               <label for="email">Email:</label>
@@ -25,16 +31,10 @@
                 class="form-control"
                 placeholder="Password">
             </div>
+
             <div class="form-group row">
               <input type="submit" value="Login">
-              <router-link v-if="errors" to="authForgot">Forgot?</router-link>
-            </div>
 
-            {{errors}}
-            <div class="form-group row" v-if="errors">
-              <ul class="error-messages">
-                <li v-for="(v, k) in errors" :key="k">{{ k }} {{ v | error }}</li>
-              </ul>
             </div>
           </form>
         </div>
@@ -65,9 +65,9 @@
             }
         },
         computed: {
-            ...mapState({
-                errors: state => state.auth.errors
-            })
+            error(){
+                return this.$store.getters.getAuthErrors
+            }
         }
     }
 </script>

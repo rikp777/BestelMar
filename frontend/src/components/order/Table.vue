@@ -70,11 +70,17 @@
                           </td>
                           <td class="right" style="text-align: right">€{{(totalPrice * 0.21).toFixed(2)}}</td>
                         </tr>
+                        <tr v-if="originalPrice !== totalPrice">
+                          <td class="left">
+                            <strong class="text-dark">Discount (10%)</strong>
+                          </td>
+                          <td class="right" style="text-align: right">- €{{(originalPrice - totalPrice).toFixed(2)}}</td>
+                        </tr>
                         <tr>
                           <td class="left">
                             <strong class="text-dark">Total</strong> </td>
                           <td class="right" style="text-align: right">
-                            <strong class="text-dark">€{{totalPrice}}</strong>
+                            <span  v-if="originalPrice !== totalPrice"><s>€{{originalPrice}}</s> / </span><strong class="text-dark">€{{totalPrice}}</strong>
                           </td>
                         </tr>
                         </tbody>
@@ -122,6 +128,9 @@
       }
     },
     computed: {
+      authUser() {
+        return this.$store.getters.authUser;
+      },
       orderPaid(){
         return this.$store.getters.orderPaid
       },
@@ -129,8 +138,16 @@
         return this.$store.getters.order;
       },
       totalPrice(){
-        return this.$store.getters.totalPrice;
-      }
+          if(this.$store.getters.isAuthenticated){
+              return ((this.$store.getters.totalPrice / 100) * 90).toFixed(2) ;
+          }else{
+              return this.$store.getters.totalPrice;
+          }
+
+      },
+      originalPrice(){
+          return this.$store.getters.totalPrice;
+      },
     },
     mounted() {
       this.connect(this.tableId)

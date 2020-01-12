@@ -9,6 +9,7 @@ const state = {
   users: {},
   user: [],
   isLoading: true,
+  errors: {},
 };
 
 // Getters
@@ -22,6 +23,9 @@ const getters = {
   userIsLoading(state) {
     return state.isLoading
   },
+  getUserErrors(state){
+    return state.errors
+  }
 };
 
 // Actions
@@ -67,6 +71,16 @@ const actions = {
         throw error
       });
   },
+  createUser(context, payload){
+    return apiService.post(apiUrl, payload)
+      .then(({data}) => {
+        context.commit("setUser", data);
+      }).catch((error) => {
+        context.commit("setAuthError", error);
+        throw error
+
+      })
+  },
 
 };
 
@@ -83,6 +97,9 @@ export const mutations = {
   },
   setUser(state, user){
     state.user = user
+  },
+  setAuthError(state, errors) {
+    state.errors = errors;
   }
 };
 

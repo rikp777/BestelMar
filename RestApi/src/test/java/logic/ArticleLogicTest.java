@@ -3,7 +3,9 @@ package logic;
 import Data.Context.MemoryContext.ArticleContextMemory;
 import Data.DTO.ArticleDto;
 import Data.Repository.ArticleRepository;
+import Factory.*;
 import Interfaces.model.IArticle;
+import logic.Interfaces.IArticleLogic;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ArticleLogicTest {
 
-    private ArticleLogic _articleLogic;
+    private IArticleLogic _articleLogic;
     private String authUser;
     private List<ArticleDto> articles = new ArrayList<>();
 
     @BeforeEach
     void setUp(){
-        _articleLogic = new ArticleLogic(new ArticleRepository(new ArticleContextMemory()));
+        _articleLogic = Factory.ArticleLogic(ContextType.SQL);
         authUser = "rikpeeters@hotmail.com";
         articles.add(new ArticleDto(1, "Fanta", "lekker", 2.10));
         articles.add(new ArticleDto(2, "Cassis", "lekker", 2.10));
@@ -32,7 +34,7 @@ public class ArticleLogicTest {
         IArticle article = articles.get(0);
 
 
-        _articleLogic.add(article);
+        _articleLogic.add(article, authUser);
 
         int expected = 1;
         int actual = _articleLogic.getAll().size();

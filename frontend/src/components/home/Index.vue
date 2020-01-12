@@ -11,10 +11,11 @@
 
 <script>
     import login from "../auth/Login";
+    import register from "../auth/Register";
     import message from "./Message";
     export default {
         name: 'home-index',
-        components: {message, login},
+        components: {message, login, register},
         data() {
             return {
                 isAuthenticated: true,

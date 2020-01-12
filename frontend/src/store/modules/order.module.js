@@ -32,7 +32,8 @@ const getters = {
     return state.orderPaid
   },
   totalPrice(state){
-    return state.order.articleOrder.reduce((acc, item) => acc + item.price, 0).toFixed(2);
+
+      return state.order.articleOrder.reduce((acc, item) => acc + item.price, 0).toFixed(2);
   },
   orderIsLoading(state) {
     return state.isLoading
