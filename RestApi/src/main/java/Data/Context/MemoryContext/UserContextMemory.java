@@ -5,6 +5,7 @@ import Data.DTO.TableDto;
 import Data.DTO.UserDto;
 import Interfaces.model.ITable;
 import Interfaces.model.IUser;
+import models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class UserContextMemory implements IUserContext {
         users = new ArrayList<>();
     }
 
-    public boolean create(IUser entity) {
+    public boolean create(UserDto entity) {
         for(UserDto u : users){
             if(u.getEmail().equals(entity.getEmail())){
                 return false;
@@ -35,7 +36,7 @@ public class UserContextMemory implements IUserContext {
     }
 
 
-    public boolean update(IUser entity){
+    public boolean update(UserDto entity){
         UserDto user = new UserDto();
         user.setId(entity.getId());
         user.setEmail(entity.getEmail());
@@ -54,7 +55,7 @@ public class UserContextMemory implements IUserContext {
         return users.contains(user);
     }
 
-    public boolean delete(IUser entity){
+    public boolean delete(UserDto entity){
         UserDto old;
         for(UserDto u : users){
             if(u.getId() == entity.getId()){
@@ -66,7 +67,7 @@ public class UserContextMemory implements IUserContext {
         return false;
     }
 
-    public IUser read(int id) {
+    public UserDto read(int id) {
         UserDto user = null;
         for(UserDto u : users){
             if(u.getId() == id){
@@ -76,7 +77,7 @@ public class UserContextMemory implements IUserContext {
         return user;
     }
 
-    public IUser read(IUser entity) {
+    public UserDto read(UserDto entity) {
         UserDto user = null;
         for(UserDto u : users){
             if(u.getId() == entity.getId()){
@@ -85,7 +86,7 @@ public class UserContextMemory implements IUserContext {
         }
         return user;
     }
-    public IUser read(String email) {
+    public UserDto read(String email) {
         UserDto user = null;
         for(UserDto u : users){
             if(u.getEmail() == email){
@@ -96,7 +97,7 @@ public class UserContextMemory implements IUserContext {
     }
 
 
-    public List<IUser> list() {
+    public List<UserDto> list() {
         return new ArrayList<>(users);
     }
 

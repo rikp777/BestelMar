@@ -16,7 +16,7 @@ public class ArticleContextSQL extends SQLConnector implements IArticleContext {
     private final static Logger LOGGER = Logger.getLogger(UserContextSQL.class.getName());
 
 
-    public boolean create(IArticle entity) {
+    public boolean create(ArticleDto entity) {
         String query = "INSERT INTO articles (name, description, price)" +
                 "VALUES (?, ?, ?) ";
         try {
@@ -34,7 +34,7 @@ public class ArticleContextSQL extends SQLConnector implements IArticleContext {
         }
         return false;
     }
-    public boolean update(IArticle entity) {
+    public boolean update(ArticleDto entity) {
         String query = "UPDATE articles SET name = ?, description = ?, price = ? WHERE id = ?";
         try {
             this.open();
@@ -54,7 +54,7 @@ public class ArticleContextSQL extends SQLConnector implements IArticleContext {
         }
         return false;
     }
-    public boolean delete(IArticle entity) {
+    public boolean delete(ArticleDto entity) {
         String query = "DELETE FROM articles WHERE id = ?";
         try {
             this.open();
@@ -73,7 +73,7 @@ public class ArticleContextSQL extends SQLConnector implements IArticleContext {
 
 
 
-    public IArticle read(int id) {
+    public ArticleDto read(int id) {
         ArticleDto articleDto = null;
         String query = "SELECT * FROM articles WHERE id = ? LIMIT 1";
         try{
@@ -97,7 +97,7 @@ public class ArticleContextSQL extends SQLConnector implements IArticleContext {
         }
         return articleDto;
     }
-    public IArticle read(String name) {
+    public ArticleDto read(String name) {
         ArticleDto articleDto = null;
         String query = "SELECT * FROM articles WHERE name = ? LIMIT 1";
         try{
@@ -121,7 +121,7 @@ public class ArticleContextSQL extends SQLConnector implements IArticleContext {
         }
         return articleDto;
     }
-    public IArticle read(IArticle entity) {
+    public ArticleDto read(ArticleDto entity) {
         if(entity.getName() != null){
             return this.read(entity.getName());
         }
@@ -133,8 +133,8 @@ public class ArticleContextSQL extends SQLConnector implements IArticleContext {
 
 
 
-    public List<IArticle> list() {
-        List<IArticle> articles = new ArrayList<>();
+    public List<ArticleDto> list() {
+        List<ArticleDto> articles = new ArrayList<>();
         String query = "SELECT * FROM articles";
 
         try{

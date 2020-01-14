@@ -15,7 +15,7 @@
     <div class="collapse navbar-collapse" id="navbarBestelMar">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 
-        <li class="nav-item" v-if="authUser == null">
+        <li class="nav-item">
           <router-link
             class="nav-link"
             :to="{ name: 'orderCreate' }"
@@ -53,7 +53,7 @@
 
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="nav-item dropdown" v-if="authUser != null">
+        <li class="nav-item dropdown" v-if="notEmptyObject(authUser)">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
             {{authUser.email}}

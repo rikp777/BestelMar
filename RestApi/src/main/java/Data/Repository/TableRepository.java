@@ -2,9 +2,11 @@ package Data.Repository;
 
 import Data.Context.Interfaces.ITableContext;
 import Data.Context.SQLContext.TableContextSQL;
+import Data.DTO.TableDto;
 import Data.Repository.Interfaces.ITableRepository;
 import Interfaces.model.ITable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TableRepository implements ITableRepository {
@@ -15,13 +17,13 @@ public class TableRepository implements ITableRepository {
 
 
     public boolean add(ITable entity) {
-        return _articleContext.create(entity);
+        return _articleContext.create((TableDto) entity);
     }
     public boolean edit(ITable entity) {
-        return _articleContext.update(entity);
+        return _articleContext.update((TableDto) entity);
     }
     public boolean remove(ITable entity) {
-        return _articleContext.delete(entity);
+        return _articleContext.delete((TableDto) entity);
     }
 
 
@@ -30,7 +32,7 @@ public class TableRepository implements ITableRepository {
         return _articleContext.read(id);
     }
     public ITable getBy(ITable entity) {
-        return _articleContext.read(entity);
+        return _articleContext.read((TableDto) entity);
     }
     public ITable getBy(String name) {
         return _articleContext.read(name);
@@ -38,6 +40,6 @@ public class TableRepository implements ITableRepository {
 
 
     public List<ITable> getAll() {
-        return _articleContext.list();
+        return new ArrayList<>(_articleContext.list());
     }
 }

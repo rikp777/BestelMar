@@ -16,7 +16,13 @@ import AccessControl from "./helpers/accessControl.service";
 
 // register globally
 Vue.component('multiselect', Multiselect)
-
+Vue.mixin({
+  methods: {
+    notEmptyObject(someObject){
+      return Object.keys(someObject).length
+    }
+  }
+})
 
 
 Vue.config.productionTip = false;

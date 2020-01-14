@@ -13,19 +13,19 @@ import java.util.List;
 public interface IArticleDao extends IArticleContext {
     @Override
     @SqlQuery("SELECT * FROM articles WHERE name = ? LIMIT 1")
-    IArticle read(@Bind("name") String name);
+    ArticleDto read(@Bind("name") String name);
 
     @Override
     @SqlQuery("INSERT INTO articles (name, description, price) VALUES (:name, :description, :price) ")
-    boolean create(@BindBean IArticle entity);
+    boolean create(@BindBean ArticleDto entity);
 
     @Override
     @SqlQuery("UPDATE articles SET name = :name, description = :description, price = :price WHERE id = :id")
-    boolean update(@BindBean IArticle entity);
+    boolean update(@BindBean ArticleDto entity);
 
     @Override
     @SqlQuery("DELETE FROM activity WHERE id = :id")
-    boolean delete(IArticle entity);
+    boolean delete(@BindBean ArticleDto entity);
 
     @Override
     @SqlQuery("SELECT * FROM articles WHERE id = ? LIMIT 1")
@@ -34,9 +34,9 @@ public interface IArticleDao extends IArticleContext {
 
     @Override
     @SqlQuery("SELECT * FROM articles WHERE id = :id LIMIT 1")
-    IArticle read(IArticle entity);
+    ArticleDto read(@BindBean ArticleDto entity);
 
     @Override
     @SqlQuery("SELECT * FROM articles")
-    List<IArticle> list();
+    List<ArticleDto> list();
 }

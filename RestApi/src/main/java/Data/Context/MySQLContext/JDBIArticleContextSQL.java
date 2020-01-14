@@ -11,7 +11,7 @@ import java.util.List;
 public class JDBIArticleContextSQL extends SQLConnector implements IArticleContext {
 
     @Override
-    public IArticle read(String name) {
+    public ArticleDto read(String name) {
         if(name != null){
             return jdbi().withExtension(IArticleDao.class, dao -> dao.read(name));
         }
@@ -19,7 +19,7 @@ public class JDBIArticleContextSQL extends SQLConnector implements IArticleConte
     }
 
     @Override
-    public boolean create(IArticle entity) {
+    public boolean create(ArticleDto entity) {
         if(entity != null){
             return jdbi().withExtension(IArticleDao.class, dao -> dao.create((ArticleDto) entity));
         }
@@ -27,7 +27,7 @@ public class JDBIArticleContextSQL extends SQLConnector implements IArticleConte
     }
 
     @Override
-    public boolean update(IArticle entity) {
+    public boolean update(ArticleDto entity) {
         if(entity.getId() != 0){
             return jdbi().withExtension(IArticleDao.class, dao -> dao.update((ArticleDto) entity));
         }
@@ -35,7 +35,7 @@ public class JDBIArticleContextSQL extends SQLConnector implements IArticleConte
     }
 
     @Override
-    public boolean delete(IArticle entity) {
+    public boolean delete(ArticleDto entity) {
         if(entity.getId() != 0){
             return jdbi().withExtension(IArticleDao.class, dao -> dao.create((ArticleDto) entity));
         }
@@ -43,7 +43,7 @@ public class JDBIArticleContextSQL extends SQLConnector implements IArticleConte
     }
 
     @Override
-    public IArticle read(int id) {
+    public ArticleDto read(int id) {
         if(id != 0){
             return jdbi().withExtension(IArticleDao.class, dao -> dao.read(id));
         }
@@ -51,7 +51,7 @@ public class JDBIArticleContextSQL extends SQLConnector implements IArticleConte
     }
 
     @Override
-    public IArticle read(IArticle entity) {
+    public ArticleDto read(ArticleDto entity) {
         if(entity != null){
             return jdbi().withExtension(IArticleDao.class, dao -> dao.read(entity));
         }
@@ -59,7 +59,7 @@ public class JDBIArticleContextSQL extends SQLConnector implements IArticleConte
     }
 
     @Override
-    public List<IArticle> list() {
+    public List<ArticleDto> list() {
         return jdbi().withExtension(IArticleDao.class, dao -> dao.list());
     }
 }

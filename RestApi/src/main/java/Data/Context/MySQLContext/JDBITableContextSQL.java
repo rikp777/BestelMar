@@ -12,7 +12,7 @@ import java.util.List;
 
 public class JDBITableContextSQL extends SQLConnector implements ITableContext {
     @Override
-    public ITable read(String name) {
+    public TableDto read(String name) {
         if(name != null){
             return jdbi().withExtension(ITableDao.class, dao -> dao.read(name));
         }
@@ -20,7 +20,7 @@ public class JDBITableContextSQL extends SQLConnector implements ITableContext {
     }
 
     @Override
-    public boolean create(ITable entity) {
+    public boolean create(TableDto entity) {
         if(entity != null){
             return jdbi().withExtension(ITableDao.class, dao -> dao.create(entity));
         }
@@ -28,7 +28,7 @@ public class JDBITableContextSQL extends SQLConnector implements ITableContext {
     }
 
     @Override
-    public boolean update(ITable entity) {
+    public boolean update(TableDto entity) {
         if(entity.getId() != 0){
             return jdbi().withExtension(ITableDao.class, dao -> dao.update(entity));
         }
@@ -36,7 +36,7 @@ public class JDBITableContextSQL extends SQLConnector implements ITableContext {
     }
 
     @Override
-    public boolean delete(ITable entity) {
+    public boolean delete(TableDto entity) {
         if(entity.getId() != 0){
             return jdbi().withExtension(ITableDao.class, dao -> dao.create(entity));
         }
@@ -44,7 +44,7 @@ public class JDBITableContextSQL extends SQLConnector implements ITableContext {
     }
 
     @Override
-    public ITable read(int id) {
+    public TableDto read(int id) {
         if(id != 0){
             return jdbi().withExtension(ITableDao.class, dao -> dao.read(id));
         }
@@ -52,7 +52,7 @@ public class JDBITableContextSQL extends SQLConnector implements ITableContext {
     }
 
     @Override
-    public ITable read(ITable entity) {
+    public TableDto read(TableDto entity) {
         if(entity != null){
             return jdbi().withExtension(ITableDao.class, dao -> dao.read(entity));
         }
@@ -60,7 +60,7 @@ public class JDBITableContextSQL extends SQLConnector implements ITableContext {
     }
 
     @Override
-    public List<ITable> list() {
+    public List<TableDto> list() {
         return jdbi().withExtension(ITableDao.class, dao -> dao.list());
     }
 }

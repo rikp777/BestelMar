@@ -17,7 +17,7 @@ public class TableContextMemory implements ITableContext {
     }
 
 
-    public boolean create(ITable entity) {
+    public boolean create(TableDto entity) {
         for(TableDto t : tables){
             if(t.getName().equals(entity.getName())){
                 return false;
@@ -34,7 +34,7 @@ public class TableContextMemory implements ITableContext {
         tables.add(table);
         return tables.contains(table);
     }
-    public boolean update(ITable entity){
+    public boolean update(TableDto entity){
         TableDto table = new TableDto(
                 entity.getId(),
                 entity.getName(),
@@ -52,7 +52,7 @@ public class TableContextMemory implements ITableContext {
         }
         return tables.contains(table);
     }
-    public boolean delete(ITable entity){
+    public boolean delete(TableDto entity){
         TableDto old;
         for(TableDto t : tables){
             if(t.getId() == entity.getId()){
@@ -65,7 +65,7 @@ public class TableContextMemory implements ITableContext {
     }
 
 
-    public ITable read(int id) {
+    public TableDto read(int id) {
         TableDto table = null;
         for(TableDto t : tables){
             if(t.getId() == id){
@@ -74,7 +74,7 @@ public class TableContextMemory implements ITableContext {
         }
         return table;
     }
-    public ITable read(String name) {
+    public TableDto read(String name) {
         TableDto table = null;
         for(TableDto t : tables){
             if(t.getName() == name){
@@ -83,7 +83,7 @@ public class TableContextMemory implements ITableContext {
         }
         return table;
     }
-    public ITable read(ITable entity) {
+    public TableDto read(TableDto entity) {
         TableDto table = null;
         for(TableDto a : tables){
             if(a.getId() == entity.getId()){
@@ -93,7 +93,7 @@ public class TableContextMemory implements ITableContext {
         return table;
     }
 
-    public List<ITable> list() {
+    public List<TableDto> list() {
         return new ArrayList<>(tables);
     }
 }

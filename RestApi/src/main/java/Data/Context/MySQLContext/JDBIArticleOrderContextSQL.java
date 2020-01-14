@@ -2,16 +2,16 @@ package Data.Context.MySQLContext;
 
 import Data.Context.Interfaces.IArticleOrderContext;
 import Data.Context.MySQLContext.Helpers.SQLConnector;
-import Data.Context.MySQLContext.dao.IArticleDao;
 import Data.Context.MySQLContext.dao.IArticleOrderDao;
+import Data.DTO.ArticleOrderDto;
+import Data.DTO.OrderDto;
 import Interfaces.model.IArticleOrder;
-import Interfaces.model.IOrder;
 
 import java.util.List;
 
 public class JDBIArticleOrderContextSQL extends SQLConnector implements IArticleOrderContext {
     @Override
-    public List<IArticleOrder> list(int orderId) {
+    public List<ArticleOrderDto> list(int orderId) {
         if(orderId != 0){
             return jdbi().withExtension(IArticleOrderDao.class, dao -> dao.list(orderId));
         }
@@ -19,7 +19,7 @@ public class JDBIArticleOrderContextSQL extends SQLConnector implements IArticle
     }
 
     @Override
-    public boolean create(IArticleOrder entity, IOrder order) {
+    public boolean create(ArticleOrderDto entity, OrderDto order) {
         if(entity != null && order != null){
             return jdbi().withExtension(IArticleOrderDao.class, dao -> dao.create(entity));
         }
@@ -27,7 +27,7 @@ public class JDBIArticleOrderContextSQL extends SQLConnector implements IArticle
     }
 
     @Override
-    public boolean create(IArticleOrder entity) {
+    public boolean create(ArticleOrderDto entity) {
         if(entity != null){
             return jdbi().withExtension(IArticleOrderDao.class, dao -> dao.create(entity));
         }
@@ -35,7 +35,7 @@ public class JDBIArticleOrderContextSQL extends SQLConnector implements IArticle
     }
 
     @Override
-    public boolean update(IArticleOrder entity) {
+    public boolean update(ArticleOrderDto entity) {
         if(entity != null){
             return jdbi().withExtension(IArticleOrderDao.class, dao -> dao.update(entity));
         }
@@ -43,7 +43,7 @@ public class JDBIArticleOrderContextSQL extends SQLConnector implements IArticle
     }
 
     @Override
-    public boolean delete(IArticleOrder entity) {
+    public boolean delete(ArticleOrderDto entity) {
         if(entity != null){
             return jdbi().withExtension(IArticleOrderDao.class, dao -> dao.delete(entity));
         }
@@ -51,7 +51,7 @@ public class JDBIArticleOrderContextSQL extends SQLConnector implements IArticle
     }
 
     @Override
-    public IArticleOrder read(int id) {
+    public ArticleOrderDto read(int id) {
         if(id != 0){
             return jdbi().withExtension(IArticleOrderDao.class, dao -> dao.read(id));
         }
@@ -59,7 +59,7 @@ public class JDBIArticleOrderContextSQL extends SQLConnector implements IArticle
     }
 
     @Override
-    public IArticleOrder read(IArticleOrder entity) {
+    public ArticleOrderDto read(ArticleOrderDto entity) {
         if(entity != null){
             return jdbi().withExtension(IArticleOrderDao.class, dao -> dao.read(entity));
         }
@@ -67,7 +67,7 @@ public class JDBIArticleOrderContextSQL extends SQLConnector implements IArticle
     }
 
     @Override
-    public List<IArticleOrder> list() {
+    public List<ArticleOrderDto> list() {
         return jdbi().withExtension(IArticleOrderDao.class, dao -> dao.list());
     }
 }

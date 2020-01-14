@@ -24,15 +24,15 @@ public interface IUserDao extends IUserContext {
     @Override
     @SqlQuery("INSERT INTO users (first_name, last_name, email, password)" +
             " VALUES (:firstName, :lastName, :email, :password) ")
-    boolean create(@BindBean IUser entity);
+    boolean create(@BindBean UserDto entity);
 
     @Override
     @SqlQuery("UPDATE users SET email = :email, first_name = :firstName, last_name = :lastName WHERE id = :id")
-    boolean update(@BindBean IUser entity);
+    boolean update(@BindBean UserDto entity);
 
     @Override
     @SqlQuery("UPDATE users SET blocked = :blocked WHERE id = :id")
-    boolean delete(@BindBean IUser entity);
+    boolean delete(@BindBean UserDto entity);
 
     @Override
     @SqlQuery("SELECT * FROM users WHERE id = ? LIMIT 1")
@@ -40,9 +40,9 @@ public interface IUserDao extends IUserContext {
 
     @Override
     @SqlQuery("SELECT * FROM users WHERE id = :id LIMIT 1")
-    UserDto read(IUser entity);
+    UserDto read(@BindBean UserDto entity);
 
     @Override
     @SqlQuery("SELECT * FROM users")
-    List<IUser> list();
+    List<UserDto> list();
 }

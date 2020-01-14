@@ -5,6 +5,9 @@ import Data.Context.MySQLContext.Helpers.SQLConnector;
 import Data.Context.MySQLContext.dao.IOrderDao;
 import Data.Context.MySQLContext.dao.ITableDao;
 import Data.Context.MySQLContext.dao.IUserDao;
+import Data.DTO.OrderDto;
+import Data.DTO.TableDto;
+import Data.DTO.UserDto;
 import Interfaces.model.IOrder;
 import Interfaces.model.ITable;
 import Interfaces.model.IUser;
@@ -13,7 +16,7 @@ import java.util.List;
 
 public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
     @Override
-    public boolean pay(IOrder entity) {
+    public boolean pay(OrderDto entity) {
         if(entity != null){
             return jdbi().withExtension(IOrderDao.class, dao -> dao.pay(entity));
         }
@@ -21,7 +24,7 @@ public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
     }
 
     @Override
-    public boolean create(IOrder entity, IUser user) {
+    public boolean create(OrderDto entity, UserDto user) {
         if(entity != null){
             return jdbi().withExtension(IOrderDao.class, dao -> dao.create(entity, user));
         }
@@ -29,7 +32,7 @@ public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
     }
 
     @Override
-    public IOrder readLast(IUser user) {
+    public OrderDto readLast(UserDto user) {
         if(user != null){
             return jdbi().withExtension(IOrderDao.class, dao -> dao.readLast(user));
         }
@@ -37,7 +40,7 @@ public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
     }
 
     @Override
-    public IOrder readLast(ITable table) {
+    public OrderDto readLast(TableDto table) {
         if(table != null){
             return jdbi().withExtension(IOrderDao.class, dao -> dao.readLast(table));
         }
@@ -45,7 +48,7 @@ public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
     }
 
     @Override
-    public List<IOrder> list(IUser user) {
+    public List<OrderDto> list(UserDto user) {
         if(user != null){
             return jdbi().withExtension(IOrderDao.class, dao -> dao.list(user));
         }
@@ -53,12 +56,12 @@ public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
     }
 
     @Override
-    public List<IOrder> listLast() {
+    public List<OrderDto> listLast() {
         return jdbi().withExtension(IOrderDao.class, dao -> dao.listLast());
     }
 
     @Override
-    public boolean create(IOrder entity) {
+    public boolean create(OrderDto entity) {
         if(entity != null){
             return jdbi().withExtension(IOrderDao.class, dao -> dao.create(entity));
         }
@@ -66,7 +69,7 @@ public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
     }
 
     @Override
-    public boolean update(IOrder entity) {
+    public boolean update(OrderDto entity) {
         if(entity != null){
             return jdbi().withExtension(IOrderDao.class, dao -> dao.update(entity));
         }
@@ -74,7 +77,7 @@ public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
     }
 
     @Override
-    public boolean delete(IOrder entity) {
+    public boolean delete(OrderDto entity) {
         if(entity != null){
             return jdbi().withExtension(IOrderDao.class, dao -> dao.delete(entity));
         }
@@ -82,7 +85,7 @@ public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
     }
 
     @Override
-    public IOrder read(int id) {
+    public OrderDto read(int id) {
         if(id != 0){
             return jdbi().withExtension(IOrderDao.class, dao -> dao.read(id));
         }
@@ -90,7 +93,7 @@ public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
     }
 
     @Override
-    public IOrder read(IOrder entity) {
+    public OrderDto read(OrderDto entity) {
         if(entity != null){
             return jdbi().withExtension(IOrderDao.class, dao -> dao.read(entity));
         }
@@ -98,7 +101,7 @@ public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
     }
 
     @Override
-    public List<IOrder> list() {
+    public List<OrderDto> list() {
         return jdbi().withExtension(IOrderDao.class, dao -> dao.list());
     }
 }

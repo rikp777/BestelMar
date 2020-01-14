@@ -7,6 +7,7 @@ import Data.Context.SQLContext.RightContextSQL;
 import Data.Repository.Interfaces.IRightRepository;
 import Interfaces.model.IRight;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RightRepository implements IRightRepository {
@@ -28,6 +29,6 @@ public class RightRepository implements IRightRepository {
 
 
     public List<IRight> getAll() {
-        return _context.list();
+        return new ArrayList<>(_context.list());
     }
 }

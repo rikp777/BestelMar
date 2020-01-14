@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class UserContextSQL extends SQLConnector implements IUserContext {
     private final static Logger LOGGER = Logger.getLogger(UserContextSQL.class.getName());
 
-    public boolean create(IUser entity) {
+    public boolean create(UserDto entity) {
         System.out.println("TEST");
         String query = "INSERT INTO users (first_name, last_name, email, password)" +
                 " VALUES (?, ?, ?, ?) ";
@@ -36,7 +36,7 @@ public class UserContextSQL extends SQLConnector implements IUserContext {
         }
         return false;
     }
-    public boolean update(IUser entity) {
+    public boolean update(UserDto entity) {
         System.out.println("Hit");
         String query = "UPDATE users SET email = ?, first_name = ?, last_name = ? WHERE id = ?";
         try {
@@ -56,7 +56,7 @@ public class UserContextSQL extends SQLConnector implements IUserContext {
         }
         return false;
     }
-    public boolean delete(IUser entity) {
+    public boolean delete(UserDto entity) {
         System.out.println("del");
         String query = "UPDATE users SET blocked = ? WHERE id = ?";
         try {
@@ -105,7 +105,7 @@ public class UserContextSQL extends SQLConnector implements IUserContext {
 
 
 
-    public IUser read(String email) {
+    public UserDto read(String email) {
         UserDto userDto = null;
         String query = "SELECT * FROM users WHERE email = ? LIMIT 1";
         try{
@@ -122,7 +122,7 @@ public class UserContextSQL extends SQLConnector implements IUserContext {
                         resultSet.getString("last_name"),
                         resultSet.getBoolean("blocked")
                 );
-                userDto.setRights(new RightContextSQL().list(userDto));
+                userDto.setRights(new ArrayList<>(new RightContextSQL().list(userDto)));
                 System.out.println(userDto.getRights().size());
             }
         }catch (Exception e){
@@ -132,7 +132,7 @@ public class UserContextSQL extends SQLConnector implements IUserContext {
         }
         return userDto;
     }
-    public IUser read(int id) {
+    public UserDto read(int id) {
         UserDto userDto = null;
         String query = "SELECT * FROM users WHERE id = ? LIMIT 1";
         try{
@@ -157,7 +157,7 @@ public class UserContextSQL extends SQLConnector implements IUserContext {
         }
         return userDto;
     }
-    public IUser read(IUser entity) {
+    public UserDto read(UserDto entity) {
         if(entity.getEmail() != null){
             return this.read(entity.getEmail());
         }else if(entity.getId() != 0){
@@ -168,8 +168,8 @@ public class UserContextSQL extends SQLConnector implements IUserContext {
 
 
 
-    public List<IUser> list() {
-        List<IUser> users = new ArrayList<IUser>();
+    public List<UserDto> list() {
+        List<UserDto> users = new ArrayList<UserDto>();
         String query = "SELECT * FROM users";
 
         try{

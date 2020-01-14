@@ -2,10 +2,15 @@ package Data.Context.MySQLContext;
 
 import Data.Context.Interfaces.IUserContext;
 import Data.Context.MySQLContext.Helpers.SQLConnector;
+import Data.Context.MySQLContext.dao.IRightDao;
 import Data.Context.MySQLContext.dao.ITableDao;
 import Data.Context.MySQLContext.dao.IUserDao;
+import Data.DTO.RightDto;
+import Data.DTO.UserDto;
+import Interfaces.model.IRight;
 import Interfaces.model.IUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JDBIUserContextSQL extends SQLConnector implements IUserContext {
@@ -18,15 +23,19 @@ public class JDBIUserContextSQL extends SQLConnector implements IUserContext {
     }
 
     @Override
-    public IUser read(String email) {
+    public UserDto read(String email) {
         if(email != null){
-            return jdbi().withExtension(IUserDao.class, dao -> dao.read(email));
+            UserDto user = jdbi().withExtension(IUserDao.class, dao -> dao.read(email));
+
+            List<RightDto> rights = jdbi().withExtension(IRightDao.class, dao -> dao.list(user));
+            user.setRights(new ArrayList<>(rights));
+            return user;
         }
         return null;
     }
 
     @Override
-    public boolean create(IUser entity) {
+    public boolean create(UserDto entity) {
         if(entity != null){
             return jdbi().withExtension(IUserDao.class, dao -> dao.create(entity));
         }
@@ -34,7 +43,7 @@ public class JDBIUserContextSQL extends SQLConnector implements IUserContext {
     }
 
     @Override
-    public boolean update(IUser entity) {
+    public boolean update(UserDto entity) {
         if(entity != null){
             return jdbi().withExtension(IUserDao.class, dao -> dao.update(entity));
         }
@@ -42,7 +51,7 @@ public class JDBIUserContextSQL extends SQLConnector implements IUserContext {
     }
 
     @Override
-    public boolean delete(IUser entity) {
+    public boolean delete(UserDto entity) {
         if(entity != null){
             return jdbi().withExtension(IUserDao.class, dao -> dao.delete(entity));
         }
@@ -50,23 +59,31 @@ public class JDBIUserContextSQL extends SQLConnector implements IUserContext {
     }
 
     @Override
-    public IUser read(int id) {
+    public UserDto read(int id) {
         if(id != 0){
-            return jdbi().withExtension(IUserDao.class, dao -> dao.read(id));
+            UserDto user =  jdbi().withExtension(IUserDao.class, dao -> dao.read(id));
+
+            List<RightDto> rights = jdbi().withExtension(IRightDao.class, dao -> dao.list(user));
+            user.setRights(new ArrayList<>(rights));
+            return user;
         }
         return null;
     }
 
     @Override
-    public IUser read(IUser entity) {
+    public UserDto read(UserDto entity) {
         if(entity != null){
-            return jdbi().withExtension(IUserDao.class, dao -> dao.read(entity));
+            UserDto user = jdbi().withExtension(IUserDao.class, dao -> dao.read(entity));
+
+            List<RightDto> rights = jdbi().withExtension(IRightDao.class, dao -> dao.list(user));
+            user.setRights(new ArrayList<>(rights));
+            return user;
         }
         return null;
     }
 
     @Override
-    public List<IUser> list() {
+    public List<UserDto> list() {
         return jdbi().withExtension(IUserDao.class, dao -> dao.list());
     }
 }

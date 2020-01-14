@@ -1,17 +1,16 @@
 package Data.Context.MemoryContext;
 
 import Data.Context.Interfaces.IArticleOrderContext;
-import Data.DTO.ArticleDto;
 import Data.DTO.ArticleOrderDTOO;
 import Data.DTO.ArticleOrderDto;
+import Data.DTO.OrderDto;
 import Interfaces.model.IArticleOrder;
-import Interfaces.model.IOrder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleOrderContextMemory implements IArticleOrderContext {
-    private static List<ArticleOrderDTOO> articleOrders;
+    private static List<ArticleOrderDto> articleOrders;
 
     public ArticleOrderContextMemory(){
         articleOrders = new ArrayList<>();
@@ -19,12 +18,12 @@ public class ArticleOrderContextMemory implements IArticleOrderContext {
 
 
 
-    public List<IArticleOrder> list(int orderId) {
+    public List<ArticleOrderDto> list(int orderId) {
         return null;
     }
 
 
-    public boolean create(IArticleOrder entity, IOrder order) {
+    public boolean create(ArticleOrderDto entity, OrderDto order) {
         ArticleOrderDTOO articleOrder = new ArticleOrderDTOO(
                 1,
                 entity.getArticle().getId(),
@@ -38,32 +37,32 @@ public class ArticleOrderContextMemory implements IArticleOrderContext {
     }
 
 
-    public boolean create(IArticleOrder entity) {
+    public boolean create(ArticleOrderDto entity) {
         return false;
     }
 
 
-    public boolean update(IArticleOrder entity) {
+    public boolean update(ArticleOrderDto entity) {
         return false;
     }
 
 
-    public boolean delete(IArticleOrder entity) {
+    public boolean delete(ArticleOrderDto entity) {
         return false;
     }
 
 
-    public IArticleOrder read(int id) {
+    public ArticleOrderDto read(int id) {
         return null;
     }
 
 
-    public IArticleOrder read(IArticleOrder entity) {
+    public ArticleOrderDto read(ArticleOrderDto entity) {
         return null;
     }
 
 
-    public List<IArticleOrder> list() {
+    public List<ArticleOrderDto> list() {
         return null;
     }
 }

@@ -4,6 +4,7 @@ import Data.Context.Interfaces.IOrderContext;
 import Data.DTO.OrderDto;
 import Data.DTO.TableDto;
 import Data.Context.SQLContext.Helpers.SQLConnector;
+import Data.DTO.UserDto;
 import Interfaces.model.IOrder;
 import Interfaces.model.ITable;
 import Interfaces.model.IUser;
@@ -20,7 +21,7 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
     private final static Logger LOGGER = Logger.getLogger(OrderContextSQL.class.getName());
 
 
-    public boolean pay(IOrder entity){
+    public boolean pay(OrderDto entity){
         String query = "UPDATE Orders SET status_id = ? WHERE id = ?";
         try {
             this.open();
@@ -37,7 +38,7 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
         }
         return false;
     }
-    public boolean create(IOrder entity, IUser user) {
+    public boolean create(OrderDto entity, UserDto user) {
         String query = "INSERT INTO Orders (date, table_id, user_id)" +
                 "VALUES (?, ?, ?) ";
         try {
@@ -55,7 +56,7 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
         }
         return false;
     }
-    public boolean create(IOrder entity) {
+    public boolean create(OrderDto entity) {
         LOGGER.log(Level.INFO, "Incommming data: \n" +
                 "table: " + entity.getTable().getName() + "\n" +
                 "date: " + entity.getDate() + "\n" +
@@ -77,7 +78,7 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
         }
         return false;
     }
-    public boolean update(IOrder entity) {
+    public boolean update(OrderDto entity) {
         String query = "UPDATE Order SET date = ? WHERE id = ?";
         try {
             this.open();
@@ -94,7 +95,7 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
         }
         return false;
     }
-    public boolean delete(IOrder entity) {
+    public boolean delete(OrderDto entity) {
         String query = "DELETE FROM orders WHERE id = ? ";
         try {
             this.open();
@@ -112,7 +113,7 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
     }
 
 
-    public IOrder read(int id) {
+    public OrderDto read(int id) {
         int tableId = 0;
         int orderId = 0;
         OrderDto orderDto = null;
@@ -135,11 +136,11 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
             this.close();
         }
         orderDto.setTable(new TableContextSQL().read(tableId));
-        orderDto.setArticleOrder(new ArticleOrderContextSQL().list(orderId));
+        orderDto.setArticleOrder(new ArrayList<>(new ArticleOrderContextSQL().list(orderId)));
         System.out.println(orderDto.getArticleOrder().get(0).getId());
         return orderDto;
     }
-    public IOrder read(IOrder entity) {
+    public OrderDto read(OrderDto entity) {
         System.out.println("en hier is die " + entity.getId());
         int tableId = 0;
         int orderId = 0;
@@ -173,11 +174,11 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
         }
         System.out.println(tableId);
         orderDto.setTable(new TableContextSQL().read(tableId));
-        orderDto.setArticleOrder(new ArticleOrderContextSQL().list(orderId));
+        orderDto.setArticleOrder(new ArrayList<>(new ArticleOrderContextSQL().list(orderId)));
         System.out.println(orderDto.getArticleOrder().get(0).getId());
         return orderDto;
     }
-    public IOrder readLast(IUser user) {
+    public OrderDto readLast(UserDto user) {
         int tableId = 0;
         int orderId = 0;
         System.out.println("user id " + user.getId());
@@ -203,10 +204,10 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
             this.close();
         }
         orderDto.setTable(new TableContextSQL().read(tableId));
-        orderDto.setArticleOrder(new ArticleOrderContextSQL().list(orderId));
+        orderDto.setArticleOrder(new ArrayList<>(new ArticleOrderContextSQL().list(orderId)));
         return orderDto;
     }
-    public IOrder readLast(ITable table) {
+    public OrderDto readLast(TableDto table) {
         OrderDto orderDto = null;
         String query = "SELECT orders.id, orders.date, orders.table_id, orders.user_id, status.id as status_id, status.name as status_name " +
                 "FROM orders " +
@@ -238,8 +239,8 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
         return orderDto;
     }
 
-    public List<IOrder> listLast(){
-        List<IOrder> orders = new ArrayList<>();
+    public List<OrderDto> listLast(){
+        List<OrderDto> orders = new ArrayList<>();
         String query = "SELECT ord.id, s.name as status_name, o.date, o.user_id, o.table_id \n" +
                 "FROM orders as o \n" +
                 "JOIN ( \n" +
@@ -275,8 +276,8 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
         }
         return orders;
     }
-    public List<IOrder> list() {
-        List<IOrder> orders = new ArrayList<>();
+    public List<OrderDto> list() {
+        List<OrderDto> orders = new ArrayList<>();
         String query = "SELECT *, status.name as status_name FROM `orders` Inner Join status on status.id = orders.status_id";
 
         try{
@@ -305,8 +306,8 @@ public class OrderContextSQL extends SQLConnector implements IOrderContext{
         }
         return orders;
     }
-    public List<IOrder> list(IUser user){
-        List<IOrder> orders = new ArrayList<>();
+    public List<OrderDto> list(UserDto user){
+        List<OrderDto> orders = new ArrayList<>();
         String query = "SELECT * FROM orders WHERE user_id = ?";
 
         try{

@@ -3,8 +3,10 @@ package Data.Context.SQLContext;
 import Data.Context.Interfaces.IRightContext;
 import Data.DTO.RightDto;
 import Data.Context.SQLContext.Helpers.SQLConnector;
+import Data.DTO.UserDto;
 import Interfaces.model.IRight;
 import Interfaces.model.IUser;
+import logic.Right;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,15 +48,15 @@ public class RightContextSQL extends SQLConnector implements IRightContext {
         _rights = rights;
     }
 
-    public IRight read(int id){
-        IRight right = _rights.stream().filter(r -> r.getId() == id).findFirst().orElse(null);
+    public RightDto read(int id){
+        RightDto right = _rights.stream().filter(r -> r.getId() == id).findFirst().orElse(null);
         return right;
     }
-    public IRight read(String name){
-        IRight right = _rights.stream().filter(r -> r.getName() == name).findFirst().orElse(null);
+    public RightDto read(String name){
+        RightDto right = _rights.stream().filter(r -> r.getName() == name).findFirst().orElse(null);
         return right;
     }
-    public List<IRight> list(IUser user){
+    public List<RightDto> list(UserDto user){
         List<RightDto> rights = new ArrayList<>();
         String query = "SELECT * FROM right_user JOIN rights on rights.id = right_user.right_id WHERE user_id = ?";
         try{
@@ -80,7 +82,7 @@ public class RightContextSQL extends SQLConnector implements IRightContext {
         return new ArrayList<>(rights);
     }
 
-    public List<IRight> list(){
+    public List<RightDto> list(){
         return new ArrayList<>(_rights);
     }
 }

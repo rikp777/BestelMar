@@ -16,7 +16,7 @@ public class ArticleContextMemory implements IArticleContext {
     }
 
 
-    public boolean create(IArticle entity) {
+    public boolean create(ArticleDto entity) {
         for(ArticleDto a : articles){
             if(a.getName().equals(entity.getName())){
                 return false;
@@ -33,7 +33,7 @@ public class ArticleContextMemory implements IArticleContext {
         articles.add(article);
         return articles.contains(article);
     }
-    public boolean update(IArticle entity){
+    public boolean update(ArticleDto entity){
         ArticleDto article = new ArticleDto(
                 entity.getId(),
                 entity.getName(),
@@ -51,7 +51,7 @@ public class ArticleContextMemory implements IArticleContext {
         }
         return articles.contains(article);
     }
-    public boolean delete(IArticle entity){
+    public boolean delete(ArticleDto entity){
         ArticleDto old;
         for(ArticleDto a : articles){
             if(a.getId() == entity.getId()){
@@ -64,7 +64,7 @@ public class ArticleContextMemory implements IArticleContext {
     }
 
 
-    public IArticle read(int id) {
+    public ArticleDto read(int id) {
         ArticleDto article = null;
         for(ArticleDto a : articles){
             if(a.getId() == id){
@@ -73,7 +73,7 @@ public class ArticleContextMemory implements IArticleContext {
         }
         return article;
     }
-    public IArticle read(String name) {
+    public ArticleDto read(String name) {
         ArticleDto article = null;
         for(ArticleDto a : articles){
             if(a.getName() == name){
@@ -82,7 +82,7 @@ public class ArticleContextMemory implements IArticleContext {
         }
         return article;
     }
-    public IArticle read(IArticle entity) {
+    public ArticleDto read(ArticleDto entity) {
         ArticleDto article = null;
         for(ArticleDto a : articles){
             if(a.getId() == entity.getId()){
@@ -92,7 +92,7 @@ public class ArticleContextMemory implements IArticleContext {
         return article;
     }
 
-    public List<IArticle> list() {
+    public List<ArticleDto> list() {
         return new ArrayList<>(articles);
     }
 }

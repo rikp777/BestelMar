@@ -4,9 +4,12 @@ import Data.Context.Interfaces.IArticleContext;
 import Data.Context.Interfaces.IUserContext;
 import Data.Context.SQLContext.ArticleContextSQL;
 import Data.Context.SQLContext.UserContextSQL;
+import Data.DTO.ArticleDto;
+import Data.DTO.ArticleOrderDto;
 import Data.Repository.Interfaces.IArticleRepository;
 import Interfaces.model.IArticle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleRepository implements IArticleRepository {
@@ -22,10 +25,10 @@ public class ArticleRepository implements IArticleRepository {
         //_articleContext.create(entity);
     }
     public boolean edit(IArticle entity) {
-        return _articleContext.update(entity);
+        return _articleContext.update((ArticleDto) entity);
     }
     public boolean remove(IArticle entity) {
-        return _articleContext.delete(entity);
+        return _articleContext.delete((ArticleDto) entity);
     }
 
 
@@ -34,7 +37,7 @@ public class ArticleRepository implements IArticleRepository {
         return _articleContext.read(id);
     }
     public IArticle getBy(IArticle entity) {
-        return _articleContext.read(entity);
+        return _articleContext.read((ArticleDto) entity);
     }
     public IArticle getBy(String name) {
         return _articleContext.read(name);
@@ -42,6 +45,6 @@ public class ArticleRepository implements IArticleRepository {
 
 
     public List<IArticle> getAll() {
-        return _articleContext.list();
+        return new ArrayList<>(_articleContext.list());
     }
 }
