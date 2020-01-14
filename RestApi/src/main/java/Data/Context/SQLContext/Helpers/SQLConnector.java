@@ -6,8 +6,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SQLConnector {
-    private static final String DATABASE_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/bestelmar";
+    private static final String DATABASE_DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/bestelmar" +
+            "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Amsterdam";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "";
 
@@ -31,7 +32,6 @@ public class SQLConnector {
                 conn = DriverManager.getConnection(DATABASE_URL, getProperties());
             }catch (Exception e) {
                 e.printStackTrace();
-                LOGGER.log(Level.WARNING, e.getMessage());
             }
         }
     }

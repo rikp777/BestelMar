@@ -1,7 +1,9 @@
 package Data.Context.MySQLContext.dao;
 
 import Data.Context.Interfaces.IArticleContext;
+import Data.DTO.ArticleDto;
 import Interfaces.model.IArticle;
+import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
@@ -27,7 +29,8 @@ public interface IArticleDao extends IArticleContext {
 
     @Override
     @SqlQuery("SELECT * FROM articles WHERE id = ? LIMIT 1")
-    IArticle read(@Bind("id") int id);
+    @RegisterBeanMapper(ArticleDto.class)
+    ArticleDto read(@Bind("id") int id);
 
     @Override
     @SqlQuery("SELECT * FROM articles WHERE id = :id LIMIT 1")

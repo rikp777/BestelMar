@@ -11,5 +11,5 @@ public interface IArticle {
     void setDescription(String description);
 
     Double getPrice();
-    void setPrice(double price);
+    void setPrice(Double price);
 }

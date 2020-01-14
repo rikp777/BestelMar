@@ -5,7 +5,6 @@ import Factory.Factory;
 import Factory.ContextType;
 import Interfaces.model.IUser;
 import logic.Interfaces.IUserLogic;
-import org.apache.derby.impl.sql.catalog.SYSCOLUMNSRowFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +21,7 @@ public class UserLogicTest{
 
     @BeforeEach
     void setUp(){
-        _userLogic = Factory.UserLogic(ContextType.MEMORY);
+        _userLogic = Factory.UserLogic(ContextType.SQL);
         authUser = "rikpeeters@hotmail.com";
         users.add(new UserDto(1, "rikpeeters@hotmail.com", "Rik", "Peeters", true));
         users.add(new UserDto(2, "janpieters@hotmail.com", "Jan", "Pieters", true));

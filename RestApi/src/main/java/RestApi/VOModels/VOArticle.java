@@ -6,7 +6,7 @@ public class VOArticle implements IArticle {
     private int id;
     private String name;
     private String description;
-    private double price;
+    private Double price;
     private String comment;
 
     VOArticle(){
@@ -43,7 +43,7 @@ public class VOArticle implements IArticle {
     public Double getPrice(){
         return this.price;
     }
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

@@ -23,7 +23,7 @@ public class ArticleLogicTest {
 
     @BeforeEach
     void setUp(){
-        _articleLogic = Factory.ArticleLogic(ContextType.SQL);
+        _articleLogic = Factory.ArticleLogic(ContextType.MYSQL);
         authUser = "rikpeeters@hotmail.com";
         articles.add(new ArticleDto(1, "Fanta", "lekker", 2.10));
         articles.add(new ArticleDto(2, "Cassis", "lekker", 2.10));
@@ -87,9 +87,10 @@ public class ArticleLogicTest {
     @Test
     void getById(){
         IArticle articleNew = articles.get(0);
-        _articleLogic.add(articleNew);
+        //_articleLogic.add(articleNew);
 
-        IArticle article = _articleLogic.getBy(articleNew.getId());
+        //IArticle article = _articleLogic.getBy(articleNew.getId());
+        IArticle article = _articleLogic.getBy(13);
 
         assertEquals(article.getId(), articleNew.getId());
         assertEquals(article.getName(), articleNew.getName());

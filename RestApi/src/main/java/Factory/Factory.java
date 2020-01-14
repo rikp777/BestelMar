@@ -2,7 +2,7 @@ package Factory;
 
 import Data.Context.Interfaces.*;
 import Data.Context.MemoryContext.*;
-import Data.Context.MySQLContext.JDBIArticleContextSQL;
+import Data.Context.MySQLContext.*;
 import Data.Context.SQLContext.*;
 import Data.Repository.*;
 import logic.ArticleLogic;
@@ -15,7 +15,7 @@ import logic.TableLogic;
 import logic.UserLogic;
 
 public class Factory {
-    private static ContextType contextTypeStatic = ContextType.SQL;
+    private static ContextType contextTypeStatic = ContextType.MYSQL;
 
 
 
@@ -31,6 +31,8 @@ public class Factory {
                 return new UserContextSQL();
             case MEMORY:
                 return new UserContextMemory();
+            case MYSQL:
+                return new JDBIUserContextSQL();
         }
         throw new IllegalArgumentException("User Context type none existent");
     }
@@ -51,6 +53,8 @@ public class Factory {
                 return new TableContextSQL();
             case MEMORY:
                 return new TableContextMemory();
+            case MYSQL:
+                return new JDBITableContextSQL();
         }
         throw new IllegalArgumentException("Table Context type none existent");
     }
@@ -101,6 +105,8 @@ public class Factory {
                 return new OrderContextSQL();
             case MEMORY:
                 return new OrderContextMemory();
+            case MYSQL:
+                return new JDBIOrderContextSQL();
         }
         throw new IllegalArgumentException("Order Context type none existent");
     }
@@ -114,6 +120,8 @@ public class Factory {
                 return new ArticleOrderContextSQL();
             case MEMORY:
                 return new ArticleOrderContextMemory();
+            case MYSQL:
+                return new JDBIArticleOrderContextSQL();
         }
         throw new IllegalArgumentException("ArticleOrder Context type none existent");
     }

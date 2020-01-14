@@ -20,7 +20,6 @@ public class JDBIArticleContextSQL extends SQLConnector implements IArticleConte
 
     @Override
     public boolean create(IArticle entity) {
-        jdbi().open();
         if(entity != null){
             return jdbi().withExtension(IArticleDao.class, dao -> dao.create((ArticleDto) entity));
         }

@@ -1,13 +1,17 @@
 package Data.Context.MySQLContext.dao;
 
 import Data.Context.Interfaces.IUserContext;
+import Data.DTO.ArticleDto;
+import Data.DTO.UserDto;
 import Interfaces.model.IUser;
+import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 
 import java.util.List;
 
+@RegisterBeanMapper(UserDto.class)
 public interface IUserDao extends IUserContext {
     @Override
     @SqlQuery("SELECT * FROM users WHERE email = ? and password = ? LIMIT 1")
@@ -15,7 +19,7 @@ public interface IUserDao extends IUserContext {
 
     @Override
     @SqlQuery("SELECT * FROM users WHERE email = ? LIMIT 1")
-    IUser read(@Bind("email") String email);
+    UserDto read(@Bind("email") String email);
 
     @Override
     @SqlQuery("INSERT INTO users (first_name, last_name, email, password)" +
@@ -32,11 +36,11 @@ public interface IUserDao extends IUserContext {
 
     @Override
     @SqlQuery("SELECT * FROM users WHERE id = ? LIMIT 1")
-    IUser read(@Bind("id") int id);
+    UserDto read(@Bind("id") int id);
 
     @Override
     @SqlQuery("SELECT * FROM users WHERE id = :id LIMIT 1")
-    IUser read(IUser entity);
+    UserDto read(IUser entity);
 
     @Override
     @SqlQuery("SELECT * FROM users")

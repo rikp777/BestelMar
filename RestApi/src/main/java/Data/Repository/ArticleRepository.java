@@ -17,7 +17,9 @@ public class ArticleRepository implements IArticleRepository {
 
 
     public boolean add(IArticle entity) {
-        return _articleContext.create(entity);
+        System.out.println("adding");
+        return false;
+        //_articleContext.create(entity);
     }
     public boolean edit(IArticle entity) {
         return _articleContext.update(entity);

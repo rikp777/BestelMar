@@ -6,7 +6,7 @@ public class Article implements IArticle {
     private int id;
     private String name;
     private String description;
-    private double price;
+    private Double price;
 
     Article(){
 
@@ -42,7 +42,7 @@ public class Article implements IArticle {
     public Double getPrice(){
         return this.price;
     }
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 }
