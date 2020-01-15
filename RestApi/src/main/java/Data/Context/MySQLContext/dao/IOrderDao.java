@@ -2,14 +2,18 @@ package Data.Context.MySQLContext.dao;
 
 import Data.Context.Interfaces.IOrderContext;
 import Data.DTO.OrderDto;
+import Data.DTO.RightDto;
 import Data.DTO.TableDto;
 import Data.DTO.UserDto;
+import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
+import org.jdbi.v3.sqlobject.config.RegisterJoinRowMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 
 import java.util.List;
 
+@RegisterBeanMapper(OrderDto.class)
 public interface IOrderDao extends IOrderContext {
     @Override
     @SqlQuery("UPDATE Orders SET status_id = 4 WHERE id = :id")
@@ -34,7 +38,7 @@ public interface IOrderDao extends IOrderContext {
     OrderDto readLast(@BindBean TableDto table);
 
     @Override
-    @SqlQuery("SELECT * FROM orders WHERE user_id = ?")
+    @SqlQuery("SELECT * FROM orders WHERE user_id = :id")
     List<OrderDto> list(@BindBean UserDto user);
 
     @Override
@@ -67,7 +71,11 @@ public interface IOrderDao extends IOrderContext {
     OrderDto read(@Bind("id") int id);
 
     @Override
-    @SqlQuery("SELECT * FROM orders WHERE id = :id LIMIT 1")
+    @SqlQuery("SELECT orders.id, orders.date, orders.table_id, orders.user_id, status.id as status_id, status.name as status_name " +
+            "FROM orders " +
+            "INNER JOIN status on status.id = orders.status_id " +
+            "WHERE orders.id = ? " +
+            "LIMIT 1")
     OrderDto read(@BindBean OrderDto entity);
 
     @Override

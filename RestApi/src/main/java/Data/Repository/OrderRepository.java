@@ -47,6 +47,7 @@ public class OrderRepository implements IOrderRepository {
         return _orderContext.readLast((UserDto) user);
     }
     public IOrder getLastBy(ITable table) {
+        TableDto tableDto = (TableDto) table;
         return _orderContext.readLast((TableDto) table);
     }
 

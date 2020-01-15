@@ -4,12 +4,14 @@ import Data.Context.Interfaces.IArticleContext;
 import Data.Context.Interfaces.ITableContext;
 import Data.DTO.TableDto;
 import Interfaces.model.IArticle;
+import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 
 import java.util.List;
 
+@RegisterBeanMapper(TableDto.class)
 public interface ITableDao extends ITableContext {
     @Override
     @SqlQuery("SELECT * FROM tables WHERE name = ? LIMIT 1")

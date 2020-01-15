@@ -23,7 +23,6 @@
         </div>
       </div>
       <h3 class="card-title">Current Orders</h3>
-      {{data}}
       <div class="card-columns">
         <div class="card" v-for="(order, orderIndex) in orders" v-bind:class="[order.status === 'Paid' ? 'border-danger mb-3' : '']">
           <div class="card-body" v-if="order.table">
@@ -80,8 +79,12 @@
         this.$store.dispatch("getAllLastOrders");
       },
       updateOrderTableStatus(orderIndex, articleOrderIndex){
-        this.orders[orderIndex].articleOrder[articleOrderIndex].status = "Waiting"
-
+        let status = this.orders[orderIndex].articleOrder[articleOrderIndex].status
+        if(status == "Placed"){
+          this.orders[orderIndex].articleOrder[articleOrderIndex].status = "Waiting"
+        }else if(status == "Waiting"){
+          this.orders[orderIndex].articleOrder[articleOrderIndex].status = "Finished"
+        }
         this.$store.dispatch("sendGlobalOrderTable", this.orders[orderIndex]).then(() => {
           console.log(this.orders[orderIndex])
           this.$store.dispatch("updateOrder", this.orders[orderIndex])

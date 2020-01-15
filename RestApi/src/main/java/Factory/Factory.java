@@ -15,7 +15,7 @@ import logic.TableLogic;
 import logic.UserLogic;
 
 public class Factory {
-    private static ContextType contextTypeStatic = ContextType.MYSQL;
+    private static ContextType contextTypeStatic = ContextType.SQL;
 
 
 

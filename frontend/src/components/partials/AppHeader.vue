@@ -22,28 +22,28 @@
           >Create Order
           </router-link>
         </li>
-        <li class="nav-item" v-if="(hasRight('admin') || hasRight('employee'))">
+        <li class="nav-item" v-if="(hasRight('Admin') || hasRight('Employee'))">
           <router-link
             class="nav-link"
             :to="{ name: 'orderList' }"
           >Orders
           </router-link>
         </li>
-        <li class="nav-item" v-if="(hasRight('admin') || hasRight('employee'))">
+        <li class="nav-item" v-if="(hasRight('Admin') || hasRight('Employee'))">
           <router-link
             class="nav-link"
             :to="{ name: 'tableList' }"
           >Tables
           </router-link>
         </li>
-        <li class="nav-item" v-if="(hasRight('admin') || hasRight('employee'))">
+        <li class="nav-item" v-if="(hasRight('Admin') || hasRight('Employee'))">
           <router-link
             class="nav-link"
             :to="{ name: 'articleList' }"
           >Articles
           </router-link>
         </li>
-        <li class="nav-item" v-if="(hasRight('admin'))">
+        <li class="nav-item" v-if="(hasRight('Admin'))">
           <router-link
             class="nav-link"
             :to="{ name: 'userList' }"
@@ -108,6 +108,7 @@
             if(this.authUser){
               if(this.authUser.rights){
                 this.authUser.rights.forEach((right)=>{
+                  //console.log(right.name + " = " + rightName)
                   if(right.name === rightName){
                     hasRight = true;
                   }

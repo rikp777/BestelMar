@@ -124,9 +124,11 @@ public class OrderLogic implements IOrderLogic {
     }
     public List<IOrder> getAllLast(){
         List<IOrder> orders = _orderRepository.getLast();
+
         for (IOrder order : orders) {
+            //System.out.println("Table " + order.toString());
             order.setTable(_tableRepository.getBy(order.getTable().getId()));
-            System.out.println("get last article Orders from " + order.getId());
+            //System.out.println("get last article Orders from " + order.getId());
             order.setArticleOrder(_articleOrderRepository.getAll(order.getId()));
         }
 
