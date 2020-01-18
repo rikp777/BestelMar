@@ -9,15 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleContextMemory implements IArticleContext {
-    private static List<ArticleDto> articles;
+    private static List<IArticle> articles;
 
     public ArticleContextMemory(){
         articles = new ArrayList<>();
     }
 
 
-    public boolean create(ArticleDto entity) {
-        for(ArticleDto a : articles){
+    public boolean create(IArticle entity) {
+        for(IArticle a : articles){
             if(a.getName().equals(entity.getName())){
                 return false;
             }
@@ -33,7 +33,7 @@ public class ArticleContextMemory implements IArticleContext {
         articles.add(article);
         return articles.contains(article);
     }
-    public boolean update(ArticleDto entity){
+    public boolean update(IArticle entity){
         ArticleDto article = new ArticleDto(
                 entity.getId(),
                 entity.getName(),
@@ -41,9 +41,9 @@ public class ArticleContextMemory implements IArticleContext {
                 entity.getPrice()
         );
 
-        ArticleDto old;
+        IArticle old;
 
-        for(ArticleDto a : articles){
+        for(IArticle a : articles){
             if(a.getId() == entity.getId()){
                 old = a;
                 articles.set(articles.indexOf(old), article);
@@ -51,9 +51,9 @@ public class ArticleContextMemory implements IArticleContext {
         }
         return articles.contains(article);
     }
-    public boolean delete(ArticleDto entity){
-        ArticleDto old;
-        for(ArticleDto a : articles){
+    public boolean delete(IArticle entity){
+        IArticle old;
+        for(IArticle a : articles){
             if(a.getId() == entity.getId()){
                 old = a;
                 articles.remove(old);
@@ -64,27 +64,27 @@ public class ArticleContextMemory implements IArticleContext {
     }
 
 
-    public ArticleDto read(int id) {
-        ArticleDto article = null;
-        for(ArticleDto a : articles){
+    public IArticle read(int id) {
+        IArticle article = null;
+        for(IArticle a : articles){
             if(a.getId() == id){
                 article = a;
             }
         }
         return article;
     }
-    public ArticleDto read(String name) {
-        ArticleDto article = null;
-        for(ArticleDto a : articles){
+    public IArticle read(String name) {
+        IArticle article = null;
+        for(IArticle a : articles){
             if(a.getName() == name){
                 article = a;
             }
         }
         return article;
     }
-    public ArticleDto read(ArticleDto entity) {
-        ArticleDto article = null;
-        for(ArticleDto a : articles){
+    public IArticle read(IArticle entity) {
+        IArticle article = null;
+        for(IArticle a : articles){
             if(a.getId() == entity.getId()){
                 article = a;
             }
@@ -92,7 +92,7 @@ public class ArticleContextMemory implements IArticleContext {
         return article;
     }
 
-    public List<ArticleDto> list() {
+    public List<IArticle> list() {
         return new ArrayList<>(articles);
     }
 }

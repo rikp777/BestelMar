@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class TableContextSQL extends SQLConnector implements ITableContext {
     private final static Logger LOGGER = Logger.getLogger(UserContextSQL.class.getName());
 
-    public boolean create(TableDto entity) {
+    public boolean create(ITable entity) {
         String query = "INSERT INTO tables (name, description)" +
                 "VALUES (?, ?) ";
         try {
@@ -32,7 +32,7 @@ public class TableContextSQL extends SQLConnector implements ITableContext {
         }
         return false;
     }
-    public boolean update(TableDto entity) {
+    public boolean update(ITable entity) {
         String query = "UPDATE tables SET name = ?, description = ?, disabled = ? WHERE id = ?";
         try {
             this.open();
@@ -52,7 +52,7 @@ public class TableContextSQL extends SQLConnector implements ITableContext {
         }
         return false;
     }
-    public boolean delete(TableDto entity) {
+    public boolean delete(ITable entity) {
         System.out.println("del");
         String query = "UPDATE tables SET disabled = ? WHERE id = ?";
         try {
@@ -78,8 +78,8 @@ public class TableContextSQL extends SQLConnector implements ITableContext {
 
 
 
-    public TableDto read(int id) {
-        TableDto tableDto = null;
+    public ITable read(int id) {
+        ITable tableDto = null;
         String query = "SELECT * FROM tables WHERE id = ? LIMIT 1";
         try{
             this.open();
@@ -102,8 +102,8 @@ public class TableContextSQL extends SQLConnector implements ITableContext {
         }
         return tableDto;
     }
-    public TableDto read(String name) {
-        TableDto tableDto = null;
+    public ITable read(String name) {
+        ITable tableDto = null;
         String query = "SELECT * FROM tables WHERE name = ? LIMIT 1";
         try{
             this.open();
@@ -126,7 +126,7 @@ public class TableContextSQL extends SQLConnector implements ITableContext {
         }
         return tableDto;
     }
-    public TableDto read(TableDto entity) {
+    public ITable read(ITable entity) {
         if(entity.getName() != null){
             return this.read(entity.getName());
         }
@@ -138,8 +138,8 @@ public class TableContextSQL extends SQLConnector implements ITableContext {
 
 
 
-    public List<TableDto> list() {
-        List<TableDto> tables = new ArrayList<>();
+    public List<ITable> list() {
+        List<ITable> tables = new ArrayList<>();
         String query = "SELECT * FROM tables";
 
         try{

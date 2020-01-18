@@ -17,13 +17,13 @@ public class UserRepository implements IUserRepository {
 
 
     public boolean add(IUser entity) {
-        return _userContext.create((UserDto) entity);
+        return _userContext.create(entity);
     }
     public boolean edit(IUser entity) {
-        return _userContext.update((UserDto) entity);
+        return _userContext.update(entity);
     }
     public boolean remove(IUser entity) {
-        return _userContext.delete((UserDto) entity);
+        return _userContext.delete(entity);
     }
 
 
@@ -35,7 +35,7 @@ public class UserRepository implements IUserRepository {
         return _userContext.read(email);
     }
     public IUser getBy(IUser entity) {
-        return _userContext.read((UserDto) entity);
+        return _userContext.read(entity);
     }
 
 

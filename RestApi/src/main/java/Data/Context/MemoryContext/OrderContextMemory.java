@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderContextMemory implements IOrderContext {
-    private static List<OrderDto> orders;
+    private static List<IOrder> orders;
 
     public OrderContextMemory(){
         orders = new ArrayList<>();
     }
-    public boolean create(OrderDto entity, UserDto user) {
-        for(OrderDto o : orders){
+    public boolean create(IOrder entity, IUser user) {
+        for(IOrder o : orders){
             if(o.getId() == entity.getId()){
                 return false;
             }
@@ -36,8 +36,8 @@ public class OrderContextMemory implements IOrderContext {
         return orders.contains(order);
     }
 
-    public boolean create(OrderDto entity) {
-        for(OrderDto o : orders){
+    public boolean create(IOrder entity) {
+        for(IOrder o : orders){
             if(o.getId() == entity.getId()){
                 return false;
             }
@@ -53,7 +53,7 @@ public class OrderContextMemory implements IOrderContext {
         orders.add(order);
         return orders.contains(order);
     }
-    public boolean update(OrderDto entity){
+    public boolean update(IOrder entity){
         OrderDto order = new OrderDto(
                 entity.getId(),
                 entity.getDate(),
@@ -61,9 +61,9 @@ public class OrderContextMemory implements IOrderContext {
                 entity.getArticleOrder()
         );
 
-        OrderDto old;
+        IOrder old;
 
-        for(OrderDto o : orders){
+        for(IOrder o : orders){
             if(o.getId() == entity.getId()){
                 old = o;
                 orders.set(orders.indexOf(old), order);
@@ -71,9 +71,9 @@ public class OrderContextMemory implements IOrderContext {
         }
         return orders.contains(order);
     }
-    public boolean delete(OrderDto entity){
-        OrderDto old;
-        for(OrderDto o : orders){
+    public boolean delete(IOrder entity){
+        IOrder old;
+        for(IOrder o : orders){
             if(o.getId() == entity.getId()){
                 old = o;
                 orders.remove(old);
@@ -84,9 +84,9 @@ public class OrderContextMemory implements IOrderContext {
     }
 
 
-    public OrderDto read(int id) {
-        OrderDto order = null;
-        for(OrderDto o : orders){
+    public IOrder read(int id) {
+        IOrder order = null;
+        for(IOrder o : orders){
             if(o.getId() == id){
                 order = o;
             }
@@ -94,9 +94,9 @@ public class OrderContextMemory implements IOrderContext {
         return order;
     }
 
-    public OrderDto read(OrderDto entity) {
-        OrderDto order = null;
-        for(OrderDto o : orders){
+    public IOrder read(IOrder entity) {
+        IOrder order = null;
+        for(IOrder o : orders){
             if(o.getId() == entity.getId()){
                 order = o;
             }
@@ -104,12 +104,12 @@ public class OrderContextMemory implements IOrderContext {
         return order;
     }
 
-    public List<OrderDto> list() {
+    public List<IOrder> list() {
         return new ArrayList<>(orders);
     }
 
-    public boolean pay(OrderDto entity) {
-        OrderDto order = new OrderDto(
+    public boolean pay(IOrder entity) {
+        IOrder order = new OrderDto(
                 entity.getId(),
                 entity.getDate(),
                 entity.getTable(),
@@ -119,9 +119,9 @@ public class OrderContextMemory implements IOrderContext {
         //order.setTable(new TableContextMemory().read(entity.getTable()));
         order.setArticleOrder(new ArrayList<>(new ArticleOrderContextMemory().list(entity.getId())));
 
-        OrderDto old;
+        IOrder old;
 
-        for(OrderDto o : orders){
+        for(IOrder o : orders){
             if(o.getId() == entity.getId()){
                 old = o;
                 orders.set(orders.indexOf(old), order);
@@ -130,22 +130,22 @@ public class OrderContextMemory implements IOrderContext {
         return orders.contains(order);
     }
 
-    public OrderDto readLast(UserDto user) {
+    public IOrder readLast(IUser user) {
         return null;
     }
 
 
-    public OrderDto readLast(TableDto table) {
-        return null;
-    }
-
-    @Override
-    public List<OrderDto> list(UserDto user) {
+    public IOrder readLast(ITable table) {
         return null;
     }
 
     @Override
-    public List<OrderDto> listLast() {
+    public List<IOrder> list(IUser user) {
+        return null;
+    }
+
+    @Override
+    public List<IOrder> listLast() {
         return null;
     }
 }

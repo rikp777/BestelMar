@@ -17,13 +17,13 @@ public class TableRepository implements ITableRepository {
 
 
     public boolean add(ITable entity) {
-        return _articleContext.create((TableDto) entity);
+        return _articleContext.create(entity);
     }
     public boolean edit(ITable entity) {
-        return _articleContext.update((TableDto) entity);
+        return _articleContext.update(entity);
     }
     public boolean remove(ITable entity) {
-        return _articleContext.delete((TableDto) entity);
+        return _articleContext.delete(entity);
     }
 
 
@@ -32,7 +32,7 @@ public class TableRepository implements ITableRepository {
         return _articleContext.read(id);
     }
     public ITable getBy(ITable entity) {
-        return _articleContext.read((TableDto) entity);
+        return _articleContext.read(entity);
     }
     public ITable getBy(String name) {
         return _articleContext.read(name);

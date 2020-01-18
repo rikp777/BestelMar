@@ -1,11 +1,10 @@
 <template>
   <div class="card mb-2">
-
     <div class="card-body" v-if="order && order.status !== 'Paid'">
       <h5 class="card-title">Table Name:  {{order.table.name}}<small> - Status: <span class="badge badge-pill badge-primary">{{order.status}}</span></small> <br> Order Id: {{order.id}}</h5>
 
       <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target=".bd-example-modal-xl"><span v-if="order.status != 'Paid'">Pay &</span> Reciept - Summary</button>
-      <button type="button" class="btn btn-primary mb-2" @click="pay(order)" v-if="order.status != 'Paid'">Pay the receipt</button>
+      <button type="button" class="btn btn-primary mb-2" @click="pay(order)" v-if="order.status != 'Paid' && allArticleOrdersFinished">Pay the receipt</button>
       <div class="list-group" v-for="articleOrder in order.articleOrder">
         <a href="#" class="list-group-item list-group-item-action">
           <div class="d-flex w-100 justify-content-between">
@@ -89,7 +88,8 @@
                   </div>
                 </div>
                 <div class="card-footer bg-white">
-                  <button class="btn btn-primary float-right" @click="pay(order)" data-dismiss="modal" v-if="order.status != 'Paid'">Pay the receipt</button>
+                  <button class="btn btn-primary float-right" @click="pay(order)" data-dismiss="modal" v-if="order.status != 'Paid' && allArticleOrdersFinished">Pay the receipt</button>
+                  <div class="alert alert-warning" v-else>You can pay for your receipt if all orders have been finished!</div>
                   <p class="mb-0">BestelMar receipt</p>
                 </div>
               </div>
@@ -114,8 +114,10 @@
     methods: {
       pay(order){
         this.$emit('paid', true)
+        console.log(order)
         this.$store.dispatch("payTableOrder", order).then(() => {
           this.getOrderTable(this.tableId)
+          this.$store.dispatch("sendGlobalOrder", order)
         })
       },
       getOrderTable(tableId){
@@ -143,11 +145,13 @@
           }else{
               return this.$store.getters.totalPrice;
           }
-
       },
       originalPrice(){
           return this.$store.getters.totalPrice;
       },
+      allArticleOrdersFinished(){
+        return this.$store.getters.allArticleOrdersFinished;
+      }
     },
     mounted() {
       this.connect(this.tableId)

@@ -11,7 +11,7 @@ import java.util.List;
 public class JDBIArticleContextSQL extends SQLConnector implements IArticleContext {
 
     @Override
-    public ArticleDto read(String name) {
+    public IArticle read(String name) {
         if(name != null){
             return jdbi().withExtension(IArticleDao.class, dao -> dao.read(name));
         }
@@ -19,7 +19,7 @@ public class JDBIArticleContextSQL extends SQLConnector implements IArticleConte
     }
 
     @Override
-    public boolean create(ArticleDto entity) {
+    public boolean create(IArticle entity) {
         if(entity != null){
             return jdbi().withExtension(IArticleDao.class, dao -> dao.create((ArticleDto) entity));
         }
@@ -27,7 +27,7 @@ public class JDBIArticleContextSQL extends SQLConnector implements IArticleConte
     }
 
     @Override
-    public boolean update(ArticleDto entity) {
+    public boolean update(IArticle entity) {
         if(entity.getId() != 0){
             return jdbi().withExtension(IArticleDao.class, dao -> dao.update((ArticleDto) entity));
         }
@@ -35,7 +35,7 @@ public class JDBIArticleContextSQL extends SQLConnector implements IArticleConte
     }
 
     @Override
-    public boolean delete(ArticleDto entity) {
+    public boolean delete(IArticle entity) {
         if(entity.getId() != 0){
             return jdbi().withExtension(IArticleDao.class, dao -> dao.create((ArticleDto) entity));
         }
@@ -43,7 +43,7 @@ public class JDBIArticleContextSQL extends SQLConnector implements IArticleConte
     }
 
     @Override
-    public ArticleDto read(int id) {
+    public IArticle read(int id) {
         if(id != 0){
             return jdbi().withExtension(IArticleDao.class, dao -> dao.read(id));
         }
@@ -51,15 +51,15 @@ public class JDBIArticleContextSQL extends SQLConnector implements IArticleConte
     }
 
     @Override
-    public ArticleDto read(ArticleDto entity) {
+    public IArticle read(IArticle entity) {
         if(entity != null){
-            return jdbi().withExtension(IArticleDao.class, dao -> dao.read(entity));
+            //return jdbi().withExtension(IArticleDao.class, dao -> dao.read(entity));
         }
         return null;
     }
 
     @Override
-    public List<ArticleDto> list() {
-        return jdbi().withExtension(IArticleDao.class, dao -> dao.list());
+    public List<IArticle> list() {
+        return null;//jdbi().withExtension(IArticleDao.class, dao -> dao.list());
     }
 }

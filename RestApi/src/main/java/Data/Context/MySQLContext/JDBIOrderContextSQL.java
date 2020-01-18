@@ -18,47 +18,47 @@ import java.util.List;
 
 public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
     @Override
-    public boolean pay(OrderDto entity) {
+    public boolean pay(IOrder entity) {
         if(entity != null){
-            return jdbi().withExtension(IOrderDao.class, dao -> dao.pay(entity));
+            //return jdbi().withExtension(IOrderDao.class, dao -> dao.pay(entity));
         }
         return false;
     }
 
     @Override
-    public boolean create(OrderDto entity, UserDto user) {
+    public boolean create(IOrder entity, IUser user) {
         if(entity != null){
-            return jdbi().withExtension(IOrderDao.class, dao -> dao.create(entity, user));
+            //return jdbi().withExtension(IOrderDao.class, dao -> dao.create(entity, user));
         }
         return false;
     }
 
     @Override
-    public OrderDto readLast(UserDto user) {
+    public IOrder readLast(IUser user) {
         if(user != null){
-            return jdbi().withExtension(IOrderDao.class, dao -> dao.readLast(user));
+            //return jdbi().withExtension(IOrderDao.class, dao -> dao.readLast(user));
         }
         return null;
     }
 
     @Override
-    public OrderDto readLast(TableDto table) {
+    public IOrder readLast(ITable table) {
         if(table != null){
-            return jdbi().withExtension(IOrderDao.class, dao -> dao.readLast(table));
+            //return jdbi().withExtension(IOrderDao.class, dao -> dao.readLast(table));
         }
         return null;
     }
 
     @Override
-    public List<OrderDto> list(UserDto user) {
+    public List<IOrder> list(IUser user) {
         if(user != null){
-            return jdbi().withExtension(IOrderDao.class, dao -> dao.list(user));
+            //return jdbi().withExtension(IOrderDao.class, dao -> dao.list(user));
         }
         return null;
     }
 
     @Override
-    public List<OrderDto> listLast() {
+    public List<IOrder> listLast() {
 
         RowMapper<OrderDto> orderMapper = (rs, ctx) -> {
             System.out.println(rs.getInt("id"));
@@ -74,19 +74,19 @@ public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
 
             return order;
         };
-        List<OrderDto> orders = jdbi().withHandle(handle -> {
-            return handle.createQuery("SELECT ord.id, s.name as status_name, o.date, o.user_id, o.table_id" +
-                    "            FROM orders as o" +
-                    "            JOIN ( " +
-                    "                SELECT MAX(orders.id) as id,  orders.date" +
-                    "                FROM orders" +
-                    "                GROUP BY orders.table_id" +
-                    "            ) as ord on o.id = ord.id" +
-                    "            JOIN status as s on s.id = o.status_id" +
-                    "            ORDER BY o.table_id")
-                    .map(orderMapper)
-                    .list();
-        });
+//        List<OrderDto> orders = jdbi().withHandle(handle -> {
+//            return handle.createQuery("SELECT ord.id, s.name as status_name, o.date, o.user_id, o.table_id" +
+//                    "            FROM orders as o" +
+//                    "            JOIN ( " +
+//                    "                SELECT MAX(orders.id) as id,  orders.date" +
+//                    "                FROM orders" +
+//                    "                GROUP BY orders.table_id" +
+//                    "            ) as ord on o.id = ord.id" +
+//                    "            JOIN status as s on s.id = o.status_id" +
+//                    "            ORDER BY o.table_id")
+//                    .map(orderMapper)
+//                    .list();
+//        });
 
         //System.out.println(orders.get(0).getTable().getId());
 
@@ -97,51 +97,51 @@ public class JDBIOrderContextSQL extends SQLConnector implements IOrderContext {
 //        for(OrderDto order : orders){
 //            //order.setTable(jdbi().withExtension(ITableDao.class, dao -> dao.()));
 //        }
-        return orders;
+        return null;
     }
 
     @Override
-    public boolean create(OrderDto entity) {
+    public boolean create(IOrder entity) {
         if(entity != null){
-            return jdbi().withExtension(IOrderDao.class, dao -> dao.create(entity));
+            //return jdbi().withExtension(IOrderDao.class, dao -> dao.create(entity));
         }
         return false;
     }
 
     @Override
-    public boolean update(OrderDto entity) {
+    public boolean update(IOrder entity) {
         if(entity != null){
-            return jdbi().withExtension(IOrderDao.class, dao -> dao.update(entity));
+            //return jdbi().withExtension(IOrderDao.class, dao -> dao.update(entity));
         }
         return false;
     }
 
     @Override
-    public boolean delete(OrderDto entity) {
+    public boolean delete(IOrder entity) {
         if(entity != null){
-            return jdbi().withExtension(IOrderDao.class, dao -> dao.delete(entity));
+            //return jdbi().withExtension(IOrderDao.class, dao -> dao.delete(entity));
         }
         return false;
     }
 
     @Override
-    public OrderDto read(int id) {
+    public IOrder read(int id) {
         if(id != 0){
-            return jdbi().withExtension(IOrderDao.class, dao -> dao.read(id));
+            //return jdbi().withExtension(IOrderDao.class, dao -> dao.read(id));
         }
         return null;
     }
 
     @Override
-    public OrderDto read(OrderDto entity) {
+    public IOrder read(IOrder entity) {
         if(entity != null){
-            return jdbi().withExtension(IOrderDao.class, dao -> dao.read(entity));
+            //return jdbi().withExtension(IOrderDao.class, dao -> dao.read(entity));
         }
         return null;
     }
 
     @Override
-    public List<OrderDto> list() {
-        return jdbi().withExtension(IOrderDao.class, dao -> dao.list());
+    public List<IOrder> list() {
+        return null; //jdbi().withExtension(IOrderDao.class, dao -> dao.list());
     }
 }

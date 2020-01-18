@@ -19,16 +19,16 @@ public class ArticleOrderRepository implements IArticleOrderRepository {
     }
 
     public boolean add(IArticleOrder entity, IOrder order) {
-        return _articleOrderContext.create((ArticleOrderDto) entity, (OrderDto) order);
+        return _articleOrderContext.create( entity, order);
     }
     public boolean add(IArticleOrder entity) {
-        return _articleOrderContext.create((ArticleOrderDto) entity);
+        return _articleOrderContext.create( entity);
     }
     public boolean edit(IArticleOrder entity) {
-        return _articleOrderContext.update((ArticleOrderDto) entity);
+        return _articleOrderContext.update(entity);
     }
     public boolean remove(IArticleOrder entity) {
-        return _articleOrderContext.delete((ArticleOrderDto) entity);
+        return _articleOrderContext.delete(entity);
     }
 
 
@@ -37,7 +37,7 @@ public class ArticleOrderRepository implements IArticleOrderRepository {
         return _articleOrderContext.read(id);
     }
     public IArticleOrder getBy(IArticleOrder entity) {
-        return _articleOrderContext.read((ArticleOrderDto) entity);
+        return _articleOrderContext.read(entity);
     }
 
 

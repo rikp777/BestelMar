@@ -12,55 +12,55 @@ import java.util.List;
 
 public class JDBITableContextSQL extends SQLConnector implements ITableContext {
     @Override
-    public TableDto read(String name) {
+    public ITable read(String name) {
         if(name != null){
-            return jdbi().withExtension(ITableDao.class, dao -> dao.read(name));
+            //return jdbi().withExtension(ITableDao.class, dao -> dao.read(name));
         }
         return null;
     }
 
     @Override
-    public boolean create(TableDto entity) {
+    public boolean create(ITable entity) {
         if(entity != null){
-            return jdbi().withExtension(ITableDao.class, dao -> dao.create(entity));
+            //return jdbi().withExtension(ITableDao.class, dao -> dao.create(entity));
         }
         return false;
     }
 
     @Override
-    public boolean update(TableDto entity) {
+    public boolean update(ITable entity) {
         if(entity.getId() != 0){
-            return jdbi().withExtension(ITableDao.class, dao -> dao.update(entity));
+            //return jdbi().withExtension(ITableDao.class, dao -> dao.update(entity));
         }
         return false;
     }
 
     @Override
-    public boolean delete(TableDto entity) {
+    public boolean delete(ITable entity) {
         if(entity.getId() != 0){
-            return jdbi().withExtension(ITableDao.class, dao -> dao.create(entity));
+            //return jdbi().withExtension(ITableDao.class, dao -> dao.create(entity));
         }
         return false;
     }
 
     @Override
-    public TableDto read(int id) {
+    public ITable read(int id) {
         if(id != 0){
-            return jdbi().withExtension(ITableDao.class, dao -> dao.read(id));
+            //return jdbi().withExtension(ITableDao.class, dao -> dao.read(id));
         }
         return null;
     }
 
     @Override
-    public TableDto read(TableDto entity) {
+    public ITable read(ITable entity) {
         if(entity != null){
-            return jdbi().withExtension(ITableDao.class, dao -> dao.read(entity));
+            //return jdbi().withExtension(ITableDao.class, dao -> dao.read(entity));
         }
         return null;
     }
 
     @Override
-    public List<TableDto> list() {
-        return jdbi().withExtension(ITableDao.class, dao -> dao.list());
+    public List<ITable> list() {
+        return null; //jdbi().withExtension(ITableDao.class, dao -> dao.list());
     }
 }

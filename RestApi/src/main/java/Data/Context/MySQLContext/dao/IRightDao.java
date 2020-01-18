@@ -12,20 +12,20 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import java.util.List;
 
 @RegisterBeanMapper(RightDto.class)
-public interface IRightDao extends IRightContext {
-    @Override
+public interface IRightDao {
+
     @SqlQuery("SELECT * FROM rights WHERE name = :id")
     RightDto read(@Bind("id") int id);
 
-    @Override
+
     @SqlQuery("SELECT * FROM rights WHERE name = :name")
     RightDto read(@Bind("name") String name);
 
-    @Override
+
     @SqlQuery("SELECT * FROM right_user JOIN rights on rights.id = right_user.right_id WHERE user_id = :id")
     List<RightDto> list(@BindBean UserDto user);
 
-    @Override
+
     @SqlQuery("SELECT * FROM rights")
     List<RightDto> list();
 }

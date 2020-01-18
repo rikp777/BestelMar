@@ -4,7 +4,7 @@ import Data.Context.Interfaces.ICrudContext;
 import Data.DTO.UserDto;
 import Interfaces.model.IUser;
 
-public interface IUserContext extends ICrudContext<UserDto> {
+public interface IUserContext extends ICrudContext<IUser> {
     boolean auth(String email, String password);
-    UserDto read(String email);
+    IUser read(String email);
 }

@@ -12,31 +12,31 @@ import java.util.List;
 
 public class JDBIRightContextSQL extends SQLConnector implements IRightContext {
     @Override
-    public RightDto read(int id) {
+    public IRight read(int id) {
         if(id != 0){
-            return jdbi().withExtension(IRightDao.class, dao -> dao.read(id));
+            //return jdbi().withExtension(IRightDao.class, dao -> dao.read(id));
         }
         return null;
     }
 
     @Override
-    public RightDto read(String name) {
+    public IRight read(String name) {
         if(name != null){
-            return jdbi().withExtension(IRightDao.class, dao -> dao.read(name));
+            //return jdbi().withExtension(IRightDao.class, dao -> dao.read(name));
         }
         return null;
     }
 
     @Override
-    public List<RightDto> list(UserDto user) {
+    public List<IRight> list(IUser user) {
         if(user != null){
-            return jdbi().withExtension(IRightDao.class, dao -> dao.list(user));
+            //return jdbi().withExtension(IRightDao.class, dao -> dao.list(user));
         }
         return null;
     }
 
     @Override
-    public List<RightDto> list() {
-        return jdbi().withExtension(IRightDao.class, dao -> dao.list());
+    public List<IRight> list() {
+        return null; //jdbi().withExtension(IRightDao.class, dao -> dao.list());
     }
 }

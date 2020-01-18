@@ -20,15 +20,13 @@ public class ArticleRepository implements IArticleRepository {
 
 
     public boolean add(IArticle entity) {
-        System.out.println("adding");
-        return false;
-        //_articleContext.create(entity);
+        return _articleContext.create(entity);
     }
     public boolean edit(IArticle entity) {
-        return _articleContext.update((ArticleDto) entity);
+        return _articleContext.update(entity);
     }
     public boolean remove(IArticle entity) {
-        return _articleContext.delete((ArticleDto) entity);
+        return _articleContext.delete(entity);
     }
 
 
@@ -37,7 +35,7 @@ public class ArticleRepository implements IArticleRepository {
         return _articleContext.read(id);
     }
     public IArticle getBy(IArticle entity) {
-        return _articleContext.read((ArticleDto) entity);
+        return _articleContext.read(entity);
     }
     public IArticle getBy(String name) {
         return _articleContext.read(name);

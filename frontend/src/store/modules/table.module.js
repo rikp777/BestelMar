@@ -18,6 +18,9 @@ const getters = {
   tablesActive(state){
     return state.tables.filter(t => t.disabled === false);
   },
+  tableById: (state) => (id) => {
+    return state.tables.find(t => t.id === id)
+  },
   tables(state) {
     return state.tables
   },

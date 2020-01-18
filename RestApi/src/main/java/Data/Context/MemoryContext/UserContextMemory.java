@@ -17,7 +17,7 @@ public class UserContextMemory implements IUserContext {
         users = new ArrayList<>();
     }
 
-    public boolean create(UserDto entity) {
+    public boolean create(IUser entity) {
         for(UserDto u : users){
             if(u.getEmail().equals(entity.getEmail())){
                 return false;
@@ -36,7 +36,7 @@ public class UserContextMemory implements IUserContext {
     }
 
 
-    public boolean update(UserDto entity){
+    public boolean update(IUser entity){
         UserDto user = new UserDto();
         user.setId(entity.getId());
         user.setEmail(entity.getEmail());
@@ -55,8 +55,8 @@ public class UserContextMemory implements IUserContext {
         return users.contains(user);
     }
 
-    public boolean delete(UserDto entity){
-        UserDto old;
+    public boolean delete(IUser entity){
+        IUser old;
         for(UserDto u : users){
             if(u.getId() == entity.getId()){
                 old = u;
@@ -67,8 +67,8 @@ public class UserContextMemory implements IUserContext {
         return false;
     }
 
-    public UserDto read(int id) {
-        UserDto user = null;
+    public IUser read(int id) {
+        IUser user = null;
         for(UserDto u : users){
             if(u.getId() == id){
                 user = u;
@@ -77,8 +77,8 @@ public class UserContextMemory implements IUserContext {
         return user;
     }
 
-    public UserDto read(UserDto entity) {
-        UserDto user = null;
+    public IUser read(IUser entity) {
+        IUser user = null;
         for(UserDto u : users){
             if(u.getId() == entity.getId()){
                 user = u;
@@ -86,8 +86,8 @@ public class UserContextMemory implements IUserContext {
         }
         return user;
     }
-    public UserDto read(String email) {
-        UserDto user = null;
+    public IUser read(String email) {
+        IUser user = null;
         for(UserDto u : users){
             if(u.getEmail() == email){
                 user = u;
@@ -97,12 +97,12 @@ public class UserContextMemory implements IUserContext {
     }
 
 
-    public List<UserDto> list() {
+    public List<IUser> list() {
         return new ArrayList<>(users);
     }
 
     public boolean auth(String email, String password) {
-        for(UserDto u : users){
+        for(IUser u : users){
             if(u.getEmail().equals(email) && u.getPassword().equals(password)){
                 return true;
             }

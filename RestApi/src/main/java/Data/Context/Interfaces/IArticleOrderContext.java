@@ -5,10 +5,11 @@ package Data.Context.Interfaces;
 import Data.DTO.ArticleOrderDto;
 import Data.DTO.OrderDto;
 import Interfaces.model.IArticleOrder;
+import Interfaces.model.IOrder;
 
 import java.util.List;
 
-public interface IArticleOrderContext extends ICrudContext<ArticleOrderDto> {
-    List<ArticleOrderDto> list(int orderId);
-    boolean create(ArticleOrderDto entity, OrderDto order);
+public interface IArticleOrderContext extends ICrudContext<IArticleOrder> {
+    List<IArticleOrder> list(int orderId);
+    boolean create(IArticleOrder entity, IOrder order);
 };

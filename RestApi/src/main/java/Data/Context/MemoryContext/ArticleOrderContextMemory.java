@@ -4,7 +4,9 @@ import Data.Context.Interfaces.IArticleOrderContext;
 import Data.DTO.ArticleOrderDTOO;
 import Data.DTO.ArticleOrderDto;
 import Data.DTO.OrderDto;
+import Interfaces.model.IArticle;
 import Interfaces.model.IArticleOrder;
+import Interfaces.model.IOrder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +20,12 @@ public class ArticleOrderContextMemory implements IArticleOrderContext {
 
 
 
-    public List<ArticleOrderDto> list(int orderId) {
+    public List<IArticleOrder> list(int orderId) {
         return null;
     }
 
 
-    public boolean create(ArticleOrderDto entity, OrderDto order) {
+    public boolean create(IArticleOrder entity, IOrder order) {
         ArticleOrderDTOO articleOrder = new ArticleOrderDTOO(
                 1,
                 entity.getArticle().getId(),
@@ -37,32 +39,32 @@ public class ArticleOrderContextMemory implements IArticleOrderContext {
     }
 
 
-    public boolean create(ArticleOrderDto entity) {
+    public boolean create(IArticleOrder entity) {
         return false;
     }
 
 
-    public boolean update(ArticleOrderDto entity) {
+    public boolean update(IArticleOrder entity) {
         return false;
     }
 
 
-    public boolean delete(ArticleOrderDto entity) {
+    public boolean delete(IArticleOrder entity) {
         return false;
     }
 
 
-    public ArticleOrderDto read(int id) {
+    public IArticleOrder read(int id) {
         return null;
     }
 
 
-    public ArticleOrderDto read(ArticleOrderDto entity) {
+    public IArticleOrder read(IArticleOrder entity) {
         return null;
     }
 
 
-    public List<ArticleOrderDto> list() {
+    public List<IArticleOrder> list() {
         return null;
     }
 }

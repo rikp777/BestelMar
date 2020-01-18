@@ -17,73 +17,73 @@ public class JDBIUserContextSQL extends SQLConnector implements IUserContext {
     @Override
     public boolean auth(String email, String password) {
         if(email != null && password != null){
-            return jdbi().withExtension(IUserDao.class, dao -> dao.auth(email, password));
+            //return jdbi().withExtension(IUserDao.class, dao -> dao.auth(email, password));
         }
         return false;
     }
 
     @Override
-    public UserDto read(String email) {
+    public IUser read(String email) {
         if(email != null){
-            UserDto user = jdbi().withExtension(IUserDao.class, dao -> dao.read(email));
-
-            List<RightDto> rights = jdbi().withExtension(IRightDao.class, dao -> dao.list(user));
-            user.setRights(new ArrayList<>(rights));
-            return user;
+//            UserDto user = jdbi().withExtension(IUserDao.class, dao -> dao.read(email));
+//
+//            List<RightDto> rights = jdbi().withExtension(IRightDao.class, dao -> dao.list(user));
+//            user.setRights(new ArrayList<>(rights));
+//            return user;
         }
         return null;
     }
 
     @Override
-    public boolean create(UserDto entity) {
+    public boolean create(IUser entity) {
         if(entity != null){
-            return jdbi().withExtension(IUserDao.class, dao -> dao.create(entity));
+            //return jdbi().withExtension(IUserDao.class, dao -> dao.create(entity));
         }
         return false;
     }
 
     @Override
-    public boolean update(UserDto entity) {
+    public boolean update(IUser entity) {
         if(entity != null){
-            return jdbi().withExtension(IUserDao.class, dao -> dao.update(entity));
+            //return jdbi().withExtension(IUserDao.class, dao -> dao.update(entity));
         }
         return false;
     }
 
     @Override
-    public boolean delete(UserDto entity) {
+    public boolean delete(IUser entity) {
         if(entity != null){
-            return jdbi().withExtension(IUserDao.class, dao -> dao.delete(entity));
+            //return jdbi().withExtension(IUserDao.class, dao -> dao.delete(entity));
         }
         return false;
     }
 
     @Override
-    public UserDto read(int id) {
+    public IUser read(int id) {
         if(id != 0){
-            UserDto user =  jdbi().withExtension(IUserDao.class, dao -> dao.read(id));
-
-            List<RightDto> rights = jdbi().withExtension(IRightDao.class, dao -> dao.list(user));
-            user.setRights(new ArrayList<>(rights));
-            return user;
+//            UserDto user =  jdbi().withExtension(IUserDao.class, dao -> dao.read(id));
+//
+//            List<RightDto> rights = jdbi().withExtension(IRightDao.class, dao -> dao.list(user));
+//            user.setRights(new ArrayList<>(rights));
+//            return user;
         }
         return null;
     }
 
     @Override
-    public UserDto read(UserDto entity) {
+    public IUser read(IUser entity) {
         if(entity != null){
-            UserDto user = jdbi().withExtension(IUserDao.class, dao -> dao.read(entity));
-
-            List<RightDto> rights = jdbi().withExtension(IRightDao.class, dao -> dao.list(user));
-            user.setRights(new ArrayList<>(rights));
-            return user;
+//            UserDto user = jdbi().withExtension(IUserDao.class, dao -> dao.read(entity));
+//
+//            List<RightDto> rights = jdbi().withExtension(IRightDao.class, dao -> dao.list(user));
+//            user.setRights(new ArrayList<>(rights));
+//            return user;
         }
         return null;
     }
 
     @Override
-    public List<UserDto> list() {
-        return jdbi().withExtension(IUserDao.class, dao -> dao.list());
+    public List<IUser> list() {
+        return null; //jdbi().withExtension(IUserDao.class, dao -> dao.list());
     }
 }

@@ -32,8 +32,10 @@ const getters = {
     return state.orderPaid
   },
   totalPrice(state){
-
-      return state.order.articleOrder.reduce((acc, item) => acc + item.price, 0).toFixed(2);
+    return state.order.articleOrder.reduce((acc, item) => acc + item.price, 0).toFixed(2);
+  },
+  allArticleOrdersFinished(state){
+    return state.order.articleOrder.every(o => o.status == "Finished")
   },
   orderIsLoading(state) {
     return state.isLoading
@@ -162,13 +164,16 @@ const actions = {
       })
   },
   getOrderForTablePaid(context, slug){
-    return apiService.get(apiUrl, "table/" + slug + "/paid").then(({data}) =>{
-      context.commit("setOrderPaid", data)
-    }).catch((error) => {
-      throw error
-    })
+    if(slug){
+      return apiService.get(apiUrl, "table/" + slug + "/paid").then(({data}) =>{
+        context.commit("setOrderPaid", data)
+      }).catch((error) => {
+        throw error
+      })
+    }
   },
   payTableOrder(context, payload){
+    console.log(payload)
     cookieService.destroyToken("table")
     context.commit("reset")
     return apiService.post(apiUrl + "/table/" + payload.table.id + "/pay", payload)
@@ -206,6 +211,7 @@ export const mutations = {
     if(order){
       console.log("Order for table does exist")
       order.articleOrder = webSocketData.articleOrder;
+      order.status = webSocketData.status;
     }else{
       console.log("New table will be pushed")
       state.orders.push(webSocketData);

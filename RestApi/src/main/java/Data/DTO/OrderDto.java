@@ -22,6 +22,11 @@ public class OrderDto implements IOrder {
         this.id = id;
         this.date = date;
     }
+    public OrderDto(int id, Date date, ITable table){
+        this.id = id;
+        this.date = date;
+        this.table = table;
+    }
     public OrderDto(int id, Date date, ITable table, List<IArticleOrder> articleOrder){
         this.id = id;
         this.date = date;

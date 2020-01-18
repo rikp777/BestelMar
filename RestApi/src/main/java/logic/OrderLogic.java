@@ -13,6 +13,7 @@ import Interfaces.model.IOrder;
 import Interfaces.model.ITable;
 import Interfaces.model.IUser;
 import logic.Interfaces.IOrderLogic;
+import models.ArticleOrder;
 import models.Status;
 
 import java.util.List;
@@ -39,15 +40,16 @@ public class OrderLogic implements IOrderLogic {
 
     public boolean add(IOrder entity) {
         boolean success = false;
-        IOrder order = _orderRepository.getLastBy(entity.getTable());
+        ITable table = _tableRepository.getBy(entity.getTable().getId());
+        IOrder order = _orderRepository.getLastBy(table);
 
         if(order == null || order.getStatus() == Status.Paid){
-            System.out.println("First order or table has been paid: " + entity.getTable().getName());
+            System.out.println("First order or table has been paid: " + table.getName());
 
             success = _orderRepository.add(entity);
 
             //we dont know the id of the created order so we need to get that in order to create an articleorder
-            order = _orderRepository.getLastBy(entity.getTable());
+            order = _orderRepository.getLastBy(table);
 
             for(IArticleOrder articleOrder : entity.getArticleOrder()){
                 System.out.println("Adding articleOrder " + articleOrder.getArticle().getName() + " to order");
@@ -57,13 +59,20 @@ public class OrderLogic implements IOrderLogic {
             return success;
 
         }else{
-            System.out.println("Order not paid yet " + entity.getTable().getName());
+            System.out.println("Order not paid yet " + table.getName());
             for(IArticleOrder articleOrder : entity.getArticleOrder()){
                 System.out.println("Making adding order " + articleOrder.getArticle().getName());
                 success = _articleOrderRepository.add(articleOrder, order);
             }
             return success;
         }
+    }
+    public boolean editArticleOrder(List<IArticleOrder> articleOrders){
+        boolean success = false;
+        for (IArticleOrder articleOrder : articleOrders){
+            success = _articleOrderRepository.edit(articleOrder);
+        }
+        return success;
     }
     public boolean edit(IOrder entity) {
         return _orderRepository.edit(entity);

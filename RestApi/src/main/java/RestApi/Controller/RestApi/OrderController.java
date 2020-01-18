@@ -11,15 +11,14 @@ import Interfaces.model.IArticleOrder;
 import Interfaces.model.IOrder;
 import Interfaces.model.ITable;
 import Interfaces.model.IUser;
-import RestApi.VOModels.VOOrder;
+import RestApi.VOModels.*;
 import logic.Interfaces.IOrderLogic;
 import logic.Interfaces.ITableLogic;
 import logic.Interfaces.IUserLogic;
 import logic.OrderLogic;
 import logic.TableLogic;
 import logic.UserLogic;
-import RestApi.VOModels.VOArticle;
-import RestApi.VOModels.VOOrderCreate;
+import models.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -82,11 +81,21 @@ public class OrderController { ;
 //
     @PutMapping("/order/{id}")
     public ResponseEntity updateArticleOrder(@RequestBody VOOrder voOrder){
+        List<IArticleOrder> articleOrders = new ArrayList<>();
+        for (VOArticleOrder voArticleOrder : voOrder.getArticleOrder()){
+            IArticleOrder articleOrder = new ArticleOrderDto();
+            articleOrder.setId(voArticleOrder.getId());
+            articleOrder.setStatus(voArticleOrder.getStatus());
+            articleOrder.setDate(voArticleOrder.getDate());
+            articleOrder.setComment(voArticleOrder.getComment());
+            articleOrder.setStatus(voArticleOrder.getStatus());
+            articleOrders.add(articleOrder);
+        }
 
-//        if(orderLogic.edit(order)){
-//            return ResponseEntity.status(HttpStatus.ACCEPTED).body(order);
-//        }
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(voOrder);
+        if(orderLogic.editArticleOrder(articleOrders)){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(articleOrders);
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("ja niet goed he");
         //return ResponseEntity.status(HttpStatus.CONFLICT).body("Something went wrong");
     }
     @PostMapping("/order")

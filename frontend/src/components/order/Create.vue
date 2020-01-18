@@ -90,6 +90,7 @@
 
 <script>
   import orderTable from './Table';
+  import cookieService from "../../helpers/cookie.service";
   export default {
     name: "order-index",
     components: { orderTable },
@@ -130,6 +131,9 @@
       table(){
         return this.order.table;
       },
+      tableById(id){
+        return this.$store.getters.tableById(id)
+      },
       tables(){
         return this.$store.getters.tablesActive
       },
@@ -150,8 +154,17 @@
     mounted(){
       this.order.table.id = null;
       if(this.orderTable){
-        //this.$set(this.order.table, "id", this.orderTable)
-        this.order.table.id = this.orderTable;
+        let tableId = cookieService.getToken("table")
+        if(tableId != null){
+          this.order.table.id = tableId;
+        }else{
+          this.order.table.id = this.orderTable
+        }
+
+        // console.log(tableId)
+        // //this.$set(this.order.table, "id", this.orderTable)
+        // let table = this.tableById(this.orderTable)
+        // this.order.table.id = table;
       }
       this.getAllArticles();
       this.getAllTables();

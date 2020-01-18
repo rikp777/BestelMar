@@ -14,21 +14,21 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import java.util.List;
 
 @RegisterBeanMapper(OrderDto.class)
-public interface IOrderDao extends IOrderContext {
-    @Override
+public interface IOrderDao  {
+
     @SqlQuery("UPDATE Orders SET status_id = 4 WHERE id = :id")
     boolean pay(@BindBean OrderDto entity);
 
-    @Override
+
     @SqlQuery("INSERT INTO Orders (date, table_id, user_id)" +
             "VALUES (:order.date, :order.table.id, :user.id) ")
     boolean create(@BindBean("order") OrderDto entity, @BindBean("user") UserDto user);
 
-    @Override
+
     @SqlQuery("SELECT * FROM orders WHERE user_id = :id ORDER BY date desc LIMIT 1")
     OrderDto readLast(@BindBean UserDto user);
 
-    @Override
+
     @SqlQuery("SELECT orders.id, orders.date, orders.table_id, orders.user_id, status.id as status_id, status.name as status_name " +
             "FROM orders " +
             "INNER JOIN status on status.id = orders.status_id " +
@@ -37,11 +37,11 @@ public interface IOrderDao extends IOrderContext {
             "LIMIT 1")
     OrderDto readLast(@BindBean TableDto table);
 
-    @Override
+
     @SqlQuery("SELECT * FROM orders WHERE user_id = :id")
     List<OrderDto> list(@BindBean UserDto user);
 
-    @Override
+
     @SqlQuery("SELECT ord.id, s.name as status_name, o.date, o.user_id, o.table_id \n" +
             "FROM orders as o \n" +
             "JOIN ( \n" +
@@ -53,24 +53,25 @@ public interface IOrderDao extends IOrderContext {
             "ORDER BY o.table_id")
     List<OrderDto> listLast();
 
-    @Override
+
     @SqlQuery("INSERT INTO Orders (date, table_id)" +
             " VALUES (:date, :table.id) ")
     boolean create(@BindBean OrderDto entity);
 
-    @Override
+
     @SqlQuery("UPDATE Order SET date = :date WHERE id = :id")
     boolean update(@BindBean OrderDto entity);
 
-    @Override
+
+
     @SqlQuery("DELETE FROM orders WHERE id = :id ")
     boolean delete(@BindBean OrderDto entity);
 
-    @Override
+
     @SqlQuery("SELECT * FROM orders WHERE id = :id LIMIT 1")
     OrderDto read(@Bind("id") int id);
 
-    @Override
+
     @SqlQuery("SELECT orders.id, orders.date, orders.table_id, orders.user_id, status.id as status_id, status.name as status_name " +
             "FROM orders " +
             "INNER JOIN status on status.id = orders.status_id " +
@@ -78,7 +79,7 @@ public interface IOrderDao extends IOrderContext {
             "LIMIT 1")
     OrderDto read(@BindBean OrderDto entity);
 
-    @Override
+
     @SqlQuery("SELECT *, status.name as status_name FROM `orders` Inner Join status on status.id = orders.status_id")
     List<OrderDto> list();
 }

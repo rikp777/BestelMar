@@ -17,8 +17,8 @@ public class TableContextMemory implements ITableContext {
     }
 
 
-    public boolean create(TableDto entity) {
-        for(TableDto t : tables){
+    public boolean create(ITable entity) {
+        for(ITable t : tables){
             if(t.getName().equals(entity.getName())){
                 return false;
             }
@@ -34,7 +34,7 @@ public class TableContextMemory implements ITableContext {
         tables.add(table);
         return tables.contains(table);
     }
-    public boolean update(TableDto entity){
+    public boolean update(ITable entity){
         TableDto table = new TableDto(
                 entity.getId(),
                 entity.getName(),
@@ -42,7 +42,7 @@ public class TableContextMemory implements ITableContext {
                 entity.getDisabled()
         );
 
-        TableDto old;
+        ITable old;
 
         for(TableDto t : tables){
             if(t.getId() == entity.getId()){
@@ -52,7 +52,7 @@ public class TableContextMemory implements ITableContext {
         }
         return tables.contains(table);
     }
-    public boolean delete(TableDto entity){
+    public boolean delete(ITable entity){
         TableDto old;
         for(TableDto t : tables){
             if(t.getId() == entity.getId()){
@@ -65,7 +65,7 @@ public class TableContextMemory implements ITableContext {
     }
 
 
-    public TableDto read(int id) {
+    public ITable read(int id) {
         TableDto table = null;
         for(TableDto t : tables){
             if(t.getId() == id){
@@ -74,7 +74,7 @@ public class TableContextMemory implements ITableContext {
         }
         return table;
     }
-    public TableDto read(String name) {
+    public ITable read(String name) {
         TableDto table = null;
         for(TableDto t : tables){
             if(t.getName() == name){
@@ -83,7 +83,7 @@ public class TableContextMemory implements ITableContext {
         }
         return table;
     }
-    public TableDto read(TableDto entity) {
+    public ITable read(ITable entity) {
         TableDto table = null;
         for(TableDto a : tables){
             if(a.getId() == entity.getId()){
@@ -93,7 +93,7 @@ public class TableContextMemory implements ITableContext {
         return table;
     }
 
-    public List<TableDto> list() {
+    public List<ITable> list() {
         return new ArrayList<>(tables);
     }
 }

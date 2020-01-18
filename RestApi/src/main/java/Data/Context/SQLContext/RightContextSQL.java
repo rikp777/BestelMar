@@ -3,10 +3,8 @@ package Data.Context.SQLContext;
 import Data.Context.Interfaces.IRightContext;
 import Data.DTO.RightDto;
 import Data.Context.SQLContext.Helpers.SQLConnector;
-import Data.DTO.UserDto;
 import Interfaces.model.IRight;
 import Interfaces.model.IUser;
-import logic.Right;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,14 +16,14 @@ import java.util.logging.Logger;
 public class RightContextSQL extends SQLConnector implements IRightContext {
     private final static Logger LOGGER = Logger.getLogger(RightContextSQL.class.getName());
 
-    private List<RightDto> _rights;
+    private List<IRight> _rights;
 
     public RightContextSQL(){
         instantiateContextSQL();
     }
 
     private void instantiateContextSQL(){
-        List<RightDto> rights = new ArrayList<>();
+        List<IRight> rights = new ArrayList<>();
         String query = "SELECT * FROM rights";
         try{
             this.open();
@@ -48,16 +46,16 @@ public class RightContextSQL extends SQLConnector implements IRightContext {
         _rights = rights;
     }
 
-    public RightDto read(int id){
-        RightDto right = _rights.stream().filter(r -> r.getId() == id).findFirst().orElse(null);
+    public IRight read(int id){
+        IRight right = _rights.stream().filter(r -> r.getId() == id).findFirst().orElse(null);
         return right;
     }
-    public RightDto read(String name){
-        RightDto right = _rights.stream().filter(r -> r.getName() == name).findFirst().orElse(null);
+    public IRight read(String name){
+        IRight right = _rights.stream().filter(r -> r.getName() == name).findFirst().orElse(null);
         return right;
     }
-    public List<RightDto> list(UserDto user){
-        List<RightDto> rights = new ArrayList<>();
+    public List<IRight> list(IUser user){
+        List<IRight> rights = new ArrayList<>();
         String query = "SELECT * FROM right_user JOIN rights on rights.id = right_user.right_id WHERE user_id = ?";
         try{
             this.open();
@@ -82,7 +80,7 @@ public class RightContextSQL extends SQLConnector implements IRightContext {
         return new ArrayList<>(rights);
     }
 
-    public List<RightDto> list(){
+    public List<IRight> list(){
         return new ArrayList<>(_rights);
     }
 }

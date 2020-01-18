@@ -16,7 +16,7 @@ public class ArticleContextSQL extends SQLConnector implements IArticleContext {
     private final static Logger LOGGER = Logger.getLogger(UserContextSQL.class.getName());
 
 
-    public boolean create(ArticleDto entity) {
+    public boolean create(IArticle entity) {
         String query = "INSERT INTO articles (name, description, price)" +
                 "VALUES (?, ?, ?) ";
         try {
@@ -34,7 +34,7 @@ public class ArticleContextSQL extends SQLConnector implements IArticleContext {
         }
         return false;
     }
-    public boolean update(ArticleDto entity) {
+    public boolean update(IArticle entity) {
         String query = "UPDATE articles SET name = ?, description = ?, price = ? WHERE id = ?";
         try {
             this.open();
@@ -54,7 +54,7 @@ public class ArticleContextSQL extends SQLConnector implements IArticleContext {
         }
         return false;
     }
-    public boolean delete(ArticleDto entity) {
+    public boolean delete(IArticle entity) {
         String query = "DELETE FROM articles WHERE id = ?";
         try {
             this.open();
@@ -121,7 +121,7 @@ public class ArticleContextSQL extends SQLConnector implements IArticleContext {
         }
         return articleDto;
     }
-    public ArticleDto read(ArticleDto entity) {
+    public IArticle read(IArticle entity) {
         if(entity.getName() != null){
             return this.read(entity.getName());
         }
@@ -133,8 +133,8 @@ public class ArticleContextSQL extends SQLConnector implements IArticleContext {
 
 
 
-    public List<ArticleDto> list() {
-        List<ArticleDto> articles = new ArrayList<>();
+    public List<IArticle> list() {
+        List<IArticle> articles = new ArrayList<>();
         String query = "SELECT * FROM articles";
 
         try{
