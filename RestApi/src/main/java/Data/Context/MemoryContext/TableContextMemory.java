@@ -4,6 +4,7 @@ import Data.Context.Interfaces.ITableContext;
 import Data.DTO.ArticleDto;
 import Data.DTO.TableDto;
 import Interfaces.model.IArticle;
+import Interfaces.model.IArticleOrder;
 import Interfaces.model.ITable;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class TableContextMemory implements ITableContext {
         }
 
         TableDto table = new TableDto(
-                entity.getId(),
+                generateId(entity),
                 entity.getName(),
                 entity.getDescription(),
                 entity.getDisabled()
@@ -95,5 +96,19 @@ public class TableContextMemory implements ITableContext {
 
     public List<ITable> list() {
         return new ArrayList<>(tables);
+    }
+
+    public int generateId(ITable entity){
+        int id;
+        if(entity.getId() == 0){
+            if(tables.size() == 0){
+                id = 1;
+            }else{
+                id = list().get(list().size() -1).getId() + 1;
+            }
+        }else{
+            id = entity.getId();
+        }
+        return id;
     }
 }

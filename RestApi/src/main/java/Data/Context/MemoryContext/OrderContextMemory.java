@@ -4,6 +4,7 @@ import Data.Context.Interfaces.IOrderContext;
 import Data.DTO.OrderDto;
 import Data.DTO.TableDto;
 import Data.DTO.UserDto;
+import Interfaces.model.IArticleOrder;
 import Interfaces.model.IOrder;
 import Interfaces.model.ITable;
 import Interfaces.model.IUser;
@@ -26,7 +27,7 @@ public class OrderContextMemory implements IOrderContext {
         }
 
         OrderDto order = new OrderDto(
-                entity.getId(),
+                generateId(entity),
                 entity.getDate(),
                 entity.getTable(),
                 entity.getArticleOrder()
@@ -139,13 +140,28 @@ public class OrderContextMemory implements IOrderContext {
         return null;
     }
 
-    @Override
+
     public List<IOrder> list(IUser user) {
         return null;
     }
 
-    @Override
+
     public List<IOrder> listLast() {
         return null;
+    }
+
+
+    public int generateId(IOrder entity){
+        int id;
+        if(entity.getId() == 0){
+            if(orders.size() == 0){
+                id = 1;
+            }else{
+                id = list().get(list().size() -1).getId() + 1;
+            }
+        }else{
+            id = entity.getId();
+        }
+        return id;
     }
 }

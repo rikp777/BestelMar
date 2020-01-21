@@ -3,6 +3,7 @@ package Data.Context.MemoryContext;
 import Data.Context.Interfaces.IUserContext;
 import Data.DTO.TableDto;
 import Data.DTO.UserDto;
+import Interfaces.model.IArticleOrder;
 import Interfaces.model.ITable;
 import Interfaces.model.IUser;
 import models.User;
@@ -24,7 +25,7 @@ public class UserContextMemory implements IUserContext {
             }
         }
         UserDto user = new UserDto();
-        user.setId(entity.getId());
+        user.setId(generateId(entity));
         user.setEmail(entity.getEmail());
         user.setFirstName(entity.getFirstName());
         user.setLastName(entity.getLastName());
@@ -44,15 +45,15 @@ public class UserContextMemory implements IUserContext {
         user.setLastName(entity.getLastName());
         user.setBlocked(entity.getBlocked());
 
-        UserDto old;
+        IUser old;
 
-        for(UserDto u : users){
+        for(IUser u : users){
             if(u.getId() == entity.getId()){
                 old = u;
                 users.set(users.indexOf(old), user);
             }
         }
-        return users.contains(user);
+        return users.contains(entity);
     }
 
     public boolean delete(IUser entity){
@@ -108,6 +109,20 @@ public class UserContextMemory implements IUserContext {
             }
         }
         return false;
+    }
+
+    public int generateId(IUser entity){
+        int id;
+        if(entity.getId() == 0){
+            if(users.size() == 0){
+                id = 1;
+            }else{
+                id = list().get(list().size() -1).getId() + 1;
+            }
+        }else{
+            id = entity.getId();
+        }
+        return id;
     }
 
 }

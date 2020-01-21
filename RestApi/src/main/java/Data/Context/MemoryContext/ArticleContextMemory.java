@@ -24,7 +24,7 @@ public class ArticleContextMemory implements IArticleContext {
         }
 
         ArticleDto article = new ArticleDto(
-                entity.getId(),
+                generateId(entity),
                 entity.getName(),
                 entity.getDescription(),
                 entity.getPrice()
@@ -94,5 +94,19 @@ public class ArticleContextMemory implements IArticleContext {
 
     public List<IArticle> list() {
         return new ArrayList<>(articles);
+    }
+
+    public int generateId(IArticle entity){
+        int id;
+        if(entity.getId() == 0){
+            if(articles.size() == 0){
+                id = 1;
+            }else{
+                id = list().get(list().size() -1).getId() + 1;
+            }
+        }else{
+            id = entity.getId();
+        }
+        return id;
     }
 }

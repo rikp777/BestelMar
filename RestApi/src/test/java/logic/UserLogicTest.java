@@ -21,7 +21,7 @@ public class UserLogicTest{
 
     @BeforeEach
     void setUp(){
-        _userLogic = Factory.UserLogic(ContextType.SQL);
+        _userLogic = Factory.UserLogic(ContextType.MEMORY);
         authUser = "rikpeeters@hotmail.com";
         users.add(new UserDto(1, "rikpeeters@hotmail.com", "Rik", "Peeters", true));
         users.add(new UserDto(2, "janpieters@hotmail.com", "Jan", "Pieters", true));

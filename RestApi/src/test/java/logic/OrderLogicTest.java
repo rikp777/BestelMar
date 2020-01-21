@@ -11,10 +11,12 @@ import Factory.Factory;
 import Factory.ContextType;
 import Interfaces.model.*;
 import logic.Interfaces.IOrderLogic;
+import logic.Interfaces.ITableLogic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import javax.xml.stream.FactoryConfigurationError;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OrderLogicTest {
 
     private IOrderLogic _orderLogic;
+    private ITableLogic _tableLogic;
     private String authUser;
     private List<OrderDto> orders = new ArrayList<>();
     private List<IArticleOrder> articleOrders = new ArrayList<>();
@@ -53,9 +56,14 @@ public class OrderLogicTest {
     @BeforeEach
     void setUp(){
         _orderLogic = Factory.OrderLogic(ContextType.MEMORY);
+        _tableLogic = Factory.TableLogic(ContextType.MEMORY);
+
         authUser = "rikpeeters@hotmail.com";
 
         initialiseData();
+
+        _tableLogic.add(tables.get(0));
+        _tableLogic.add(tables.get(1));
     }
 
     @Test

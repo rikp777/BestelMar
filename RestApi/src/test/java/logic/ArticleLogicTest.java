@@ -23,7 +23,7 @@ public class ArticleLogicTest {
 
     @BeforeEach
     void setUp(){
-        _articleLogic = Factory.ArticleLogic(ContextType.MYSQL);
+        _articleLogic = Factory.ArticleLogic(ContextType.MEMORY);
         authUser = "rikpeeters@hotmail.com";
         articles.add(new ArticleDto(1, "Fanta", "lekker", 2.10));
         articles.add(new ArticleDto(2, "Cassis", "lekker", 2.10));

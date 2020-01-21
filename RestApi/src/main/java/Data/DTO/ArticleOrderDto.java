@@ -14,6 +14,15 @@ public class ArticleOrderDto implements IArticleOrder {
     private Date date;
     private Status status;
 
+    public ArticleOrderDto(int id, Double price, String comment, IArticle article, Date date, Status status) {
+        this.id = id;
+        this.price = price;
+        this.comment = comment;
+        this.article = article;
+        this.date = date;
+        this.status = status;
+    }
+
     public ArticleOrderDto(){
 
     }

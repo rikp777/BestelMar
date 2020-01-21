@@ -6,8 +6,10 @@ import Data.DTO.ArticleDto;
 import Data.DTO.TableDto;
 import Data.Repository.ArticleRepository;
 import Data.Repository.TableRepository;
+import Factory.*;
 import Interfaces.model.IArticle;
 import Interfaces.model.ITable;
+import logic.Interfaces.ITableLogic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,13 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TableLogicTest {
 
-    private TableLogic _tableLogic;
+    private ITableLogic _tableLogic;
     private String authUser;
     private List<TableDto> tables = new ArrayList<>();
 
     @BeforeEach
     void setUp(){
-        _tableLogic = new TableLogic(new TableRepository(new TableContextMemory()));
+        _tableLogic = Factory.TableLogic(ContextType.MEMORY);
         authUser = "rikpeeters@hotmail.com";
         tables.add(new TableDto(1, "tafel 1", "Links achter in de hoek bij de kast", true));
         tables.add(new TableDto(2, "tafel 2", "rechts achter", true));

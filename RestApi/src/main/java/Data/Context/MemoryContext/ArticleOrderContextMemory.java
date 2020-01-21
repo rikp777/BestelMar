@@ -7,12 +7,13 @@ import Data.DTO.OrderDto;
 import Interfaces.model.IArticle;
 import Interfaces.model.IArticleOrder;
 import Interfaces.model.IOrder;
+import models.Status;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleOrderContextMemory implements IArticleOrderContext {
-    private static List<ArticleOrderDto> articleOrders;
+    private static List<IArticleOrder> articleOrders;
 
     public ArticleOrderContextMemory(){
         articleOrders = new ArrayList<>();
@@ -21,21 +22,22 @@ public class ArticleOrderContextMemory implements IArticleOrderContext {
 
 
     public List<IArticleOrder> list(int orderId) {
-        return null;
+        return new ArrayList<>(articleOrders);
     }
 
 
     public boolean create(IArticleOrder entity, IOrder order) {
-        ArticleOrderDTOO articleOrder = new ArticleOrderDTOO(
-                1,
-                entity.getArticle().getId(),
-                order.getId(),
+        IArticleOrder articleOrder = new ArticleOrderDto(
+                generateId(entity),
                 entity.getPrice(),
                 entity.getComment(),
-                1,
-                entity.getDate()
+                entity.getArticle(),
+                entity.getDate(),
+                Status.Placed
         );
-        return false;
+
+        articleOrders.add(articleOrder);
+        return articleOrders.contains(articleOrder);
     }
 
 
@@ -66,5 +68,20 @@ public class ArticleOrderContextMemory implements IArticleOrderContext {
 
     public List<IArticleOrder> list() {
         return null;
+    }
+
+
+    public int generateId(IArticleOrder entity){
+        int id;
+        if(entity.getId() == 0){
+            if(articleOrders.size() == 0){
+                id = 1;
+            }else{
+                id = list().get(list().size() -1).getId() + 1;
+            }
+        }else{
+            id = entity.getId();
+        }
+        return id;
     }
 }
